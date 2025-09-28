@@ -6,6 +6,10 @@ __pycache__/
 .pytest_cache/
 .Rproj.user
 
+# Ignore virtual environments
+venv39/
+venv311/
+
 # Ignore build artifacts
 dist/
 build/
