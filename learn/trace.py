@@ -26,7 +26,9 @@ class CompatibilityUnpickler(pickle.Unpickler):
     CLASS_MAPPING = {
         ('core.common', 'EdgeMark'): 'causaliq_core.graph',
         ('core.common', 'EdgeType'): 'causaliq_core.graph',
-        ('core.common', 'EnumWithAttrs'): 'causaliq_core.utils.enums',
+        ('core.common', 'EnumWithAttrs'): 'causaliq_core.utils',
+        ('core.common', 'rndsf'): 'causaliq_core.math',
+        ('core.common', 'ln'): 'causaliq_core.math',
         # Add more specific class mappings as needed
     }
     
@@ -63,7 +65,7 @@ def load_with_compatibility(file_handle, compression="gzip", **kwargs):
         file_handle.seek(0)
         return CompatibilityUnpickler(file_handle).load()
 from core.common import environment, Randomise
-from causaliq_core.utils.enums import EnumWithAttrs
+from causaliq_core.utils import EnumWithAttrs
 from core.metrics import values_same
 from core.graph import SDG, DAG
 from learn.common import TreeStats

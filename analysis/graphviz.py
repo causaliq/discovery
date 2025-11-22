@@ -5,7 +5,7 @@ import graphviz as gv
 from pandas import DataFrame
 from re import compile
 
-from core.common import ln
+from causaliq_core.math import ln
 from analysis.trace import TraceAnalysis
 
 STATUS_COLOUR = {'ok': 'darkgreen', 'eqv': 'indianred1', 'rev': '#990000',

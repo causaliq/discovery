@@ -10,7 +10,7 @@ import scipy.stats as stats
 from sklearn.linear_model import LinearRegression
 from scipy.special import gammaln
 
-from core.common import ln
+from causaliq_core.math import ln
 from core.timing import Timing
 from fileio.data import Data
 from fileio.oracle import Oracle

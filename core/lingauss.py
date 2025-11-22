@@ -5,7 +5,8 @@ from sklearn.linear_model import LinearRegression
 from math import sqrt
 from numpy import sum as npsum
 
-from core.common import random_generator, rndsf
+from core.common import random_generator
+from causaliq_core.math import rndsf
 from core.metrics import values_same, dicts_same
 from fileio.pandas import Pandas
 

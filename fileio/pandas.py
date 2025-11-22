@@ -9,7 +9,7 @@ from gzip import BadGzipFile
 from csv import QUOTE_MINIMAL
 
 from fileio.data import Data
-from core.common import rndsf
+from causaliq_core.math import rndsf
 from fileio.common import is_valid_path, FileFormatError, DatasetType
 from core.timing import Timing
 

@@ -12,7 +12,8 @@ from re import compile
 
 from experiments.config import Ordering, SERIES_GROUPS_P, SERIES_P, \
     FIGURE_PARAMS_P, Package, Algorithm
-from core.common import Randomise, ln
+from core.common import Randomise
+from causaliq_core.math import ln
 from core.bn import BN
 from fileio.common import EXPTS_DIR
 from learn.knowledge import RuleSet

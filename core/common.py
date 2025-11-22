@@ -61,59 +61,9 @@ class EnumWithAttrs(Enum):
         return self._label_
 
 
-def rndsf(x, sf, zero=None):
-    """
-        Round a number to specified number of significant figures.
+# rndsf function migrated to causaliq_core.math
 
-        :param float/int x: number to round
-        :param int sf: number of significant values required
-        :param float/None zero: abs values below this treated as zero,
-                                None ==> set to 10**(-sf)
-
-        :raises TypeError: if bad arg types
-        :raises ValueError: if bad arg values
-
-        :return str: rounded value as a float expressed as a string
-    """
-    if (not isinstance(x, (float, int)) or isinstance(x, bool)
-            or not isinstance(sf, int) or isinstance(sf, bool)
-            or (zero is not None and not isinstance(zero, float))):
-        raise TypeError("rndsf bad arg types")
-
-    zero = zero if zero is not None else 10 ** (- sf)
-    if sf < 2 or sf > 10 or zero < 10 ** -20 or zero > 0.1:
-        raise ValueError("rndsf bad arg values")
-    if -zero < x and x < zero:
-        return '0.0'
-
-    exp = int(floor(log10(abs(x))))
-    x = round(x, sf - exp - 1)
-    str = "{:.{}f}".format(x, max(1, sf - exp - 1))
-    str = str if str.endswith('.0') else str.rstrip('0')
-    str = str + '0' if str.endswith('.') else str
-    return str
-
-
-def ln(x, base='e'):
-    """
-        Return logarithm to specified base
-
-        :param float x: number to obtain logarithm of
-        :param int/str base: base to use - 2, 10 or 'e'
-
-        :raises TypeError: for bad argument types
-        :raises ValueError: for bad argument values
-
-        :returns float: logarithm(x) to specified base
-    """
-    if not isinstance(base, str) and not isinstance(base, int) \
-            or isinstance(base, bool):
-        raise TypeError('ln bad argument type')
-
-    if base not in [2, 10, 'e']:
-        raise ValueError('ln bad argument value')
-
-    return log2(x) if base == 2 else (log10(x) if base == 10 else log(x))
+# ln function migrated to causaliq_core.math
 
 
 def random_generator():

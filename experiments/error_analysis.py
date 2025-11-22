@@ -6,7 +6,7 @@ from math import ceil
 
 from fileio.common import EXPTS_DIR
 from fileio.pandas import Pandas
-from core.common import ln
+from causaliq_core.math import ln
 from experiments.common import reference_bn
 from learn.trace import Trace
 from analysis.trace import TraceAnalysis

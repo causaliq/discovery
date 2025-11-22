@@ -4,7 +4,7 @@
 from copy import deepcopy
 from time import asctime, localtime
 
-from causaliq_core.utils.enums import EnumWithAttrs
+from causaliq_core.utils import EnumWithAttrs
 from core.score import node_score
 from core.metrics import values_same
 from core.graph import DAG

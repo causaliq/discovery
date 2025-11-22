@@ -1,8 +1,8 @@
 
 # Encapsulates knowledge rules
 
-from core.common import ln
-from causaliq_core.utils.enums import EnumWithAttrs
+from causaliq_core.math import ln
+from causaliq_core.utils import EnumWithAttrs
 from core.metrics import values_same
 from core.indep import indep
 from core.score import node_score
