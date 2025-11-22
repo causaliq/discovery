@@ -15,27 +15,9 @@ from cpuinfo import get_cpu_info
 from psutil import virtual_memory
 
 from fileio.common import EXPTS_DIR
-
-SOFTWARE_VERSION = 221
+from causaliq_core.graph import EdgeType
 
 BAYESYS_VERSIONS = ['v1.3', 'v1.5+']
-
-
-class EdgeMark(Enum):  # supported "ends" of an edge
-    NONE = 0
-    LINE = 1
-    ARROW = 2
-    CIRCLE = 3
-
-
-class EdgeType(Enum):  # supported edge types and their symbols
-    NONE = (0, EdgeMark.NONE, EdgeMark.NONE, '')
-    DIRECTED = (1, EdgeMark.LINE, EdgeMark.ARROW, '->')
-    UNDIRECTED = (2, EdgeMark.LINE, EdgeMark.LINE, '-')
-    BIDIRECTED = (3, EdgeMark.ARROW, EdgeMark.ARROW, '<->')
-    SEMIDIRECTED = (4, EdgeMark.CIRCLE, EdgeMark.ARROW, 'o->')
-    NONDIRECTED = (5, EdgeMark.CIRCLE, EdgeMark.CIRCLE, 'o-o')
-    SEMIUNDIRECTED = (6, EdgeMark.CIRCLE, EdgeMark.LINE, 'o-')
 
 
 class Randomise(Enum):  # supported experiment randomisations

@@ -8,7 +8,8 @@ from os.path import exists
 from time import time
 import pytest
 
-from core.common import adjmat, environment, EnumWithAttrs, \
+from causaliq_core.utils.enums import EnumWithAttrs
+from core.common import adjmat, environment, \
     generate_stable_random, stable_random, init_stable_random, \
     RandomIntegers, STABLE_RANDOM_FILE, rndsf
 

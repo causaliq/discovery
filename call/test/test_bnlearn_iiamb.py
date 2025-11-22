@@ -2,7 +2,7 @@
 
 import pytest
 
-from core.common import EdgeType
+from causaliq_core.graph import EdgeType
 from call.bnlearn import bnlearn_learn
 from fileio.common import TESTDATA_DIR
 from fileio.numpy import NumPy

@@ -7,7 +7,8 @@
 #
 
 from core.common import adjmat
-from core.graph import DAG, EdgeType
+from core.graph import DAG
+from causaliq_core.graph import EdgeType
 from core.bn import BN
 
 

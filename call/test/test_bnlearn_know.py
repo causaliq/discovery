@@ -8,7 +8,7 @@ from call.bnlearn import bnlearn_learn
 from fileio.common import TESTDATA_DIR
 from fileio.bayesys import read_constraints
 from fileio.numpy import NumPy
-from core.common import EdgeType
+from causaliq_core.graph import EdgeType
 from core.graph import DAG
 from core.bn import BN
 from learn.knowledge import Knowledge

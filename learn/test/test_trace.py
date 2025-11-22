@@ -6,8 +6,9 @@ from time import sleep
 from os.path import exists
 from os import remove, rmdir
 
+from causaliq_core.legacy import SOFTWARE_VERSION
 from learn.trace import Trace, Activity, Detail
-from core.common import SOFTWARE_VERSION, Randomise
+from core.common import Randomise
 from fileio.common import TESTDATA_DIR
 import testdata.example_dags as ex_dag
 

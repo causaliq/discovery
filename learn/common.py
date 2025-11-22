@@ -3,7 +3,7 @@
 
 from copy import deepcopy
 
-from core.common import EnumWithAttrs
+from causaliq_core.utils.enums import EnumWithAttrs
 
 
 class Output(EnumWithAttrs):

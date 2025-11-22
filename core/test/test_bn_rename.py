@@ -4,7 +4,7 @@
 import pytest
 from copy import deepcopy
 
-from core.common import EdgeType
+from causaliq_core.graph import EdgeType
 from core.graph import DAG
 from core.bn import BN
 from fileio.common import TESTDATA_DIR

@@ -6,7 +6,8 @@ import pytest
 from call.causal import requires_causal_learn, causal_learn
 from fileio.common import TESTDATA_DIR
 from fileio.numpy import NumPy
-from core.graph import EdgeType, PDAG
+from causaliq_core.graph import EdgeType
+from core.graph import PDAG
 from core.metrics import values_same
 from learn.trace import Trace
 

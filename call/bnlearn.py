@@ -9,7 +9,7 @@ from random import random
 from re import compile
 
 from call.r import dispatch_r
-from core.common import EdgeType
+from causaliq_core.graph import EdgeType
 from core.graph import DAG, PDAG
 from core.bn import BN
 from core.lingauss import LinGauss

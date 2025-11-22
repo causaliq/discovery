@@ -9,9 +9,61 @@ import pickle
 from compress_pickle import dump, load
 from gzip import BadGzipFile
 from os import makedirs
+from io import BytesIO
+import gzip
 
-from core.common import SOFTWARE_VERSION, environment, Randomise, \
-                        EnumWithAttrs
+from causaliq_core.legacy import SOFTWARE_VERSION
+
+
+class CompatibilityUnpickler(pickle.Unpickler):
+    """
+    Custom unpickler that handles module path changes for backward compatibility.
+    
+    Maps specific classes that have been moved between modules.
+    """
+    
+    # Mapping of (old_module, class_name) to new_module
+    CLASS_MAPPING = {
+        ('core.common', 'EdgeMark'): 'causaliq_core.graph',
+        ('core.common', 'EdgeType'): 'causaliq_core.graph',
+        ('core.common', 'EnumWithAttrs'): 'causaliq_core.utils.enums',
+        # Add more specific class mappings as needed
+    }
+    
+    def find_class(self, module, name):
+        """
+        Override find_class to handle module path changes.
+        
+        :param str module: Original module name from pickle
+        :param str name: Class name
+        :returns: The class object from the new location
+        """
+        # Check if this specific class has been moved
+        if (module, name) in self.CLASS_MAPPING:
+            module = self.CLASS_MAPPING[(module, name)]
+        
+        return super().find_class(module, name)
+
+
+def load_with_compatibility(file_handle, compression="gzip", **kwargs):
+    """
+    Load pickled data with module compatibility handling.
+    
+    :param file_handle: File handle to read from
+    :param str compression: Compression type
+    :returns: Unpickled object
+    """
+    if compression == "gzip":
+        # For gzip compressed files, we need to decompress first
+        file_handle.seek(0)
+        with gzip.GzipFile(fileobj=file_handle, mode='rb') as gz_file:
+            return CompatibilityUnpickler(gz_file).load()
+    else:
+        # For uncompressed files
+        file_handle.seek(0)
+        return CompatibilityUnpickler(file_handle).load()
+from core.common import environment, Randomise
+from causaliq_core.utils.enums import EnumWithAttrs
 from core.metrics import values_same
 from core.graph import SDG, DAG
 from learn.common import TreeStats
@@ -429,8 +481,8 @@ class Trace():
 
         try:
             with open(path + '/' + file_name, 'rb') as fh:
-                traces = load(fh, compression="gzip",
-                              set_default_extension=False)
+                # Use compatibility loader instead of compress_pickle.load
+                traces = load_with_compatibility(fh, compression="gzip")
                 if not isinstance(traces, dict) or not \
                         all([isinstance(v, Trace) for v in traces.values()]):
                     raise ValueError()

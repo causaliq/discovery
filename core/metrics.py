@@ -6,7 +6,8 @@
 from pandas import Series, DataFrame
 from math import floor, log10, isnan
 
-from core.common import EdgeType, ln
+from causaliq_core.graph import EdgeType
+from core.common import ln
 
 
 def values_same(value1, value2, sf=3):

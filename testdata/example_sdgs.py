@@ -7,7 +7,8 @@
 #
 
 from core.common import adjmat
-from core.graph import SDG, EdgeType
+from core.graph import SDG
+from causaliq_core.graph import EdgeType
 
 
 def ab_undirected(check=None):

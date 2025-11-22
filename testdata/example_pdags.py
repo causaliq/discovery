@@ -7,7 +7,8 @@
 #
 
 from core.common import adjmat
-from core.graph import EdgeType, PDAG
+from causaliq_core.graph import EdgeType
+from core.graph import PDAG
 
 
 def empty(check=None):

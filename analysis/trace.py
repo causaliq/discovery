@@ -4,7 +4,8 @@
 from enum import Enum
 from pandas import DataFrame
 
-from core.common import BAYESYS_VERSIONS, EdgeType
+from causaliq_core.graph import EdgeType
+from core.common import BAYESYS_VERSIONS
 from core.graph import DAG, PDAG
 from core.bn import BN
 from core.indep import indep
