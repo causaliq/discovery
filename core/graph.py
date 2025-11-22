@@ -8,7 +8,7 @@ from pandas import DataFrame
 from core.metrics import pdag_compare
 from core.score import dag_score
 from causaliq_core.graph import EdgeType
-from core.common import BAYESYS_VERSIONS
+from causaliq_core.graph import BAYESYS_VERSIONS
 from fileio.data import Data
 from fileio.oracle import Oracle
 

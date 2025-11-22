@@ -29,6 +29,8 @@ class CompatibilityUnpickler(pickle.Unpickler):
         ('core.common', 'EnumWithAttrs'): 'causaliq_core.utils',
         ('core.common', 'rndsf'): 'causaliq_core.math',
         ('core.common', 'ln'): 'causaliq_core.math',
+        ('core.common', 'BAYESYS_VERSIONS'): 'causaliq_core.graph',
+        ('core.common', 'adjmat'): 'causaliq_core.graph',
         # Add more specific class mappings as needed
     }
     

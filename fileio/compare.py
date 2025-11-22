@@ -2,7 +2,7 @@
 from os import listdir
 from os.path import sep
 
-from core.common import BAYESYS_VERSIONS
+from causaliq_core.graph import BAYESYS_VERSIONS
 from fileio.common import is_valid_path
 from fileio.bayesys import read
 

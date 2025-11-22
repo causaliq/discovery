@@ -17,7 +17,7 @@ from psutil import virtual_memory
 from fileio.common import EXPTS_DIR
 from causaliq_core.graph import EdgeType
 
-BAYESYS_VERSIONS = ['v1.3', 'v1.5+']
+# BAYESYS_VERSIONS migrated to causaliq_core.graph
 
 
 class Randomise(Enum):  # supported experiment randomisations
@@ -155,33 +155,7 @@ def init_stable_random(offset=0):
     _stable_random = None
 
 
-def adjmat(columns):
-    """
-        Create an adjacency matrix with specified entries
-
-        :param dict columns: data for matrix specified by column
-
-        :raises TypeError: if arg types incorrect
-        :raises ValueError: if values specified are invalid
-
-        :returns DataFrame: the adjacency matrix
-    """
-    if not isinstance(columns, dict) \
-            or not all([isinstance(c, list) for c in columns.values()]) \
-            or not all([isinstance(e, int)
-                        for c in columns.values() for e in c]):
-        raise TypeError('adjmat called with bad arg type')
-
-    if not all([len(c) == len(columns) for c in columns.values()]):
-        raise ValueError('some columns wrong length for adjmat')
-
-    valid = [e.value[0] for e in EdgeType]  # valid edge integer codes
-    if not all([e in valid for c in columns.values() for e in c]):
-        raise ValueError('invalid integer values for adjmat')
-
-    adjmat = DataFrame(columns, dtype='int8')
-    adjmat[''] = list(adjmat.columns)
-    return adjmat.set_index('')
+# adjmat function migrated to causaliq_core.graph
 
 
 def environment():

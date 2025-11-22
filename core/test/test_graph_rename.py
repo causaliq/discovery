@@ -4,7 +4,7 @@
 import pytest
 
 from causaliq_core.graph import EdgeType
-from core.common import adjmat
+from causaliq_core.graph import adjmat
 from core.graph import SDG, PDAG, DAG
 import testdata.example_sdgs as ex_sdg
 import testdata.example_pdags as ex_pdag
