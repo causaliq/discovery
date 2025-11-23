@@ -3,7 +3,7 @@
 # research output
 
 from enum import Enum
-from core.common import Randomise
+from causaliq_core.utils.random import Randomise
 from learn.knowledge import RuleSet
 
 

@@ -3,7 +3,7 @@
 
 from copy import deepcopy
 
-from core.common import stable_random, init_stable_random
+from causaliq_core.utils.random import stable_random, init_stable_random
 from learn.trace import Activity
 from learn.dagchange import BestDAGChanges, DAGChange
 from learn.knowledge_rule import Rule, RuleSet, KnowledgeOutcome, \

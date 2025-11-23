@@ -9,7 +9,7 @@ from learn.trace import Activity
 from learn.dagchange import DAGChange, BestDAGChanges
 from fileio.common import TESTDATA_DIR
 from core.bn import BN
-from core.common import init_stable_random
+from causaliq_core.utils.random import init_stable_random
 
 
 @pytest.fixture

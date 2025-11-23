@@ -12,9 +12,11 @@ from causaliq_core.utils import EnumWithAttrs
 from causaliq_core.math import rndsf
 from causaliq_core.graph import adjmat
 from causaliq_core.utils import environment
-from core.common import \
+from causaliq_core.utils.random import \
     generate_stable_random, stable_random, init_stable_random, \
-    RandomIntegers, STABLE_RANDOM_FILE
+    RandomIntegers
+
+STABLE_RANDOM_FILE = "/stable_random.dat"
 
 from fileio.common import EXPTS_DIR, TESTDATA_DIR
 
@@ -30,6 +32,15 @@ def test_sequence():  # obtains sequence of randos in test file
     with open(file_name, 'r') as file:
         sequence = file.readlines()
     return [float(i.strip()) for i in sequence]
+
+
+@pytest.fixture
+def mock_stable_sequence(test_sequence, monkeypatch):
+    """Mock embedded sequence to use test data for testing offset behavior."""
+    monkeypatch.setattr(
+        "causaliq_core.utils.random.STABLE_RANDOM_SEQUENCE", test_sequence
+    )
+    return test_sequence
 
 
 def test_common_adjmat_type_error_1():  # arg is not a dict
@@ -169,8 +180,9 @@ def test_stable_random_1_ok():  # generate and fetch test sequence
         stable_random(path)
 
 
-def test_stable_random_2_ok(test_sequence):  # check init_stable_random resets
+def test_stable_random_2_ok(mock_stable_sequence):  # check init_stable_random resets
 
+    test_sequence = mock_stable_sequence
     N = 5
     path = TESTDATA_DIR + '/experiments'
 
@@ -192,8 +204,9 @@ def test_stable_random_2_ok(test_sequence):  # check init_stable_random resets
         stable_random(path)
 
 
-def test_stable_random_3_ok(test_sequence):  # check diff seq offset 1
+def test_stable_random_3_ok(mock_stable_sequence):  # check diff seq offset 1
 
+    test_sequence = mock_stable_sequence
     N = 5
     path = TESTDATA_DIR + '/experiments'
 
@@ -217,8 +230,9 @@ def test_stable_random_3_ok(test_sequence):  # check diff seq offset 1
         stable_random(path)
 
 
-def test_stable_random_4_ok(test_sequence):  # check diff seq offset 2
+def test_stable_random_4_ok(mock_stable_sequence):  # check diff seq offset 2
 
+    test_sequence = mock_stable_sequence
     path = TESTDATA_DIR + '/experiments'
     init_stable_random(offset=2)
     assert stable_random(path) == test_sequence[2]
@@ -230,8 +244,9 @@ def test_stable_random_4_ok(test_sequence):  # check diff seq offset 2
         stable_random(path)
 
 
-def test_stable_random_5_ok(test_sequence):  # check diff seq with offset 3
+def test_stable_random_5_ok(mock_stable_sequence):  # check seq with offset 3
 
+    test_sequence = mock_stable_sequence
     path = TESTDATA_DIR + '/experiments'
     init_stable_random(offset=3)
     assert stable_random(path) == test_sequence[3]
@@ -243,8 +258,9 @@ def test_stable_random_5_ok(test_sequence):  # check diff seq with offset 3
         stable_random(path)
 
 
-def test_stable_random_6_ok(test_sequence):  # check diff seq with offset 4
+def test_stable_random_6_ok(mock_stable_sequence):  # check seq with offset 4
 
+    test_sequence = mock_stable_sequence
     path = TESTDATA_DIR + '/experiments'
     init_stable_random(offset=4)
     assert stable_random(path) == test_sequence[4]
@@ -300,7 +316,8 @@ def test_common_random_integers_value_error_2():  # invalid value for subsample
         RandomIntegers(10, 1001)
 
 
-def test_common_random_integers_filenotfound_error_1():  # bad path
+# not relevant anymore as numbers not kept in file
+def xtest_common_random_integers_filenotfound_error_1():  # bad path
     init_stable_random()
     with pytest.raises(FileNotFoundError):
         iter = RandomIntegers(10, path='non-existent')

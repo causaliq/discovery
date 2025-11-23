@@ -5,7 +5,7 @@ import pytest
 from random import random
 from os import remove
 
-from core.common import Randomise
+from causaliq_core.utils.random import Randomise
 from fileio.common import TESTDATA_DIR
 from experiments.trace_analysis import trace_analysis
 

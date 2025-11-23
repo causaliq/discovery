@@ -3,7 +3,7 @@
 
 import pytest
 
-from core.common import init_stable_random
+from causaliq_core.utils.random import init_stable_random
 from fileio.common import TESTDATA_DIR
 from core.bn import BN
 from learn.knowledge import Knowledge, Rule, RuleSet

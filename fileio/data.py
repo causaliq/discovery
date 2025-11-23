@@ -3,7 +3,7 @@
 
 from abc import ABC, abstractmethod
 
-from core.common import RandomIntegers
+from causaliq_core.utils.random import RandomIntegers
 
 
 class Data(ABC):

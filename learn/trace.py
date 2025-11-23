@@ -32,6 +32,13 @@ class CompatibilityUnpickler(pickle.Unpickler):
         ('core.common', 'BAYESYS_VERSIONS'): 'causaliq_core.graph',
         ('core.common', 'adjmat'): 'causaliq_core.graph',
         ('core.common', 'environment'): 'causaliq_core.utils',
+        ('core.common', 'RandomIntegers'): 'causaliq_core.utils.random',
+        ('core.common', 'Randomise'): 'causaliq_core.utils.random',
+        ('core.common', 'stable_random'): 'causaliq_core.utils.random',
+        ('core.common', 'init_stable_random'): 'causaliq_core.utils.random',
+        ('core.common', 'generate_stable_random'): 'causaliq_core.utils.random',
+        ('core.common', 'random_generator'): 'causaliq_core.utils.random',
+        ('core.common', 'set_random_seed'): 'causaliq_core.utils.random',
         # Add more specific class mappings as needed
     }
     
@@ -67,7 +74,7 @@ def load_with_compatibility(file_handle, compression="gzip", **kwargs):
         # For uncompressed files
         file_handle.seek(0)
         return CompatibilityUnpickler(file_handle).load()
-from core.common import Randomise
+from causaliq_core.utils.random import Randomise
 from causaliq_core.utils import environment
 from causaliq_core.utils import EnumWithAttrs
 from core.metrics import values_same

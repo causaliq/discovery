@@ -4,7 +4,7 @@
 
 from itertools import combinations
 
-from core.common import random_generator
+from causaliq_core.utils.random import random_generator
 from core.metrics import values_same
 from core.cnd import CND
 

@@ -5,7 +5,7 @@ import pytest
 from pandas import set_option
 from time import localtime, asctime
 
-from core.common import Randomise
+from causaliq_core.utils.random import Randomise
 from fileio.common import EXPTS_DIR
 from fileio.numpy import NumPy
 from fileio.oracle import Oracle
