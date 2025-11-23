@@ -11,7 +11,8 @@ import pytest
 from causaliq_core.utils import EnumWithAttrs
 from causaliq_core.math import rndsf
 from causaliq_core.graph import adjmat
-from core.common import environment, \
+from causaliq_core.utils import environment
+from core.common import \
     generate_stable_random, stable_random, init_stable_random, \
     RandomIntegers, STABLE_RANDOM_FILE
 

@@ -157,31 +157,7 @@ def init_stable_random(offset=0):
 
 # adjmat function migrated to causaliq_core.graph
 
-
-def environment():
-    """
-        Obtain details of the hardware and software environment that the
-        software is running under. For efficiency, this is obtained from
-        a file "environment.json" in EXPTS_DIR if one modified in the last
-        24 hours is available, otherwise the OS (registry etc.) is queried
-        and a new version of "environment.json" created.
-
-        :returns dict: of environment information
-    """
-    envfile_name = EXPTS_DIR + '/environment.json'
-    envfile = Path(envfile_name)
-    if not envfile.exists() or time() - envfile.stat().st_mtime > 24 * 3600:
-        env = {'os': uname().system + ' v' + uname().version,
-               'cpu': get_cpu_info()['brand_raw'],
-               'python': get_cpu_info()['python_version'],
-               'ram': round(virtual_memory().total / (1024 * 1024 * 1024))}
-        with open(envfile_name, "w") as file:
-            dump(env, file)
-    else:
-        with open(envfile_name, 'r') as file:
-            env = load(file)
-
-    return env
+# environment function migrated to causaliq_core.utils
 
 
 class RandomIntegers():

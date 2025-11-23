@@ -31,6 +31,7 @@ class CompatibilityUnpickler(pickle.Unpickler):
         ('core.common', 'ln'): 'causaliq_core.math',
         ('core.common', 'BAYESYS_VERSIONS'): 'causaliq_core.graph',
         ('core.common', 'adjmat'): 'causaliq_core.graph',
+        ('core.common', 'environment'): 'causaliq_core.utils',
         # Add more specific class mappings as needed
     }
     
@@ -66,7 +67,8 @@ def load_with_compatibility(file_handle, compression="gzip", **kwargs):
         # For uncompressed files
         file_handle.seek(0)
         return CompatibilityUnpickler(file_handle).load()
-from core.common import environment, Randomise
+from core.common import Randomise
+from causaliq_core.utils import environment
 from causaliq_core.utils import EnumWithAttrs
 from core.metrics import values_same
 from core.graph import SDG, DAG
