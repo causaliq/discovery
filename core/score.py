@@ -11,7 +11,7 @@ from sklearn.linear_model import LinearRegression
 from scipy.special import gammaln
 
 from causaliq_core.math import ln
-from core.timing import Timing
+from causaliq_core.utils.timing import Timing
 from fileio.data import Data
 from fileio.oracle import Oracle
 

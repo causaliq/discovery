@@ -27,7 +27,7 @@ from learn.trace import CONTEXT_FIELDS, Trace, Activity, Detail
 from fileio.pandas import Pandas
 from fileio.numpy import NumPy
 from core.graph import PDAG, DAG
-from core.timing import run_with_timeout, TimeoutError
+from causaliq_core.utils.timing import run_with_timeout, TimeoutError
 
 CAUSAL_ALGORITHMS = {
     "astar": "score",

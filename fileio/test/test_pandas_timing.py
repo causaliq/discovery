@@ -6,7 +6,7 @@ import pytest
 from fileio.common import EXPTS_DIR
 from fileio.pandas import Pandas
 from learn.hc import hc
-from core.timing import Timing
+from causaliq_core.utils.timing import Timing
 
 
 def do_expt(network, N, id, params=None):

@@ -14,7 +14,7 @@ from fileio.tetrad import write as write_tetrad, read as read_tetrad
 from fileio.bayesys import write as write_bayesys
 from core.bn import BN
 from core.graph import DAG
-from core.timing import Timing
+from causaliq_core.utils.timing import Timing
 
 PATH = EXPTS_DIR + '/papers/gaming/'
 TETRAD_FILE = EXPTS_DIR + '/papers/gaming/tetrad/{}_disc.tetrad'

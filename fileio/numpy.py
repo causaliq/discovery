@@ -9,7 +9,7 @@ from pandas import read_csv, factorize, DataFrame, Categorical
 from pandas.errors import EmptyDataError
 from gzip import BadGzipFile
 
-from core.timing import Timing
+from causaliq_core.utils.timing import Timing
 from fileio.common import DatasetType, is_valid_path, FileFormatError
 from fileio.pandas import Pandas
 from fileio.data import Data

@@ -6,7 +6,7 @@ import pytest
 from fileio.common import EXPTS_DIR
 from fileio.numpy import NumPy
 from fileio.pandas import Pandas
-from core.timing import Timing
+from causaliq_core.utils.timing import Timing
 from learn.hc import hc
 
 

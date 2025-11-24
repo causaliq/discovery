@@ -4,7 +4,7 @@
 import pytest
 from time import time, sleep
 
-from core.timing import Timing
+from causaliq_core.utils.timing import Timing
 
 TOO_LONG = ''.join(['*'] * (Timing.MAX_ACTION_LEN + 1))
 

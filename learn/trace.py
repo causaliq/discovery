@@ -39,6 +39,11 @@ class CompatibilityUnpickler(pickle.Unpickler):
         ('core.common', 'generate_stable_random'): 'causaliq_core.utils.random',
         ('core.common', 'random_generator'): 'causaliq_core.utils.random',
         ('core.common', 'set_random_seed'): 'causaliq_core.utils.random',
+        ('core.timing', 'Timing'): 'causaliq_core.utils.timing',
+        ('core.timing', 'MetaTiming'): 'causaliq_core.utils.timing',
+        ('core.timing', 'TimeoutError'): 'causaliq_core.utils.timing',
+        ('core.timing', 'run_with_timeout'): 'causaliq_core.utils.timing',
+        ('core.timing', 'with_timeout'): 'causaliq_core.utils.timing',
         # Add more specific class mappings as needed
     }
     

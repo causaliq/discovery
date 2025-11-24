@@ -7,7 +7,7 @@ from pandas import DataFrame, crosstab
 
 from fileio.common import TESTDATA_DIR, EXPTS_DIR
 from fileio.pandas import Pandas
-from core.timing import Timing
+from causaliq_core.utils.timing import Timing
 
 
 @pytest.fixture(scope="module")  # AB, 2 rows
