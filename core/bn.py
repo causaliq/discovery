@@ -5,7 +5,7 @@
 from pandas import DataFrame, MultiIndex
 
 from causaliq_core.utils.random import set_random_seed
-from causaliq_core.math import ln
+from causaliq_core.utils import ln
 from core.graph import DAG
 from core.score import bn_score
 from core.cnd import CND

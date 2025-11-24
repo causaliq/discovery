@@ -12,7 +12,7 @@ from os import makedirs
 from io import BytesIO
 import gzip
 
-from causaliq_core.legacy import SOFTWARE_VERSION
+from causaliq_core import SOFTWARE_VERSION
 
 
 class CompatibilityUnpickler(pickle.Unpickler):
@@ -27,8 +27,8 @@ class CompatibilityUnpickler(pickle.Unpickler):
         ('core.common', 'EdgeMark'): 'causaliq_core.graph',
         ('core.common', 'EdgeType'): 'causaliq_core.graph',
         ('core.common', 'EnumWithAttrs'): 'causaliq_core.utils',
-        ('core.common', 'rndsf'): 'causaliq_core.math',
-        ('core.common', 'ln'): 'causaliq_core.math',
+        ('core.common', 'rndsf'): 'causaliq_core.utils',
+        ('core.common', 'ln'): 'causaliq_core.utils',
         ('core.common', 'BAYESYS_VERSIONS'): 'causaliq_core.graph',
         ('core.common', 'adjmat'): 'causaliq_core.graph',
         ('core.common', 'environment'): 'causaliq_core.utils',

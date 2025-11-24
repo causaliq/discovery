@@ -1,7 +1,7 @@
 
 # Encapsulates knowledge rules
 
-from causaliq_core.math import ln
+from causaliq_core.utils import ln
 from causaliq_core.utils import EnumWithAttrs
 from core.metrics import values_same
 from core.indep import indep

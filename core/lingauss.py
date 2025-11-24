@@ -6,7 +6,7 @@ from math import sqrt
 from numpy import sum as npsum
 
 from causaliq_core.utils.random import random_generator
-from causaliq_core.math import rndsf
+from causaliq_core.utils import rndsf
 from core.metrics import values_same, dicts_same
 from fileio.pandas import Pandas
 

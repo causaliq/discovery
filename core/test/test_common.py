@@ -9,7 +9,7 @@ from time import time
 import pytest
 
 from causaliq_core.utils import EnumWithAttrs
-from causaliq_core.math import rndsf
+from causaliq_core.utils import rndsf
 from causaliq_core.graph import adjmat
 from causaliq_core.utils import environment
 from causaliq_core.utils.random import \
