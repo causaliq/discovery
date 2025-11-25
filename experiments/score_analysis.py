@@ -10,12 +10,12 @@ from experiments.common import NETWORKS_GRID_DESIGN, reference_bn, series_props
 from experiments.plot import relplot
 from learn.trace import Trace
 from analysis.trace import TraceAnalysis
-from core.score import node_score
+from data.score import node_score
 from core.graph import DAG
 from core.bn import BN
 from core.cpt import CPT
 from core.metrics import kl
-from core.indep import indep
+from data.indep import indep
 
 
 def _get_scores_for_figure(nodes, Ns, ref_parents, params, data):

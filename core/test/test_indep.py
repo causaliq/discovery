@@ -4,7 +4,7 @@
 import pytest
 from pandas import DataFrame
 
-from core.indep import indep, check_test_params
+from data.indep import indep, check_test_params
 from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_indep
 from core.bn import BN

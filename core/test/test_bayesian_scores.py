@@ -3,7 +3,7 @@ import pytest
 from numpy import array
 
 from core.metrics import values_same
-from core.score import bayesian_score
+from data.score import bayesian_score
 
 
 def check(counts, q_i, type, expected, iss=1):

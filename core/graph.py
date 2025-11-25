@@ -6,7 +6,7 @@ from numpy import zeros
 from pandas import DataFrame
 
 from core.metrics import pdag_compare
-from core.score import dag_score
+from data.score import dag_score
 from causaliq_core.graph import EdgeType
 from causaliq_core.graph import BAYESYS_VERSIONS
 from data import Data

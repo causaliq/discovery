@@ -2,11 +2,11 @@
 <!-- This network was created in BNBENCH -->
 <smile version="1.0" id="bnbench" numsamples="100000" discsamples="100000">
     <nodes>
-        <equation id="Tests_across_all_4_Pillars">
-            <definition>Tests_across_all_4_Pillars=Normal(608611.125,414554.25)</definition>
-        </equation>
         <equation id="Season">
             <definition>Season=Normal(2.653579712,1.148386598)</definition>
+        </equation>
+        <equation id="Tests_across_all_4_Pillars">
+            <definition>Tests_across_all_4_Pillars=Normal(608611.125,414554.25)</definition>
         </equation>
         <equation id="Majority_COVID_19_variant">
             <definition>Majority_COVID_19_variant=Normal(2.346362591,1.332238913)</definition>
@@ -55,13 +55,13 @@
             <parents>Deaths_with_COVID_on_certificate Lockdown Patients_in_MVBs Patients_in_hospital</parents>
             <definition>Face_masks=-0.003179745283*Deaths_with_COVID_on_certificate+0.5117633343*Lockdown+0.0005133040249*Patients_in_MVBs+0.000007808208466*Patients_in_hospital+Normal(1.244655609,0.6451629825)</definition>
         </equation>
-        <equation id="Leisure_activity">
-            <parents>Lockdown Season</parents>
-            <definition>Leisure_activity=-0.2964703143*Lockdown-0.3072581291*Season+Normal(4.04975605,0.6194804621)</definition>
-        </equation>
         <equation id="Excess_mortality">
             <parents>Deaths_with_COVID_on_certificate Lockdown</parents>
             <definition>Excess_mortality=0.05584656447*Deaths_with_COVID_on_certificate-1.171786427*Lockdown+Normal(-0.4592809677,11.89302828)</definition>
+        </equation>
+        <equation id="Leisure_activity">
+            <parents>Lockdown Season</parents>
+            <definition>Leisure_activity=-0.2964703143*Lockdown-0.3072581291*Season+Normal(4.04975605,0.6194804621)</definition>
         </equation>
         <equation id="Transportation_activity">
             <parents>Leisure_activity Lockdown Season Work_and_school_activity</parents>
@@ -70,15 +70,15 @@
     </nodes>
     <extensions>
         <genie version="1.0" app="GeNIe 4.0.1922.0 ACADEMIC" name="Network1">
-            <node id="Tests_across_all_4_Pillars">
-                <name>Tests_across_all_4_Pillars</name>
+            <node id="Season">
+                <name>Season</name>
                 <interior color="e5f6f7" />
                 <outline color="000080" />
                 <font color="000000" name="Arial" size="8" />
                 <position>20 100 100 140</position>
             </node>
-            <node id="Season">
-                <name>Season</name>
+            <node id="Tests_across_all_4_Pillars">
+                <name>Tests_across_all_4_Pillars</name>
                 <interior color="e5f6f7" />
                 <outline color="000080" />
                 <font color="000000" name="Arial" size="8" />
@@ -168,15 +168,15 @@
                 <font color="000000" name="Arial" size="8" />
                 <position>120 900 200 940</position>
             </node>
-            <node id="Leisure_activity">
-                <name>Leisure_activity</name>
+            <node id="Excess_mortality">
+                <name>Excess_mortality</name>
                 <interior color="e5f6f7" />
                 <outline color="000080" />
                 <font color="000000" name="Arial" size="8" />
                 <position>220 900 300 940</position>
             </node>
-            <node id="Excess_mortality">
-                <name>Excess_mortality</name>
+            <node id="Leisure_activity">
+                <name>Leisure_activity</name>
                 <interior color="e5f6f7" />
                 <outline color="000080" />
                 <font color="000000" name="Arial" size="8" />

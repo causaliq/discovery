@@ -3,7 +3,7 @@ import pytest
 from pandas import DataFrame
 
 from core.metrics import dicts_same
-from core.score import free_params, dag_score, ENTROPY_SCORES, BAYESIAN_SCORES
+from data.score import free_params, dag_score, ENTROPY_SCORES, BAYESIAN_SCORES
 from core.bn import BN
 from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_score

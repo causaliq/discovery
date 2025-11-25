@@ -13,9 +13,9 @@ from causaliq_core.graph import EdgeType
 from core.graph import DAG, PDAG
 from core.bn import BN
 from core.lingauss import LinGauss
-from core.score import SCORES, SCORE_PARAMS, check_score_params
-from core.indep import TESTS, TEST_PARAMS, check_test_params
-from core.indep import check_indep_args, MIN_P_VALUE
+from data.score import SCORES, SCORE_PARAMS, check_score_params
+from data.indep import TESTS, TEST_PARAMS, check_test_params
+from data.indep import check_indep_args, MIN_P_VALUE
 from data import is_valid_path
 from data.pandas import Pandas
 from data.numpy import NumPy

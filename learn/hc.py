@@ -14,7 +14,7 @@ from data import Data
 from data.pandas import Pandas
 from data.numpy import NumPy
 from core.graph import DAG, SDG
-from core.score import check_score_params, SCORE_PARAMS
+from data.score import check_score_params, SCORE_PARAMS
 from core.metrics import values_same
 from learn.tabulist import TabuList
 from learn.knowledge import Knowledge

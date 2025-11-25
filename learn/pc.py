@@ -6,7 +6,7 @@ from itertools import combinations
 
 from data.pandas import Pandas
 from core.bn import BN
-from core.indep import indep
+from data.indep import indep
 
 
 def _check_ci_args(data, bn, N):

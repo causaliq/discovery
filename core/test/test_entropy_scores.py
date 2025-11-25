@@ -5,7 +5,7 @@ import pytest
 from numpy import array
 
 from core.metrics import dicts_same
-from core.score import entropy_scores
+from data.score import entropy_scores
 
 
 def test_metrics_entropy_scores_type_error_1():  # bad argument types
