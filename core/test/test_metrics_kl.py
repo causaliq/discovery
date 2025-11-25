@@ -6,7 +6,7 @@ import pytest
 from core.bn import BN
 from core.metrics import kl, values_same
 from data import TESTDATA_DIR
-from fileio.pandas import Pandas
+from data.pandas import Pandas
 
 
 def test_kl_type_error():  # bad argument types

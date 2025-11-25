@@ -5,7 +5,7 @@ from pandas import DataFrame, Series, concat
 from itertools import combinations
 
 from data import EXPTS_DIR
-from fileio.pandas import Pandas
+from data.pandas import Pandas
 from experiments.common import NETWORKS_GRID_DESIGN, reference_bn, series_props
 from experiments.plot import relplot
 from learn.trace import Trace

@@ -9,7 +9,7 @@ from call.bnlearn import bnlearn_score
 from call.r import requires_r_and_bnlearn
 import testdata.example_dags as dag
 from data import TESTDATA_DIR
-from fileio.numpy import NumPy
+from data.numpy import NumPy
 from core.graph import DAG
 from core.metrics import dicts_same, values_same
 from core.bn import BN

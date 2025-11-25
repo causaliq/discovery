@@ -3,7 +3,7 @@ import pytest
 
 from learn.pc import sgs_skeleton
 from data import FileFormatError, TESTDATA_DIR
-from fileio.pandas import Pandas
+from data.pandas import Pandas
 from core.bn import BN
 
 

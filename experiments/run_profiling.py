@@ -4,7 +4,7 @@
 from pprofile import Profile
 
 from data import EXPTS_DIR, TESTDATA_DIR
-from fileio.numpy import NumPy
+from data.numpy import NumPy
 # from fileio.pandas import Pandas
 from core.bn import BN
 from causaliq_core.utils.timing import Timing

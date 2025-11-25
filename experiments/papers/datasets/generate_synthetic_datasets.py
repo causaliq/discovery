@@ -2,7 +2,7 @@
 # Generate the synthetic datasets used in experiments
 
 from data import EXPTS_DIR
-from fileio.pandas import Pandas
+from data.pandas import Pandas
 from core.bn import BN
 
 

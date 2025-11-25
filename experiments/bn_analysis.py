@@ -5,7 +5,7 @@ from pandas import DataFrame
 
 from data import EXPTS_DIR
 from fileio.bayesys import write
-from fileio.pandas import Pandas
+from data.pandas import Pandas
 from analysis.bn import BNAnalysis
 from experiments.plot import plot_degree_distribution
 from experiments.common import reference_bn

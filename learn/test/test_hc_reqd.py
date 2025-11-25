@@ -5,7 +5,7 @@ import pytest
 from pandas import set_option
 
 from data import TESTDATA_DIR
-from fileio.pandas import Pandas
+from data.pandas import Pandas
 from core.bn import BN, DAG
 from learn.hc import hc
 from learn.knowledge import Knowledge, RuleSet

@@ -6,7 +6,7 @@ from pandas import DataFrame, set_option
 
 from data import TESTDATA_DIR
 from data.oracle import Oracle
-from fileio.pandas import Pandas
+from data.pandas import Pandas
 from core.bn import BN
 from learn.hc import hc
 from call.r import requires_r_and_bnlearn

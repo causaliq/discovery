@@ -6,7 +6,7 @@ from random import random
 from os import remove
 from pandas import DataFrame
 
-from fileio.pandas import Pandas
+from data.pandas import Pandas
 from data import FileFormatError, TESTDATA_DIR, EXPTS_DIR
 from core.metrics import dicts_same
 

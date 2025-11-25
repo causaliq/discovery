@@ -7,7 +7,7 @@ from numpy import ndarray, NaN
 
 from data import TESTDATA_DIR
 from data import Data
-from fileio.pandas import Pandas
+from data.pandas import Pandas
 from core.bn import BN
 
 

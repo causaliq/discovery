@@ -6,7 +6,7 @@ import numpy as np
 from pandas import DataFrame
 
 from core.lingauss import LinGauss
-from fileio.pandas import Pandas
+from data.pandas import Pandas
 from core.metrics import values_same
 
 

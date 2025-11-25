@@ -11,7 +11,7 @@ from gzip import BadGzipFile
 
 from causaliq_core.utils.timing import Timing
 from data import DatasetType, is_valid_path, FileFormatError
-from fileio.pandas import Pandas
+from data.pandas import Pandas
 from data import Data
 
 MAX_CATEGORY = 100  # maximum number of different values in category

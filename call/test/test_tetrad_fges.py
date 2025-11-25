@@ -6,7 +6,7 @@ import pytest
 from causaliq_core.graph import EdgeType
 from call.tetrad import tetrad_learn
 from data import TESTDATA_DIR
-from fileio.numpy import NumPy
+from data.numpy import NumPy
 from core.bn import BN
 from core.graph import PDAG, DAG
 

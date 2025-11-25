@@ -7,7 +7,7 @@ from time import localtime, asctime
 
 from causaliq_core.utils.random import Randomise
 from data import EXPTS_DIR
-from fileio.numpy import NumPy
+from data.numpy import NumPy
 from data.oracle import Oracle
 from call.r import initialise_r_environment
 from call.bnlearn import bnlearn_learn

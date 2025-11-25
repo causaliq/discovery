@@ -5,8 +5,8 @@ import pytest
 from numpy import array, ndarray
 
 from data import TESTDATA_DIR
-from fileio.numpy import NumPy
-from fileio.pandas import Pandas
+from data.numpy import NumPy
+from data.pandas import Pandas
 from core.bn import BN
 
 

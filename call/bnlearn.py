@@ -17,8 +17,8 @@ from core.score import SCORES, SCORE_PARAMS, check_score_params
 from core.indep import TESTS, TEST_PARAMS, check_test_params
 from core.indep import check_indep_args, MIN_P_VALUE
 from data import is_valid_path
-from fileio.pandas import Pandas
-from fileio.numpy import NumPy
+from data.pandas import Pandas
+from data.numpy import NumPy
 from learn.trace import Trace, Activity, Detail, CONTEXT_FIELDS
 from learn.knowledge import Knowledge
 from learn.knowledge_rule import Rule

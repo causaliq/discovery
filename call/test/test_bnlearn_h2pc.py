@@ -5,7 +5,7 @@ import pytest
 from call.bnlearn import bnlearn_learn
 from call.r import requires_r_and_bnlearn
 from data import TESTDATA_DIR
-from fileio.numpy import NumPy
+from data.numpy import NumPy
 from core.bn import BN
 
 

@@ -5,8 +5,8 @@ import pytest
 from pandas import DataFrame
 
 from data import TESTDATA_DIR
-from fileio.pandas import Pandas
-from fileio.numpy import NumPy
+from data.pandas import Pandas
+from data.numpy import NumPy
 from core.bn import BN
 from learn.hc import hc, set_stable_order, Stability
 from learn.hc_worker import HCWorker, Prefer

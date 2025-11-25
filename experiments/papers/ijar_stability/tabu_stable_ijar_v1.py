@@ -10,8 +10,8 @@ from experiments.plot import relplot
 from core.graph import DAG
 from core.score import SCORE_PARAMS
 from data import EXPTS_DIR
-from fileio.pandas import Pandas
-from fileio.numpy import NumPy
+from data.pandas import Pandas
+from data.numpy import NumPy
 from learn.hc import hc
 from learn.trace import Trace, Activity, Detail
 from learn.knowledge import Knowledge, RuleSet

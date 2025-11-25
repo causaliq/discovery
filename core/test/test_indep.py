@@ -10,7 +10,7 @@ from call.bnlearn import bnlearn_indep
 from core.bn import BN
 from core.metrics import dicts_same, values_same
 from data import FileFormatError, TESTDATA_DIR
-from fileio.pandas import Pandas
+from data.pandas import Pandas
 from fileio.bayesys import read as read_dag
 
 TYPES = ['x2', 'mi']

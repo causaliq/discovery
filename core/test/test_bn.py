@@ -8,7 +8,7 @@ from core.metrics import values_same
 import testdata.example_dags as dag
 import testdata.example_bns as bn
 from data import TESTDATA_DIR, EXPTS_DIR
-from fileio.pandas import Pandas
+from data.pandas import Pandas
 
 
 @pytest.fixture(scope="module")  # simple Data object

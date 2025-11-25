@@ -6,8 +6,8 @@ from pandas import DataFrame
 from call.bnlearn import bnlearn_learn
 from call.r import requires_r_and_bnlearn
 from data import TESTDATA_DIR
-from fileio.pandas import Pandas
-from fileio.numpy import NumPy
+from data.pandas import Pandas
+from data.numpy import NumPy
 from core.bn import BN
 
 

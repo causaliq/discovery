@@ -4,7 +4,7 @@
 from pandas import DataFrame
 from itertools import combinations
 
-from fileio.pandas import Pandas
+from data.pandas import Pandas
 from core.bn import BN
 from core.indep import indep
 

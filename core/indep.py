@@ -6,7 +6,7 @@ from pandas import DataFrame, crosstab
 from scipy import stats
 from numpy import log
 
-from fileio.pandas import Pandas
+from data.pandas import Pandas
 from core.bn import BN
 
 TESTS = ['mi', 'x2']

@@ -12,7 +12,7 @@ from core.bn import BN
 from core.cpt import CPT
 from core.metrics import kl
 from core.score import node_score
-from fileio.pandas import Pandas
+from data.pandas import Pandas
 from data.oracle import Oracle
 
 

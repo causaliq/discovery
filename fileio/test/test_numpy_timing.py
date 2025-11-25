@@ -4,8 +4,8 @@
 import pytest
 
 from data import EXPTS_DIR
-from fileio.numpy import NumPy
-from fileio.pandas import Pandas
+from data.numpy import NumPy
+from data.pandas import Pandas
 from causaliq_core.utils.timing import Timing
 from learn.hc import hc
 

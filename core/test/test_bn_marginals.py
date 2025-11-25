@@ -4,7 +4,7 @@ from itertools import combinations
 from pandas import DataFrame
 
 from data import TESTDATA_DIR
-from fileio.pandas import Pandas
+from data.pandas import Pandas
 from core.graph import DAG
 from core.bn import BN
 from core.cpt import NodeValueCombinations

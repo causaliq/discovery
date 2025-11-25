@@ -5,7 +5,7 @@ from pandas import DataFrame
 from core.metrics import dicts_same
 from core.score import free_params, bn_score
 from core.bn import BN
-from fileio.pandas import Pandas
+from data.pandas import Pandas
 import testdata.example_dags as dag
 
 TYPES = ['aic', 'bic', 'loglik']

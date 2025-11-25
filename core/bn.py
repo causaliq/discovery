@@ -13,7 +13,7 @@ from core.cpt import CPT, NodeValueCombinations
 from core.lingauss import LinGauss
 import fileio.dsc as dsc
 import fileio.xdsl as xdsl
-from fileio.pandas import Pandas
+from data.pandas import Pandas
 
 
 class BN():

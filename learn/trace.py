@@ -86,7 +86,7 @@ from core.metrics import values_same
 from core.graph import SDG, DAG
 from learn.common import TreeStats
 from data import EXPTS_DIR, is_valid_path
-from fileio.numpy import NumPy
+from data.numpy import NumPy
 
 CONTEXT_FIELDS = {'id': str, 'algorithm': str, 'params': dict, 'in': str,
                   'N': int, 'dataset': bool, 'external': str,

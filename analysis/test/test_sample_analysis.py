@@ -7,7 +7,7 @@ from analysis.bn import SampleAnalysis
 from core.bn import BN
 from core.metrics import values_same
 from data import TESTDATA_DIR, EXPTS_DIR
-from fileio.pandas import Pandas
+from data.pandas import Pandas
 from data.oracle import Oracle
 
 

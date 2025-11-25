@@ -4,7 +4,7 @@ from numpy import array
 
 from learn.exhaustive import exhaustive
 from data import TESTDATA_DIR
-from fileio.numpy import NumPy
+from data.numpy import NumPy
 from core.metrics import dicts_same
 from core.bn import BN
 

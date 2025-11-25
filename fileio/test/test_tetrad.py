@@ -8,7 +8,7 @@ from os import remove
 from causaliq_core.graph import EdgeType
 from data import TESTDATA_DIR, FileFormatError
 from fileio.tetrad import read, write
-from fileio.pandas import Pandas
+from data.pandas import Pandas
 import testdata.example_dags as ex_dag
 import testdata.example_pdags as ex_pdag
 from core.bn import BN

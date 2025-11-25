@@ -16,7 +16,7 @@ from os import listdir
 from glob import glob
 
 from data import EXPTS_DIR
-from fileio.pandas import Pandas
+from data.pandas import Pandas
 from fileio.bayesys import write as write_bayesys, read as read_bayesys, \
     read_constraints
 from fileio.xdsl import write as write_xdsl

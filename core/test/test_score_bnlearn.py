@@ -13,7 +13,7 @@ from data import TESTDATA_DIR
 from core.graph import DAG
 from core.metrics import dicts_same
 from core.bn import BN
-from fileio.pandas import Pandas
+from data.pandas import Pandas
 
 TYPES = ['loglik', 'bic', 'aic', 'bde', 'k2', 'bdj', 'bds']  # scores to test
 DEFAULT_PARAMS = {'iss': 1.0, 'prior': 'uniform', 'base': 'e'}

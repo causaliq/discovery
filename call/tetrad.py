@@ -11,8 +11,8 @@ from core.graph import SDG, PDAG, DAG
 from core.score import SCORE_PARAMS
 from learn.trace import Trace, Activity, Detail, CONTEXT_FIELDS
 from call.cmd import dispatch_cmd
-from fileio.pandas import Pandas
-from fileio.numpy import NumPy
+from data.pandas import Pandas
+from data.numpy import NumPy
 
 
 TETRAD_ALGORITHMS = {

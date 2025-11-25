@@ -10,7 +10,7 @@ from data import TESTDATA_DIR, EXPTS_DIR
 from core.metrics import dicts_same
 from core.bn import BN
 from core.cpt import CPT
-from fileio.pandas import Pandas
+from data.pandas import Pandas
 import testdata.example_dags as ex_dag
 
 

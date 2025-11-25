@@ -8,7 +8,7 @@ from causaliq_core.utils import EnumWithAttrs
 from core.score import node_score
 from core.metrics import values_same
 from core.graph import DAG
-from fileio.pandas import Pandas
+from data.pandas import Pandas
 from learn.trace import Trace
 from learn.tabulist import TabuList
 from learn.trace import Activity, Detail

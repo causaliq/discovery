@@ -4,8 +4,8 @@
 from pandas import DataFrame
 
 from data import EXPTS_DIR
-from fileio.pandas import Pandas
-from fileio.numpy import NumPy
+from data.pandas import Pandas
+from data.numpy import NumPy
 from fileio.bayesys import read
 from learn.hc import hc
 from call.bnlearn import bnlearn_learn

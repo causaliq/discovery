@@ -11,8 +11,8 @@ from time import time
 from learn.common import TreeStats
 from learn.hc_worker import HCWorker, Prefer
 from data import Data
-from fileio.pandas import Pandas
-from fileio.numpy import NumPy
+from data.pandas import Pandas
+from data.numpy import NumPy
 from core.graph import DAG, SDG
 from core.score import check_score_params, SCORE_PARAMS
 from core.metrics import values_same
