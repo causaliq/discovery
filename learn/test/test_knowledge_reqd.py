@@ -7,7 +7,7 @@ from learn.knowledge import Knowledge, Rule, RuleSet, \
     KnowledgeOutcome, KnowledgeEvent
 from learn.trace import Activity
 from learn.dagchange import DAGChange, BestDAGChanges
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 from core.bn import BN
 from core.graph import DAG
 

@@ -4,7 +4,7 @@
 import pytest
 
 from core.graph import PDAG
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 from core.bn import BN
 from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_cpdag

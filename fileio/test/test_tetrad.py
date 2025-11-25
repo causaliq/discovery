@@ -6,7 +6,7 @@ from random import random
 from os import remove
 
 from causaliq_core.graph import EdgeType
-from fileio.common import TESTDATA_DIR, FileFormatError
+from data import TESTDATA_DIR, FileFormatError
 from fileio.tetrad import read, write
 from fileio.pandas import Pandas
 import testdata.example_dags as ex_dag

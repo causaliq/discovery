@@ -5,7 +5,7 @@
 import pytest
 
 from run_learn import run_learn
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 
 Ns = [10, 20, 40, 50, 80, 100, 200, 400, 500, 800, 1000]
 # Ns = [10, 20]

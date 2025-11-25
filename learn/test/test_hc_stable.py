@@ -4,7 +4,7 @@
 import pytest
 from pandas import DataFrame
 
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 from fileio.pandas import Pandas
 from fileio.numpy import NumPy
 from core.bn import BN

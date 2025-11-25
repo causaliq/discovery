@@ -6,9 +6,9 @@ from pandas import set_option
 from time import localtime, asctime
 
 from causaliq_core.utils.random import Randomise
-from fileio.common import EXPTS_DIR
+from data import EXPTS_DIR
 from fileio.numpy import NumPy
-from fileio.oracle import Oracle
+from data.oracle import Oracle
 from call.r import initialise_r_environment
 from call.bnlearn import bnlearn_learn
 from call.tetrad import tetrad_learn

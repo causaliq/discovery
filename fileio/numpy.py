@@ -10,9 +10,9 @@ from pandas.errors import EmptyDataError
 from gzip import BadGzipFile
 
 from causaliq_core.utils.timing import Timing
-from fileio.common import DatasetType, is_valid_path, FileFormatError
+from data import DatasetType, is_valid_path, FileFormatError
 from fileio.pandas import Pandas
-from fileio.data import Data
+from data import Data
 
 MAX_CATEGORY = 100  # maximum number of different values in category
 

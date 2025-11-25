@@ -13,7 +13,7 @@ from core.cpt import CPT
 from core.metrics import kl
 from core.score import node_score
 from fileio.pandas import Pandas
-from fileio.oracle import Oracle
+from data.oracle import Oracle
 
 
 BN_PROPERTIES = {  # Properties of analysed BN

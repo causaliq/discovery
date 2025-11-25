@@ -5,7 +5,7 @@ import pytest
 from numpy import ndarray
 from pandas import DataFrame, crosstab
 
-from fileio.common import TESTDATA_DIR, EXPTS_DIR
+from data import TESTDATA_DIR, EXPTS_DIR
 from fileio.pandas import Pandas
 from causaliq_core.utils.timing import Timing
 

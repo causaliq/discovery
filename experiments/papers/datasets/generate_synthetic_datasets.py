@@ -1,7 +1,7 @@
 
 # Generate the synthetic datasets used in experiments
 
-from fileio.common import EXPTS_DIR
+from data import EXPTS_DIR
 from fileio.pandas import Pandas
 from core.bn import BN
 

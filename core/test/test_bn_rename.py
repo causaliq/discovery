@@ -7,7 +7,7 @@ from copy import deepcopy
 from causaliq_core.graph import EdgeType
 from core.graph import DAG
 from core.bn import BN
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 
 
 def test_bn_rename_type_error_1():  # bad argument types

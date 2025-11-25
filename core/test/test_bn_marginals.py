@@ -3,7 +3,7 @@ import pytest
 from itertools import combinations
 from pandas import DataFrame
 
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 from fileio.pandas import Pandas
 from core.graph import DAG
 from core.bn import BN

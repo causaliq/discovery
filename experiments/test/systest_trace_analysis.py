@@ -6,7 +6,7 @@ from random import random
 from os import remove
 
 from causaliq_core.utils.random import Randomise
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 from experiments.trace_analysis import trace_analysis
 
 

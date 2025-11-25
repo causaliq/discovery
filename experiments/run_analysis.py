@@ -3,7 +3,7 @@
 
 import pytest
 
-from fileio.common import EXPTS_DIR
+from data import EXPTS_DIR
 from experiments.common import process_args
 from experiments.score_analysis import score_analysis, score2_analysis, \
     score3_analysis

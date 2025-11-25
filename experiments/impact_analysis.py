@@ -10,7 +10,7 @@ from scipy.stats import t
 from pingouin import pairwise_tests
 from warnings import simplefilter, catch_warnings
 
-from fileio.common import EXPTS_DIR
+from data import EXPTS_DIR
 from learn.trace import Trace
 from analysis.trace import TraceAnalysis
 from experiments.plot import relplot

@@ -6,7 +6,7 @@ from random import random
 from os import remove
 
 from fileio.bayesys import read, write, read_constraints
-from fileio.common import FileFormatError, TESTDATA_DIR
+from data import FileFormatError, TESTDATA_DIR
 import testdata.example_dags as ex_dag
 import testdata.example_pdags as ex_pdag
 from core.bn import BN

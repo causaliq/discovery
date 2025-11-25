@@ -85,7 +85,7 @@ from causaliq_core.utils import EnumWithAttrs
 from core.metrics import values_same
 from core.graph import SDG, DAG
 from learn.common import TreeStats
-from fileio.common import EXPTS_DIR, is_valid_path
+from data import EXPTS_DIR, is_valid_path
 from fileio.numpy import NumPy
 
 CONTEXT_FIELDS = {'id': str, 'algorithm': str, 'params': dict, 'in': str,

@@ -3,7 +3,7 @@
 # - checking that traces are repeatable for TABU/BASE learning
 
 from run_learn import run_learn
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 from experiments.trace_analysis import trace_analysis
 
 

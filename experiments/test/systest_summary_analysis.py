@@ -5,7 +5,7 @@ import pytest
 from math import isnan
 
 from experiments.run_analysis import run_analysis
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 
 ROOT_DIR = TESTDATA_DIR + '/experiments'
 

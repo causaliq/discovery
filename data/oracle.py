@@ -1,4 +1,3 @@
-
 # Concrete subclass of Data which implements an oracle data source
 
 from numpy import float64
@@ -98,9 +97,11 @@ class Oracle(Data):
             Randomises the node names that the learning algorithm uses
             (so sensitivity to these names can be assessed).
 
-            :param int seed: randomisation seed
+            :param int/None seed: randomisation seed (if None, names revert
+                                  back to original names)
 
-            :raises NotImplementedError: always as not implemented for subclass
+            :raises TypeError: for bad argument types
+            :raises ValueError: for bad argument values
         """
         raise NotImplementedError('Data.randomise_names() n/a for Oracle')
 

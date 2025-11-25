@@ -9,7 +9,7 @@ from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_indep
 from core.bn import BN
 from core.metrics import dicts_same, values_same
-from fileio.common import FileFormatError, TESTDATA_DIR
+from data import FileFormatError, TESTDATA_DIR
 from fileio.pandas import Pandas
 from fileio.bayesys import read as read_dag
 

@@ -4,8 +4,8 @@
 import pytest
 from pandas import DataFrame, set_option
 
-from fileio.common import TESTDATA_DIR
-from fileio.oracle import Oracle
+from data import TESTDATA_DIR
+from data.oracle import Oracle
 from fileio.pandas import Pandas
 from core.bn import BN
 from learn.hc import hc

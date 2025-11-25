@@ -7,7 +7,7 @@ from os import remove
 from pandas import DataFrame
 
 from fileio.pandas import Pandas
-from fileio.common import FileFormatError, TESTDATA_DIR, EXPTS_DIR
+from data import FileFormatError, TESTDATA_DIR, EXPTS_DIR
 from core.metrics import dicts_same
 
 

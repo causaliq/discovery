@@ -7,7 +7,7 @@ from random import random
 from functools import wraps
 from os import remove
 
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 from learn.trace import Trace
 from core.bn import BN
 from analysis.graphviz import traceviz

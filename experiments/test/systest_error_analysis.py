@@ -5,7 +5,7 @@ import pytest
 from random import random
 from os import remove
 
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 from experiments.error_analysis import error_analysis
 
 

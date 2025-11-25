@@ -4,7 +4,7 @@
 import pytest
 
 from causaliq_core.utils.random import init_stable_random
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 from core.bn import BN
 from learn.knowledge import Knowledge, Rule, RuleSet
 

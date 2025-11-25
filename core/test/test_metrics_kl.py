@@ -5,7 +5,7 @@ import pytest
 
 from core.bn import BN
 from core.metrics import kl, values_same
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 from fileio.pandas import Pandas
 
 

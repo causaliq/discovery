@@ -18,7 +18,7 @@ from causaliq_core.utils.random import \
 
 STABLE_RANDOM_FILE = "/stable_random.dat"
 
-from fileio.common import EXPTS_DIR, TESTDATA_DIR
+from data import EXPTS_DIR, TESTDATA_DIR
 
 
 class ExampleEnumWithAttrs(EnumWithAttrs):

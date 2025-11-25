@@ -4,7 +4,7 @@
 from pandas import DataFrame
 from math import ceil, sqrt
 
-from fileio.common import EXPTS_DIR
+from data import EXPTS_DIR
 from fileio.pandas import Pandas
 from experiments.common import NETWORKS_GRID_DESIGN, reference_bn, METRICS, \
     Ordering, compare_series_properties, comma_to_and, FIGURE_PARAMS

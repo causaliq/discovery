@@ -3,7 +3,7 @@
 
 from pandas import DataFrame
 
-from fileio.common import EXPTS_DIR
+from data import EXPTS_DIR
 from experiments.config import NETWORKS
 from core.bn import BN
 from analysis.bn import BNAnalysis

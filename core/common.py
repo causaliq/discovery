@@ -14,7 +14,7 @@ from platform import uname
 from cpuinfo import get_cpu_info
 from psutil import virtual_memory
 
-from fileio.common import EXPTS_DIR
+from data import EXPTS_DIR
 from causaliq_core.graph import EdgeType
 
 # BAYESYS_VERSIONS migrated to causaliq_core.graph

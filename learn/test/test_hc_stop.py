@@ -4,7 +4,7 @@
 import pytest
 from pandas import DataFrame, set_option
 
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 from core.bn import BN
 from learn.hc import hc
 from learn.knowledge import Knowledge, RuleSet

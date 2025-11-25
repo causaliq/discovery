@@ -6,7 +6,7 @@ from pandas import DataFrame, set_option, concat
 from math import isnan
 from statistics import mean, stdev
 
-from fileio.common import EXPTS_DIR
+from data import EXPTS_DIR
 from experiments.common import SERIES_GROUPS, reference_bn
 from core.graph import PDAG
 from learn.trace import Trace

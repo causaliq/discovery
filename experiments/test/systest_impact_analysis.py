@@ -3,7 +3,7 @@
 
 import pytest
 
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 from experiments.impact_analysis import impact_analysis
 
 

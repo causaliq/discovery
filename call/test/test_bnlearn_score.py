@@ -8,7 +8,7 @@ from os import remove
 from call.bnlearn import bnlearn_score
 from call.r import requires_r_and_bnlearn
 import testdata.example_dags as dag
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 from fileio.numpy import NumPy
 from core.graph import DAG
 from core.metrics import dicts_same, values_same

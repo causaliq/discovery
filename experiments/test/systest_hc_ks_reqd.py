@@ -3,7 +3,7 @@
 # - checking that traces are repeatable for required arc knowledge runs
 
 from run_learn import run_learn
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 
 
 # 16 pieces of required arc info

@@ -3,7 +3,7 @@
 
 import pytest
 
-from fileio.common import EXPTS_DIR
+from data import EXPTS_DIR
 from fileio.pandas import Pandas
 from learn.hc import hc
 from causaliq_core.utils.timing import Timing

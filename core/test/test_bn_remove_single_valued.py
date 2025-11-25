@@ -7,7 +7,7 @@ from pandas import DataFrame
 
 from core.bn import BN
 from core.graph import DAG
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 from fileio.pandas import Pandas
 import testdata.example_dags as ex_dag
 

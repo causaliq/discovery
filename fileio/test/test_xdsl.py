@@ -6,7 +6,7 @@ from os import remove
 from random import random
 
 from fileio.xdsl import read, write
-from fileio.common import TESTDATA_DIR, FileFormatError
+from data import TESTDATA_DIR, FileFormatError
 import fileio.bayesys
 from core.bn import BN
 import testdata.example_bns as ex_bn

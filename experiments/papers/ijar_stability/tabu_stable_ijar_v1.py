@@ -9,7 +9,7 @@ from experiments.summary_analysis import summary_analysis
 from experiments.plot import relplot
 from core.graph import DAG
 from core.score import SCORE_PARAMS
-from fileio.common import EXPTS_DIR
+from data import EXPTS_DIR
 from fileio.pandas import Pandas
 from fileio.numpy import NumPy
 from learn.hc import hc

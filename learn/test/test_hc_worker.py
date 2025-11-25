@@ -6,9 +6,9 @@ import pytest
 from learn.hc_worker import HCWorker, Prefer
 from core.bn import BN
 from core.metrics import values_same
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 from fileio.pandas import Pandas
-from fileio.oracle import Oracle
+from data.oracle import Oracle
 from learn.knowledge import Knowledge
 from learn.knowledge_rule import RuleSet
 

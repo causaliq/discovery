@@ -3,9 +3,9 @@
 
 import pytest
 
-from fileio.common import TESTDATA_DIR
-from fileio.data import Data
-from fileio.oracle import Oracle
+from data import TESTDATA_DIR
+from data import Data
+from data.oracle import Oracle
 from core.bn import BN
 
 

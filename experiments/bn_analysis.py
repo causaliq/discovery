@@ -3,7 +3,7 @@
 
 from pandas import DataFrame
 
-from fileio.common import EXPTS_DIR
+from data import EXPTS_DIR
 from fileio.bayesys import write
 from fileio.pandas import Pandas
 from analysis.bn import BNAnalysis

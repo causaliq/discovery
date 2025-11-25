@@ -3,7 +3,7 @@ import pytest
 from numpy import array
 
 from learn.exhaustive import exhaustive
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 from fileio.numpy import NumPy
 from core.metrics import dicts_same
 from core.bn import BN

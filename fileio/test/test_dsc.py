@@ -5,7 +5,7 @@ from random import random
 from os import remove
 import pytest
 
-from fileio.common import FileFormatError, TESTDATA_DIR
+from data import FileFormatError, TESTDATA_DIR
 from core.bn import BN
 
 

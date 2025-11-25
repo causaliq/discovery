@@ -4,7 +4,7 @@
 
 import csv
 
-from fileio.common import is_valid_path, FileFormatError
+from data import is_valid_path, FileFormatError
 from core.graph import PDAG, DAG
 from learn.knowledge import Knowledge, RuleSet
 

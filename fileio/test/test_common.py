@@ -1,7 +1,7 @@
 
 import pytest
 
-from fileio.common import is_valid_path, TESTDATA_DIR
+from data import is_valid_path, TESTDATA_DIR
 
 
 def test_fileio_common_is_valid_path_type_error():

@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 from experiments.run_analysis import run_analysis
 from experiments.summary_analysis import summary_analysis
 from experiments.plot import relplot
-from fileio.common import EXPTS_DIR
+from data import EXPTS_DIR
 from fileio.pandas import Pandas
 from learn.hc import hc
 from learn.trace import Trace

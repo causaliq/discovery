@@ -7,7 +7,7 @@ from learn.knowledge import Knowledge, Rule, RuleSet, \
     KnowledgeOutcome
 from learn.trace import Activity
 from learn.dagchange import DAGChange, BestDAGChanges
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 from fileio.numpy import NumPy
 from core.bn import BN
 from causaliq_core.utils.random import init_stable_random

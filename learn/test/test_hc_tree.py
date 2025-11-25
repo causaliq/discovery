@@ -3,7 +3,7 @@
 
 import pytest
 
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 from core.bn import BN
 from learn.hc import hc
 from learn.knowledge import Knowledge

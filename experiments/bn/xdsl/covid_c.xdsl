@@ -2,14 +2,14 @@
 <!-- This network was created in BNBENCH -->
 <smile version="1.0" id="bnbench" numsamples="100000" discsamples="100000">
     <nodes>
-        <equation id="Majority_COVID_19_variant">
-            <definition>Majority_COVID_19_variant=Normal(2.346362591,1.332238913)</definition>
+        <equation id="Season">
+            <definition>Season=Normal(2.653579712,1.148386598)</definition>
         </equation>
         <equation id="Tests_across_all_4_Pillars">
             <definition>Tests_across_all_4_Pillars=Normal(608611.125,414554.25)</definition>
         </equation>
-        <equation id="Season">
-            <definition>Season=Normal(2.653579712,1.148386598)</definition>
+        <equation id="Majority_COVID_19_variant">
+            <definition>Majority_COVID_19_variant=Normal(2.346362591,1.332238913)</definition>
         </equation>
         <equation id="New_infections">
             <parents>Majority_COVID_19_variant Season</parents>
@@ -39,13 +39,13 @@
             <parents>Majority_COVID_19_variant Patients_in_MVBs Patients_in_hospital</parents>
             <definition>Deaths_with_COVID_on_certificate=-38.12265778*Majority_COVID_19_variant+0.2139523774*Patients_in_MVBs+0.0142967701*Patients_in_hospital+Normal(-1.471603394,92.40650353)</definition>
         </equation>
-        <equation id="Lockdown">
-            <parents>Deaths_with_COVID_on_certificate Majority_COVID_19_variant Patients_in_MVBs Patients_in_hospital Season</parents>
-            <definition>Lockdown=0.001453980105*Deaths_with_COVID_on_certificate-0.5916585326*Majority_COVID_19_variant+0.0003145858645*Patients_in_MVBs+0.00001347064972*Patients_in_hospital+0.03979425505*Season+Normal(3.017402172,0.8368324544)</definition>
-        </equation>
         <equation id="Second_dose_uptake">
             <parents>Deaths_with_COVID_on_certificate Majority_COVID_19_variant Positive_tests</parents>
             <definition>Second_dose_uptake=-0.02410616912*Deaths_with_COVID_on_certificate+16.17470169*Majority_COVID_19_variant+0.0001354217529*Positive_tests+Normal(9.345661163,16.65104577)</definition>
+        </equation>
+        <equation id="Lockdown">
+            <parents>Deaths_with_COVID_on_certificate Majority_COVID_19_variant Patients_in_MVBs Patients_in_hospital Season</parents>
+            <definition>Lockdown=0.001453980105*Deaths_with_COVID_on_certificate-0.5916585326*Majority_COVID_19_variant+0.0003145858645*Patients_in_MVBs+0.00001347064972*Patients_in_hospital+0.03979425505*Season+Normal(3.017402172,0.8368324544)</definition>
         </equation>
         <equation id="Leisure_activity">
             <parents>Lockdown Season</parents>
@@ -70,8 +70,8 @@
     </nodes>
     <extensions>
         <genie version="1.0" app="GeNIe 4.0.1922.0 ACADEMIC" name="Network1">
-            <node id="Majority_COVID_19_variant">
-                <name>Majority_COVID_19_variant</name>
+            <node id="Season">
+                <name>Season</name>
                 <interior color="e5f6f7" />
                 <outline color="000080" />
                 <font color="000000" name="Arial" size="8" />
@@ -84,8 +84,8 @@
                 <font color="000000" name="Arial" size="8" />
                 <position>120 100 200 140</position>
             </node>
-            <node id="Season">
-                <name>Season</name>
+            <node id="Majority_COVID_19_variant">
+                <name>Majority_COVID_19_variant</name>
                 <interior color="e5f6f7" />
                 <outline color="000080" />
                 <font color="000000" name="Arial" size="8" />
@@ -140,15 +140,15 @@
                 <font color="000000" name="Arial" size="8" />
                 <position>20 700 100 740</position>
             </node>
-            <node id="Lockdown">
-                <name>Lockdown</name>
+            <node id="Second_dose_uptake">
+                <name>Second_dose_uptake</name>
                 <interior color="e5f6f7" />
                 <outline color="000080" />
                 <font color="000000" name="Arial" size="8" />
                 <position>20 800 100 840</position>
             </node>
-            <node id="Second_dose_uptake">
-                <name>Second_dose_uptake</name>
+            <node id="Lockdown">
+                <name>Lockdown</name>
                 <interior color="e5f6f7" />
                 <outline color="000080" />
                 <font color="000000" name="Arial" size="8" />

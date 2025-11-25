@@ -15,7 +15,7 @@ import time
 from os import listdir
 from glob import glob
 
-from fileio.common import EXPTS_DIR
+from data import EXPTS_DIR
 from fileio.pandas import Pandas
 from fileio.bayesys import write as write_bayesys, read as read_bayesys, \
     read_constraints

@@ -4,7 +4,7 @@
 
 import re
 
-from fileio.common import is_valid_path, FileFormatError
+from data import is_valid_path, FileFormatError
 from core.metrics import values_same
 from core.cpt import CPT
 

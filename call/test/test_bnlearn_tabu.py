@@ -5,7 +5,7 @@ from copy import deepcopy
 
 from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_learn
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 from fileio.numpy import NumPy
 from core.bn import BN
 

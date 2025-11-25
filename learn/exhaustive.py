@@ -4,8 +4,8 @@
 from pandas import DataFrame, concat
 from itertools import combinations
 
-from fileio.data import Data
-from fileio.oracle import Oracle
+from data import Data
+from data.oracle import Oracle
 from core.graph import DAG, NotDAGError
 
 

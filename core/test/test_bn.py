@@ -7,7 +7,7 @@ from core.lingauss import LinGauss
 from core.metrics import values_same
 import testdata.example_dags as dag
 import testdata.example_bns as bn
-from fileio.common import TESTDATA_DIR, EXPTS_DIR
+from data import TESTDATA_DIR, EXPTS_DIR
 from fileio.pandas import Pandas
 
 

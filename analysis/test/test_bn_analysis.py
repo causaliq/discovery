@@ -7,7 +7,7 @@ from pandas import set_option
 from core.bn import BN
 from core.metrics import values_same
 from analysis.bn import DAGAnalysis, BNAnalysis
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 
 
 @pytest.fixture(scope='module')

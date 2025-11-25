@@ -9,7 +9,7 @@ from causaliq_core.graph import BAYESYS_VERSIONS
 from core.graph import DAG, PDAG
 from core.bn import BN
 from core.indep import indep
-from fileio.common import EXPTS_DIR
+from data import EXPTS_DIR
 from learn.trace import Trace, Activity
 
 

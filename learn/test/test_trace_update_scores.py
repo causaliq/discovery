@@ -4,7 +4,7 @@
 import pytest
 
 from core.metrics import values_same
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 from learn.trace import Trace
 
 

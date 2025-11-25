@@ -3,7 +3,7 @@ import pytest
 
 from core.metrics import values_same
 from fileio.compare import compare_all
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 
 
 def test_core_metrics_compare_all_type_error():

@@ -6,9 +6,9 @@ from pandas import DataFrame
 from analysis.bn import SampleAnalysis
 from core.bn import BN
 from core.metrics import values_same
-from fileio.common import TESTDATA_DIR, EXPTS_DIR
+from data import TESTDATA_DIR, EXPTS_DIR
 from fileio.pandas import Pandas
-from fileio.oracle import Oracle
+from data.oracle import Oracle
 
 
 # test function which solves log x / x = c

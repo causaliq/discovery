@@ -5,7 +5,7 @@ from core.graph import PDAG
 from core.metrics import dicts_same, values_same
 from fileio.noisy import evaluate_noisy
 from fileio.bayesys import read
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 from experiments.common import reference_bn
 
 

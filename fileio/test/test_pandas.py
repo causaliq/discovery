@@ -5,8 +5,8 @@ import pytest
 from pandas import DataFrame, read_csv
 from numpy import ndarray, NaN
 
-from fileio.common import TESTDATA_DIR
-from fileio.data import Data
+from data import TESTDATA_DIR
+from data import Data
 from fileio.pandas import Pandas
 from core.bn import BN
 

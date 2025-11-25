@@ -4,7 +4,7 @@
 import pytest
 
 from call.causal import requires_causal_learn, causal_learn
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 from fileio.numpy import NumPy
 from causaliq_core.graph import EdgeType
 from core.graph import PDAG

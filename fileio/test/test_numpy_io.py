@@ -7,7 +7,7 @@ from numpy import array
 from os import remove
 from random import random
 
-from fileio.common import TESTDATA_DIR, FileFormatError
+from data import TESTDATA_DIR, FileFormatError
 from fileio.numpy import NumPy
 
 AB_3 = TESTDATA_DIR + '/simple/ab_3.csv'

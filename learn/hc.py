@@ -10,7 +10,7 @@ from time import time
 
 from learn.common import TreeStats
 from learn.hc_worker import HCWorker, Prefer
-from fileio.data import Data
+from data import Data
 from fileio.pandas import Pandas
 from fileio.numpy import NumPy
 from core.graph import DAG, SDG

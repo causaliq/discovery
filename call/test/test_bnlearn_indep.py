@@ -7,7 +7,7 @@ from pandas import DataFrame
 from core.metrics import dicts_same
 from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_indep
-from fileio.common import FileFormatError, TESTDATA_DIR
+from data import FileFormatError, TESTDATA_DIR
 
 
 # --- Failure cases

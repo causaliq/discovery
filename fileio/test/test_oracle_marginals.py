@@ -4,8 +4,8 @@
 import pytest
 from numpy import ndarray
 
-from fileio.common import TESTDATA_DIR
-from fileio.oracle import Oracle
+from data import TESTDATA_DIR
+from data.oracle import Oracle
 from core.metrics import values_same
 from core.bn import BN
 

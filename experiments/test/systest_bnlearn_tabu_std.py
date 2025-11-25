@@ -4,7 +4,7 @@
 
 from call.r import requires_r_and_bnlearn
 from run_learn import run_learn
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 from experiments.trace_analysis import trace_analysis
 
 

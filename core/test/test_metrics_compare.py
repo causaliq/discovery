@@ -6,7 +6,7 @@ import pytest
 from core.graph import PDAG, DAG
 from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_compare
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 import fileio.bayesys as bayesys
 import testdata.example_dags as ex_dag
 import testdata.example_sdgs as ex_sdg

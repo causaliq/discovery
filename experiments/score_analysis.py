@@ -4,7 +4,7 @@
 from pandas import DataFrame, Series, concat
 from itertools import combinations
 
-from fileio.common import EXPTS_DIR
+from data import EXPTS_DIR
 from fileio.pandas import Pandas
 from experiments.common import NETWORKS_GRID_DESIGN, reference_bn, series_props
 from experiments.plot import relplot

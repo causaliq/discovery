@@ -4,7 +4,7 @@
 
 from experiments.run_learn import run_learn
 from experiments.run_analysis import run_analysis
-from fileio.common import EXPTS_DIR
+from data import EXPTS_DIR
 
 NETWORKS = ('asia,sports,sachs,child,' +  # Note covid not included
             'insurance,property,diarrhoea,water,' +

@@ -6,7 +6,7 @@ import pytest
 from core.graph import DAG
 from core.bn import BN
 import testdata.example_dags as ex_dag
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 
 
 def test_graph_partial_order_type_error1():

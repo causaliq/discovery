@@ -5,7 +5,7 @@ import pytest
 from copy import deepcopy
 
 from learn.trace import Trace
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 
 
 def test_trace_rename_type_error_1():  # bad argument types

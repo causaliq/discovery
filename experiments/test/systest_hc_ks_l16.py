@@ -5,7 +5,7 @@
 import pytest
 
 from run_learn import run_learn
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 
 
 def systest_run_learn_type_error_1():  # no arguments

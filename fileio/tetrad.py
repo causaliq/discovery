@@ -4,7 +4,7 @@
 
 import re
 
-from fileio.common import is_valid_path, FileFormatError
+from data import is_valid_path, FileFormatError
 from core.graph import DAG, PDAG
 
 EDGE = re.compile(r'^\d+\.\s(\w+)\s(\-\-[\>\-])\s(\w+)$')

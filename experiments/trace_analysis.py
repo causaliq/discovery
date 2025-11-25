@@ -4,7 +4,7 @@
 from pandas import DataFrame, set_option
 from itertools import zip_longest, chain
 
-from fileio.common import EXPTS_DIR
+from data import EXPTS_DIR
 from fileio.pandas import Pandas
 from experiments.common import reference_bn, NETWORKS_GRID_DESIGN, \
     SERIES_GROUPS, FIGURE_PARAMS

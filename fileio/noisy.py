@@ -7,7 +7,7 @@ from re import compile
 import pandas as pd
 
 from fileio.bayesys import read
-from fileio.common import FileFormatError, is_valid_path
+from data import FileFormatError, is_valid_path
 from core.metrics import dicts_same
 
 

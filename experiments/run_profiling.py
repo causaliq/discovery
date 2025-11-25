@@ -3,7 +3,7 @@
 
 from pprofile import Profile
 
-from fileio.common import EXPTS_DIR, TESTDATA_DIR
+from data import EXPTS_DIR, TESTDATA_DIR
 from fileio.numpy import NumPy
 # from fileio.pandas import Pandas
 from core.bn import BN

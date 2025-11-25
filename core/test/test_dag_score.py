@@ -8,10 +8,10 @@ from core.bn import BN
 from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_score
 import testdata.example_dags as dag
-from fileio.common import TESTDATA_DIR
+from data import TESTDATA_DIR
 from fileio.pandas import Pandas
 from fileio.numpy import NumPy
-from fileio.oracle import Oracle
+from data.oracle import Oracle
 
 ENTROPY_PARAMS = {'base': 'e', 'k': 1.0}
 BAYESIAN_PARAMS = {'iss': 1.0, 'prior': 'uniform'}
