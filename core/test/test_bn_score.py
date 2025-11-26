@@ -16,56 +16,56 @@ def test_bn_score_type_error_1():  # bad primary arg types for BN.score
     data = DataFrame({'A': ['0', '1'], 'B': ['0', '1']}, dtype='category')
     bn = BN.fit(dag.ab(), Pandas(df=data))
     with pytest.raises(TypeError):
-        bn.score()
+        bn_score(bn)
     with pytest.raises(TypeError):
-        bn.score(data, 'bic', {})
+        bn_score(bn, data, 'bic', {})
     with pytest.raises(TypeError):
-        bn.score(True, 'bic', {})
+        bn_score(bn, True, 'bic', {})
     with pytest.raises(TypeError):
-        bn.score(10.7, 'bic', {})
+        bn_score(bn, 10.7, 'bic', {})
     with pytest.raises(TypeError):
-        bn.score(1000, 37)
+        bn_score(bn, 1000, 37, {})
     with pytest.raises(TypeError):
-        bn.score(200, 'bic', True)
+        bn_score(bn, 200, 'bic', True)
 
 
 def test_bn_score_type_error_2():  # bad score type
     data = DataFrame({'A': ['0', '1'], 'B': ['0', '1']}, dtype='category')
     bn = BN.fit(dag.ab(), Pandas(df=data))
     with pytest.raises(TypeError):
-        bn.score(1000, [37])
+        bn_score(bn, 1000, [37])
 
 
 def test_bn_score_type_error_3():  # bad 'base' score param type
     data = DataFrame({'A': ['0', '1'], 'B': ['0', '1']}, dtype='category')
     bn = BN.fit(dag.ab(), Pandas(df=data))
     with pytest.raises(TypeError):
-        bn.score(800, 'bic', {'base': 2.2})
+        bn_score(bn, 800, 'bic', {'base': 2.2})
     with pytest.raises(TypeError):
-        bn.score(40, 'bic', {'base': True})
+        bn_score(bn, 40, 'bic', {'base': True})
 
 
 def test_bn_score_type_error_4():  # bad 'prior' score param type
     data = DataFrame({'A': ['0', '1'], 'B': ['0', '1']}, dtype='category')
     bn = BN.fit(dag.ab(), Pandas(df=data))
     with pytest.raises(TypeError):
-        bn.score(10000, 'bds', {'prior': 12})
+        bn_score(bn, 10000, 'bds', {'prior': 12})
 
 
 def test_bn_score_type_error_5():  # bad 'iss' score param type
     data = DataFrame({'A': ['0', '1'], 'B': ['0', '1']}, dtype='category')
     bn = BN.fit(dag.ab(), Pandas(df=data))
     with pytest.raises(TypeError):
-        bn.score(12, 'bde', {'prior': 'uniform', 'iss': 'should be num'})
+        bn_score(bn, 12, 'bde', {'prior': 'uniform', 'iss': 'should be num'})
 
 
 def test_bn_score_value_error_6():  # non-positive sample size
     data = DataFrame({'A': ['0', '1'], 'B': ['0', '1']}, dtype='category')
     bn = BN.fit(dag.ab(), Pandas(df=data))
     with pytest.raises(ValueError):
-        bn.score(0, 'bic')
+        bn_score(bn, 0, 'bic', {})
     with pytest.raises(ValueError):
-        bn.score(-1, 'bic')
+        bn_score(bn, -1, 'bic', {})
 
 
 def test_bn_score_type_error_7():  # bad arg types

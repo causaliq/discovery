@@ -4,6 +4,7 @@ from pandas import DataFrame
 
 from data import TESTDATA_DIR
 from data.pandas import Pandas
+from data.score import bn_score
 from core.graph import DAG
 from core.bn import BN
 from core.metrics import values_same, dicts_same
@@ -335,4 +336,4 @@ def test_bn_prob_marginal_distribution_cancer():
 
 
 def test_bn_prob_bn_score_heckerman(bn):
-    bn.score(12, 'bic')
+    bn_score(bn, 12, 'bic', {})

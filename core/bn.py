@@ -7,7 +7,6 @@ from pandas import DataFrame, MultiIndex
 from causaliq_core.utils.random import set_random_seed
 from causaliq_core.utils import ln
 from core.graph import DAG
-from data.score import bn_score
 from core.cnd import CND
 from core.cpt import CPT, NodeValueCombinations
 from core.lingauss import LinGauss
@@ -166,23 +165,7 @@ class BN():
         elif suffix == 'xdsl':
             xdsl.write(self, path, genie=True)
         else:
-            raise ValueError('BN.read() invalid file suffix')
-
-    def score(self, N, types, params={}):
-        """
-            Generate 'oracle' score for BN using specified dataset size
-            and CPT entries.
-
-            :param int N: dataset size to base score on
-            :param str/list types: type(s) of score e.g. 'loglik', 'bic', 'bde'
-            :param dict params: score parameters e.g. log base
-
-            :raises TypeError: if arguments have bad type
-            :raises ValueError: if arguments have bad values
-
-            :returns DataFrame: requested score types (col) for each node (row)
-        """
-        return bn_score(self, N, types, params)
+            raise ValueError('Unknown file format: {}'.format(suffix))
 
     def global_distribution(self):
         """
