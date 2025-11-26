@@ -9,6 +9,7 @@ from statistics import mean, stdev
 from data import EXPTS_DIR
 from experiments.common import SERIES_GROUPS, reference_bn
 from core.graph import PDAG
+from core.metrics import pdag_compare
 from learn.trace import Trace
 from analysis.trace import TraceAnalysis
 
@@ -284,7 +285,7 @@ def summary_analysis(series, networks, Ns, Ss=None, metrics=None, maxtime=None,
                         except ValueError:
                             graph = trace.result
                         ref_cpdag = PDAG.toCPDAG(ref.dag)
-                        metrics_e = graph.compared_to(ref_cpdag)
+                        metrics_e = pdag_compare(graph, ref_cpdag)
                         analysis.summary.update({'p-e': (metrics_e['p'] if
                                                          metrics_e['p'] is not
                                                          None else 0.0),

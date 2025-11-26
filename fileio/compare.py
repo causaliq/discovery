@@ -3,6 +3,7 @@ from os import listdir
 from os.path import sep
 
 from causaliq_core.graph import BAYESYS_VERSIONS
+from core.metrics import pdag_compare
 from data import is_valid_path
 from fileio.bayesys import read
 
@@ -59,7 +60,7 @@ def compare_all(dir, metric, bayesys):
         for file2, graph2 in graphs.items():
             if file1 == file2:
                 continue
-            metrics = graph1.compared_to(graph2, bayesys=bayesys)
+            metrics = pdag_compare(graph1, graph2, bayesys=bayesys)
             if metric not in metrics:
                 raise ValueError('Bad metric value for compare_all')
             print('{} of {} compared to {} is {:.3f}'

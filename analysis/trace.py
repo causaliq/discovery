@@ -8,6 +8,7 @@ from causaliq_core.graph import EdgeType
 from causaliq_core.graph import BAYESYS_VERSIONS
 from core.graph import DAG, PDAG
 from core.bn import BN
+from core.metrics import pdag_compare
 from data.indep import indep
 from data import EXPTS_DIR
 from learn.trace import Trace, Activity
@@ -143,8 +144,8 @@ class TraceAnalysis():
         # check type of learnt graph
 
         graph = trace.result
-        metrics = graph.compared_to(ref, bayesys=BAYESYS_VERSIONS[-1],
-                                    identify_edges=True)
+        metrics = pdag_compare(graph, ref, bayesys=BAYESYS_VERSIONS[-1],
+                               identify_edges=True)
         if isinstance(graph, DAG):
             graph_type = 'DAG'
             pdag = PDAG.fromDAG(graph)  # will always be a CPDAG
@@ -159,9 +160,9 @@ class TraceAnalysis():
             pdag is None
 
         ref_cpdag = PDAG.fromDAG(ref)
-        equiv_metrics = (pdag.compared_to(ref_cpdag,
-                                          bayesys=BAYESYS_VERSIONS[-1],
-                                          identify_edges=True)
+        equiv_metrics = (pdag_compare(pdag, ref_cpdag,
+                                      bayesys=BAYESYS_VERSIONS[-1],
+                                      identify_edges=True)
                          if pdag is not None else None)
 
         # Compute Log-Likelihood if data provided

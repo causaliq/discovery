@@ -6,7 +6,7 @@
 from pandas import Series, DataFrame
 from math import floor, log10, isnan
 
-from causaliq_core.graph import EdgeType
+from causaliq_core.graph import EdgeType, BAYESYS_VERSIONS
 from causaliq_core.utils import ln
 
 
@@ -147,6 +147,20 @@ def pdag_compare(graph, reference, bayesys=None, identify_edges=False):
 
         :returns dict: structural comparison metrics
     """
+    # Import PDAG here to avoid circular imports
+    from core.graph import PDAG
+    
+    # Validation logic from compared_to method
+    if not isinstance(reference, PDAG) \
+            or (not isinstance(bayesys, str) and bayesys is not None):
+        raise TypeError('bad arg type for compared_to')
+
+    if bayesys is not None and bayesys not in BAYESYS_VERSIONS:
+        raise ValueError('bad bayesys value for compared_to')
+
+    if graph.nodes != reference.nodes and bayesys != 'v1.3':
+        raise ValueError('comparing two graphs with different nodes')
+
     def _metric(ref_type, type, reversed=False):  # identify count metric name
         if ref_type == EdgeType.DIRECTED and type == EdgeType.DIRECTED:
             return 'arc_matched' if not reversed else 'arc_reversed'

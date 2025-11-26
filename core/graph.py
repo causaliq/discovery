@@ -5,7 +5,6 @@
 from numpy import zeros
 from pandas import DataFrame
 
-from core.metrics import pdag_compare
 from causaliq_core.graph import EdgeType
 from causaliq_core.graph import BAYESYS_VERSIONS
 
@@ -466,34 +465,6 @@ class PDAG(SDG):
             return bool: True if CPDAG, otherwise False
         """
         return self.toCPDAG(self) == self
-
-    def compared_to(self, reference, bayesys=None, identify_edges=False):
-        """
-            Compare a graph with a reference graph
-
-            :param PDAG reference: reference graph for comparison
-            :param str/None bayesys: version of Bayesys metrics to return,
-                                     or None if Bayesys metrics not required
-            :param bool identify_edges: whether edges in each low level
-                                        category (e.g. arc_missing) are to be
-                                        included in metrics returned.
-
-            :raises TypeError: if reference is not a Dependency Graph
-            :raises ValueError: if both graphs don't contain same nodes
-
-            :returns dict: Bayesys comparison metrics
-        """
-        if not isinstance(reference, PDAG) \
-                or (not isinstance(bayesys, str) and bayesys is not None):
-            raise TypeError('bad arg type for compared_to')
-
-        if bayesys is not None and bayesys not in BAYESYS_VERSIONS:
-            raise ValueError('bad bayesys value for compared_to')
-
-        if self.nodes != reference.nodes and bayesys != 'v1.3':
-            raise ValueError('comparing two graphs with different nodes')
-
-        return pdag_compare(self, reference, bayesys, identify_edges)
 
     def edge_reversible(self, edge):
         """

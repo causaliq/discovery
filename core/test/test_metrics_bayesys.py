@@ -2,7 +2,7 @@
 # Test Bayesys metrics
 
 from core.graph import PDAG
-from core.metrics import dicts_same, values_same
+from core.metrics import dicts_same, values_same, pdag_compare
 from fileio.noisy import evaluate_noisy
 from fileio.bayesys import read
 from data import TESTDATA_DIR
@@ -105,7 +105,7 @@ def test_core_metrics_bayesys_single_edge():
         ref_graph = PDAG(nodes, _edges(ref_type))
         for idx, type in enumerate(edge_types):
             graph = PDAG(nodes, _edges(type))
-            metrics = graph.compared_to(ref_graph, bayesys='v1.5+')
+            metrics = pdag_compare(graph, ref_graph, bayesys='v1.5+')
             expected = dict(expected_metrics[expected_results[idx][ref_idx]])
             print(expected_results[idx][ref_idx])
             print(ref_graph)
@@ -126,10 +126,10 @@ def test_core_metrics_bayesys_noisy():
 def test_core_metrics_bayesys_dhs():
     d8atr_fges = read(TESTDATA_DIR + '/dhs/d8atr/d8atr-fges.csv')
     d8atr_fges3 = read(TESTDATA_DIR + '/dhs/d8atr/d8atr-fges3.csv')
-    assert values_same(d8atr_fges.compared_to(d8atr_fges3,
-                                              bayesys='v1.5+')['bsf'], 0.541)
-    assert values_same(d8atr_fges3.compared_to(d8atr_fges,
-                                               bayesys='v1.5+')['bsf'], 0.252)
+    assert values_same(pdag_compare(d8atr_fges, d8atr_fges3,
+                                     bayesys='v1.5+')['bsf'], 0.541)
+    assert values_same(pdag_compare(d8atr_fges3, d8atr_fges,
+                                     bayesys='v1.5+')['bsf'], 0.252)
 
 
 def test_core_metrics_bayesys_sachs():
@@ -138,7 +138,7 @@ def test_core_metrics_bayesys_sachs():
     pdag = PDAG.fromDAG(dag)
     print(pdag)
 
-    metrics = dag.compared_to(dag,  bayesys='v1.5+')
+    metrics = pdag_compare(dag, dag, bayesys='v1.5+')
     print('\nDAG metrics are:\n{}'.format(metrics))
     assert metrics == \
         {'arc_matched': 17, 'arc_reversed': 0, 'edge_not_arc': 0,
@@ -148,7 +148,7 @@ def test_core_metrics_bayesys_sachs():
          'fp-b': 0.0, 'tn-b': 38.0, 'fn-b': 0.0, 'p-b': 1.0, 'r-b': 1.0,
          'f1-b': 1.0, 'shd-b': 0.0, 'ddm': 1.0, 'bsf': 1.0}
 
-    metrics = pdag.compared_to(pdag,  bayesys='v1.5+')
+    metrics = pdag_compare(pdag, pdag, bayesys='v1.5+')
     print('\nPDAG metrics are:\n{}'.format(metrics))
     assert metrics == \
         {'arc_matched': 0, 'arc_reversed': 0, 'edge_not_arc': 0,

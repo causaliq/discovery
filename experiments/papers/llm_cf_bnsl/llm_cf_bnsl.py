@@ -17,6 +17,7 @@ from glob import glob
 
 from data import EXPTS_DIR
 from data.pandas import Pandas
+from core.metrics import pdag_compare
 from fileio.bayesys import write as write_bayesys, read as read_bayesys, \
     read_constraints
 from fileio.xdsl import write as write_xdsl
@@ -81,14 +82,14 @@ def learn_graph(netw, algo):
 
     ref, _ = reference_bn(netw)
     print('\nComparison with reference DAG:')
-    for metric, value in graph.compared_to(ref.dag).items():
+    for metric, value in pdag_compare(graph, ref.dag).items():
         print('{}: {}'.format(metric, round(value, 3)))
 
     # Structural comparison between CPDAGs
 
     ref_cpdag = PDAG.fromDAG(ref.dag)
     print('\nCPDAG comparison with reference:')
-    for metric, value in cpdag.compared_to(ref_cpdag).items():
+    for metric, value in pdag_compare(cpdag, ref_cpdag).items():
         print('{}: {}'.format(metric, round(value, 3)))
 
 
@@ -143,7 +144,7 @@ def constrained_graph(netw, algo, type, level='0'):
 
     # Structural comparison between reference and learnt graph
 
-    diffs = pdag.compared_to(ref)
+    diffs = pdag_compare(pdag, ref)
     print(diffs)
 
     write_bayesys(pdag, c_file.replace('/constraints/constraints',
@@ -169,7 +170,7 @@ def xgraph_diarrhoea_pc():
 
     ref, _ = reference_bn('diarrhoea')
     print('\nComparison with reference DAG:')
-    for metric, value in graph.compared_to(ref.dag).items():
+    for metric, value in pdag_compare(graph, ref.dag).items():
         print('{}: {}'.format(metric, round(value, 3)))
 
     # Structural comparison between CPDAGs
@@ -177,7 +178,7 @@ def xgraph_diarrhoea_pc():
     cpdag = PDAG.fromDAG(graph)
     ref_cpdag = PDAG.fromDAG(ref.dag)
     print('\nCPDAG comparison with reference:')
-    for metric, value in cpdag.compared_to(ref_cpdag).items():
+    for metric, value in pdag_compare(cpdag, ref_cpdag).items():
         print('{}: {}'.format(metric, round(value, 3)))
 
 
@@ -243,7 +244,7 @@ def graph_sports_mmhc():
     pdag = constrained_graph('sports', 'mmhc', '')
     prev = read_bayesys(EXPTS_DIR +
                         '/papers/llm_cf_bnsl/sports_mmhc.csv')
-    diffs = pdag.compared_to(prev)
+    diffs = pdag_compare(pdag, prev)
     print(diffs)
 
 
@@ -256,7 +257,7 @@ def graph_diarrhoea_fges():
                        '/learnt_graphs/fges_DIARRHOEA.tetrad')
     prev = read_bayesys(EXPTS_DIR +
                         '/papers/llm_cf_bnsl/diarrhoea_fges.csv')
-    diffs = pdag.compared_to(prev)
+    diffs = pdag_compare(pdag, prev)
     print(diffs)
 
 
@@ -487,6 +488,6 @@ def graph_llm_summarise():
                          for e, t in pdag.edges.items()]
                 pdag = PDAG(ref.nodes, edges)
                 file = (file.split('\\')[-1]).replace('.csv', '')
-                diffs = pdag.compared_to(ref)
+                diffs = pdag_compare(pdag, ref)
                 print('{}: {:.3f}'.format(file, diffs['f1']))
             print()

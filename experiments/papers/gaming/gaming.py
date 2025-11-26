@@ -6,6 +6,7 @@ from pandas import DataFrame
 from data import EXPTS_DIR
 from data.pandas import Pandas
 from data.numpy import NumPy
+from core.metrics import pdag_compare
 from fileio.bayesys import read
 from learn.hc import hc
 from call.bnlearn import bnlearn_learn
@@ -247,7 +248,7 @@ def graph_gaming_analysis():
             except ValueError:
                 kind = 'NONEX'
         comparison = {'algo': algo, 'type': kind}
-        comparison.update(graph.compared_to(ref))
+        comparison.update(pdag_compare(graph, ref))
         comparisons.append(comparison)
 
     print('\n\n{}'.format(DataFrame(comparisons)))

@@ -6,6 +6,7 @@ from os import walk, sep
 from re import compile
 import pandas as pd
 
+from core.metrics import pdag_compare
 from fileio.bayesys import read
 from data import FileFormatError, is_valid_path
 from core.metrics import dicts_same
@@ -252,7 +253,7 @@ def evaluate_noisy(learned_dir, true_dir, results_dir, strict=False,
 
                     learned = read(root + sep + name, all_nodes=true.nodes,
                                    strict=strict)
-                    metrics = learned.compared_to(true, bayesys='v1.5+')
+                    metrics = pdag_compare(learned, true, bayesys='v1.5+')
                     expected = _get_recorded_metrics(results_dir, case)
 
                     assert dicts_same(metrics, expected, strict=False, sf=3)
