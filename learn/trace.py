@@ -84,6 +84,7 @@ from causaliq_core.utils import environment
 from causaliq_core.utils import EnumWithAttrs
 from core.metrics import values_same
 from core.graph import SDG, DAG
+from data.score import dag_score
 from learn.common import TreeStats
 from data import EXPTS_DIR, is_valid_path
 from data.numpy import NumPy
@@ -350,7 +351,7 @@ class Trace():
                 initial_score = {}
                 for N in Ns:
                     data.set_N(N)
-                    initial_score[N] = (initial.score(data, score + gauss,
+                    initial_score[N] = (dag_score(initial, data, score + gauss,
                                                       params)[score +
                                                               gauss]).sum()
 
@@ -380,7 +381,7 @@ class Trace():
 
                 try:
                     learnt = DAG.extendPDAG(learnt)
-                    learnt_score = (learnt.score(data, score + gauss,
+                    learnt_score = (dag_score(learnt, data, score + gauss,
                                                  params)[score + gauss]).sum()
                 except ValueError:
                     print('\n*** Cannot extend PDAG for {}\n'.format(id))

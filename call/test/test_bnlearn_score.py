@@ -9,6 +9,7 @@ from call.bnlearn import bnlearn_score
 from call.r import requires_r_and_bnlearn
 import testdata.example_dags as dag
 from data import TESTDATA_DIR
+from data.score import dag_score
 from data.numpy import NumPy
 from core.graph import DAG
 from core.metrics import dicts_same, values_same
@@ -145,7 +146,7 @@ def test_bnlearn_score_a_b_1_ok():
     data = NumPy(array([[0, 0], [1, 1]], dtype='uint8'), dstype='categorical',
                  col_values={'A': ('1', '0'), 'B': ('1', '0')})
     bnscores = bnlearn_score(dag.a_b(), data, TYPES, params={'iss': 1.0})
-    scores = dag.a_b().score(data, TYPES, {'base': 'e'})
+    scores = dag_score(dag.a_b(), data, TYPES, {'base': 'e'})
     print(scores)
     assert dicts_same(bnscores, dict(scores.sum()))
 
@@ -156,7 +157,7 @@ def test_bnlearn_score_a_b_2_ok():
     data = NumPy(array([[0, 0], [1, 1]], dtype='uint8'), dstype='categorical',
                  col_values={'A': ('1', '0'), 'B': ('1', '0')})
     bnscores = bnlearn_score(dag.a_b(), data, TYPES, {'iss': 2.0})
-    scores = dag.a_b().score(data, TYPES, {'base': 'e', 'iss': 2.0})
+    scores = dag_score(dag.a_b(), data, TYPES, {'base': 'e', 'iss': 2.0})
     print(scores)
     assert dicts_same(bnscores, dict(scores.sum()))
 
@@ -167,7 +168,7 @@ def test_bnlearn_score_a_b_3_ok():
     data = NumPy(array([[0, 0], [1, 1]], dtype='uint8'), dstype='categorical',
                  col_values={'A': ('1', '0'), 'B': ('1', '0')})
     bnscores = bnlearn_score(dag.a_b(), data, TYPES, {'iss': 10.0})
-    scores = dag.a_b().score(data, TYPES, {'base': 'e', 'iss': 10.0})
+    scores = dag_score(dag.a_b(), data, TYPES, {'base': 'e', 'iss': 10.0})
     print(scores)
     assert dicts_same(bnscores, dict(scores.sum()))
 
@@ -178,7 +179,7 @@ def test_bnlearn_score_a_b_4_ok():
     data = NumPy(array([[0, 0], [1, 1]], dtype='uint8'), dstype='categorical',
                  col_values={'A': ('1', '0'), 'B': ('1', '0')})
     bnscores = bnlearn_score(dag.a_b(), data, TYPES, {'iss': 100.0})
-    scores = dag.a_b().score(data, TYPES, {'base': 'e', 'iss': 100.0})
+    scores = dag_score(dag.a_b(), data, TYPES, {'base': 'e', 'iss': 100.0})
     print(scores)
     assert dicts_same(bnscores, dict(scores.sum()))
 
@@ -190,7 +191,7 @@ def test_bnlearn_score_a_b_5_ok():
                  col_values={'A': ('1', '0'), 'B': ('1', '0')})
     print('\n\n{}'.format(data.as_df()))
     bnscores = bnlearn_score(dag.a_b(), data, TYPES, {'k': 2})
-    scores = dag.a_b().score(data, TYPES, {'base': 'e', 'k': 2})
+    scores = dag_score(dag.a_b(), data, TYPES, {'base': 'e', 'k': 2})
     print(scores)
     assert dicts_same(bnscores, dict(scores.sum()))
 
@@ -202,7 +203,7 @@ def test_bnlearn_score_a_b_6_ok():
                  col_values={'A': ('1', '0'), 'B': ('1', '0')})
     print('\n\n{}'.format(data.as_df()))
     bnscores = bnlearn_score(dag.a_b(), data, TYPES, {'k': 0.5})
-    scores = dag.a_b().score(data, TYPES, {'base': 'e', 'k': 0.5})
+    scores = dag_score(dag.a_b(), data, TYPES, {'base': 'e', 'k': 0.5})
     print(scores)
     assert dicts_same(bnscores, dict(scores.sum()))
 
@@ -214,7 +215,7 @@ def test_bnlearn_score_a_b_7_ok():
                  col_values={'A': ('1', '0'), 'B': ('1', '0')})
     print('\n\n{}'.format(data.as_df()))
     bnscores = bnlearn_score(dag.a_b(), data, TYPES, {'k': 10.0})
-    scores = dag.a_b().score(data, TYPES, {'base': 'e', 'k': 10.0})
+    scores = dag_score(dag.a_b(), data, TYPES, {'base': 'e', 'k': 10.0})
     print(scores)
     assert dicts_same(bnscores, dict(scores.sum()))
 
@@ -226,7 +227,7 @@ def test_bnlearn_score_a_b_8_ok():
                  col_values={'A': ('1', '0'), 'B': ('1', '0')})
     print('\n\n{}'.format(data.as_df()))
     bnscores = bnlearn_score(dag.a_b(), data, TYPES, {'k': 0.1})
-    scores = dag.a_b().score(data, TYPES, {'base': 'e', 'k': 0.1})
+    scores = dag_score(dag.a_b(), data, TYPES, {'base': 'e', 'k': 0.1})
     print(scores)
     assert dicts_same(bnscores, dict(scores.sum()))
 
@@ -240,7 +241,7 @@ def test_bnlearn_score_x_y_1_ok():
                  dstype='continuous', col_values={'X': None, 'Y': None})
     print('\n\n{}'.format(data.as_df()))
     bnscores = bnlearn_score(dag.x_y(), data, ['bic-g'], {'k': 1.0})
-    scores = dag.x_y().score(data, 'bic-g')
+    scores = dag_score(dag.x_y(), data, 'bic-g', {'k': 1.0})
     print('\n\nBnbench node scores are:\n{}'.format(scores['bic-g']))
 
     # BIC scores very close because no linear regression involved
@@ -256,7 +257,7 @@ def test_bnlearn_score_x_y_2_ok():
                  dstype='continuous', col_values={'X': None, 'Y': None})
     print('\n\n{}'.format(data.as_df()))
     bnscores = bnlearn_score(dag.x_y(), data, ['bic-g'], {'k': 1.0})
-    scores = dag.x_y().score(data, 'bic-g')
+    scores = dag_score(dag.x_y(), data, 'bic-g', {'k': 1.0})
     print('\n\nBnbench node scores are:\n{}'.format(scores['bic-g']))
 
     # BIC scores very close because no linear regression involved
@@ -272,7 +273,7 @@ def test_bnlearn_score_xy_1_ok():
                  dstype='continuous', col_values={'X': None, 'Y': None})
     print('\n\n{}'.format(data.as_df()))
     bnscores = bnlearn_score(dag.xy(), data, ['bic-g'], {'k': 1.0})
-    scores = dag.xy().score(data, 'bic-g')
+    scores = dag_score(dag.xy(), data, 'bic-g', {'k': 1.0})
     print('\n\nBnbench node scores are:\n{}'.format(scores['bic-g']))
 
     # BIC scores not very similar because of linear regression differences
@@ -292,7 +293,7 @@ def test_bnlearn_score_xyz_1_ok():
                  dstype='continuous',
                  col_values={'X': None, 'Y': None, 'Z': None})
     bnscores = bnlearn_score(dag.xyz(), data, ['bic-g'], {'k': 1.0})
-    scores = dag.xyz().score(data, 'bic-g')
+    scores = dag_score(dag.xyz(), data, 'bic-g', {'k': 1.0})
     print('\n\nBnbench node scores are:\n{}'.format(scores['bic-g']))
 
     # BIC scores not very similar because of linear regression differences
@@ -313,7 +314,7 @@ def test_bnlearn_score_xy_zy_1_ok():
                  dstype='continuous',
                  col_values={'X': None, 'Y': None, 'Z': None})
     bnscores = bnlearn_score(dag.xy_zy(), data, ['bic-g'], {'k': 1.0})
-    scores = dag.xy_zy().score(data, 'bic-g')
+    scores = dag_score(dag.xy_zy(), data, 'bic-g', {'k': 1.0})
     print('\n\nBnbench node scores are:\n{}'.format(scores['bic-g']))
 
     # BIC scores not very similar because of linear regression differences
@@ -331,7 +332,7 @@ def test_bnlearn_score_gauss_1_ok():
 
     assert values_same(bnscores['bic-g'], -53221.35, sf=7)  # website value
     print()
-    scores = dag.gauss().score(data, 'bic-g')
+    scores = dag_score(dag.gauss(), data, 'bic-g', {'k': 1.0})
     print('\n\nBnbench node scores are:\n{}'.format(scores['bic-g']))
     print('BIC: bnlearn {:.3f}, bnbench {:.3f}'
           .format(bnscores['bic-g'], dict(scores.sum())['bic-g']))
@@ -351,7 +352,7 @@ def test_bnlearn_score_bge_x_y_1_ok():
     print('\n\n{}'.format(data.as_df()))
     bnscores = bnlearn_score(dag.x_y(), data, ['bge'], {'k': 1.0})
 
-    scores = dag.x_y().score(data, 'bge')
+    scores = dag_score(dag.x_y(), data, 'bge', {'k': 1.0})
     print('\n\nCausal-iq node scores are:\n{}'.format(scores))
 
     assert dicts_same(bnscores, dict(scores.sum()), sf=7)
@@ -365,7 +366,7 @@ def test_bnlearn_score_bge_xy_1_ok():
     print('\n\n{}'.format(data.as_df()))
     bnscores = bnlearn_score(dag.xy(), data, ['bge'], {'k': 1.0})
 
-    scores = dag.xy().score(data, 'bge')
+    scores = dag_score(dag.xy(), data, 'bge', {'k': 1.0})
     print('\n\nCausal-iq node scores are:\n{}'.format(scores))
 
     assert dicts_same(bnscores, dict(scores.sum()), sf=7)
@@ -379,7 +380,7 @@ def test_bnlearn_score_bge_yx_1_ok():
     print('\n\n{}'.format(data.as_df()))
     bnscores = bnlearn_score(dag.yx(), data, ['bge'], {'k': 1.0})
 
-    scores = dag.yx().score(data, 'bge')
+    scores = dag_score(dag.yx(), data, 'bge', {'k': 1.0})
     print('\n\nCausal-iq node scores are:\n{}'.format(scores))
 
     assert dicts_same(bnscores, dict(scores.sum()), sf=7)
@@ -393,7 +394,7 @@ def test_bnlearn_score_bge_f1_f2_1_ok():
     print('\n\n{}'.format(data.as_df()))
     bnscores = bnlearn_score(dag, data, ['bge'], {'k': 1.0})
 
-    scores = dag.score(data, 'bge')
+    scores = dag_score(dag, data, 'bge', {'k': 1.0})
     print('\n\nCausal-iq node scores are:\n{}'.format(scores))
 
     assert dicts_same(bnscores, dict(scores.sum()), sf=7)
@@ -407,7 +408,7 @@ def test_bnlearn_score_bge_f1f2_1_ok():
     print('\n\n{}'.format(data.as_df()))
     bnscores = bnlearn_score(dag, data, ['bge'], {'k': 1.0})
 
-    scores = dag.score(data, 'bge')
+    scores = dag_score(dag, data, 'bge', {'k': 1.0})
     print('\n\nCausal-iq node scores are:\n{}'.format(scores))
 
     assert dicts_same(bnscores, dict(scores.sum()), sf=7)
@@ -421,7 +422,7 @@ def test_bnlearn_score_bge_f2f1_1_ok():
     print('\n\n{}'.format(data.as_df()))
     bnscores = bnlearn_score(dag, data, ['bge'], {'k': 1.0})
 
-    scores = dag.score(data, 'bge')
+    scores = dag_score(dag, data, 'bge', {'k': 1.0})
     print('\n\nCausal-iq node scores are:\n{}'.format(scores))
 
     assert dicts_same(bnscores, dict(scores.sum()), sf=7)
@@ -434,7 +435,7 @@ def test_bnlearn_score_bge_xyz_1_ok():
     print('\n\n{}'.format(data.as_df()))
     bnscores = bnlearn_score(dag.xyz(), data, ['bge'], {'k': 1.0})
 
-    scores = dag.xyz().score(data, 'bge')
+    scores = dag_score(dag.xyz(), data, 'bge', {'k': 1.0})
     print('\n\nCausal-iq node scores are:\n{}'.format(scores))
 
     assert dicts_same(bnscores, dict(scores.sum()), sf=7)
@@ -448,7 +449,7 @@ def test_bnlearn_score_bge_xy_zy_1_ok():
     print('\n\n{}'.format(data.as_df()))
     bnscores = bnlearn_score(dag.xy_zy(), data, ['bge'], {'k': 1.0})
 
-    scores = dag.xy_zy().score(data, 'bge')
+    scores = dag_score(dag.xy_zy(), data, 'bge', {'k': 1.0})
     print('\n\nCausal-iq node scores are:\n{}'.format(scores))
 
     assert dicts_same(bnscores, dict(scores.sum()), sf=7)
@@ -461,7 +462,7 @@ def test_bnlearn_score_bge_xy_zy_2_ok():
     print('\n\n{}'.format(data.as_df()))
     bnscores = bnlearn_score(dag.xy_zy(), data, ['bge'], {'k': 1.0})
 
-    scores = dag.xy_zy().score(data, 'bge')
+    scores = dag_score(dag.xy_zy(), data, 'bge', {'k': 1.0})
     print('\n\nCausal-iq node scores are:\n{}'.format(scores))
 
     assert dicts_same(bnscores, dict(scores.sum()), sf=7)
@@ -476,7 +477,7 @@ def test_bnlearn_score_bge_gauss_10_ok():
     print('\n\n{}'.format(data.as_df()))
     bnscores = bnlearn_score(dag, data, ['bge'], {'k': 1.0})
 
-    scores = dag.score(data, 'bge')
+    scores = dag_score(dag, data, 'bge', {'k': 1.0})
     print('\n\nCausal-iq node scores are:\n{}'.format(scores))
 
     assert dicts_same(bnscores, dict(scores.sum()), sf=7)
@@ -491,7 +492,7 @@ def test_bnlearn_score_bge_gauss_1k_ok():
     print('\n\n{}'.format(data.as_df().tail()))
     bnscores = bnlearn_score(dag, data, ['bge'], {'k': 1.0})
 
-    scores = dag.score(data, 'bge')
+    scores = dag_score(dag, data, 'bge', {'k': 1.0})
     print('\n\nCausal-iq node scores are:\n{}'.format(scores))
 
     assert dicts_same(bnscores, dict(scores.sum()), sf=7)

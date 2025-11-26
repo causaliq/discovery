@@ -3,7 +3,7 @@ import pytest
 from pandas import DataFrame
 
 from core.metrics import dicts_same
-from data.score import free_params, bn_score
+from data.score import free_params, bn_score, dag_score
 from core.bn import BN
 from data.pandas import Pandas
 import testdata.example_dags as dag
@@ -168,7 +168,7 @@ def test_bn_score_ab2():  # simple A->B graph with two rows of data
 
     # all parental combos present in data so DAG & BN scores will match
 
-    dag_scores = graph.score(data, TYPES, {'base': 2})
+    dag_scores = dag_score(graph, data, TYPES, {'base': 2})
     assert dicts_same(dict(scores.sum()), dict(dag_scores.sum()))
 
 
@@ -184,7 +184,7 @@ def test_bn_score_ab3():
 
     # all parental combos present in data so DAG & BN scores will match
 
-    dag_scores = graph.score(data, TYPES, {'base': 2})
+    dag_scores = dag_score(graph, data, TYPES, {'base': 2})
     assert dicts_same(dict(scores.sum()), dict(dag_scores.sum()))
 
 
@@ -201,7 +201,7 @@ def test_bn_score_ab4():  # all possible binary cases
     # all parental combos present in data so DAG & BN scores will match
 
     assert bn.estimated_pmfs == {}  # no estimated pmfs
-    dag_scores = graph.score(data, TYPES, {'base': 2})
+    dag_scores = dag_score(graph, data, TYPES, {'base': 2})
     assert dicts_same(dict(scores.sum()), dict(dag_scores.sum()))
 
 
@@ -218,16 +218,16 @@ def test_bn_score_ab5():  # 2 unbalanced binary cases
     # all parental combos present in data so DAG & BN scores will match
 
     assert bn.estimated_pmfs == {}  # no estimated pmfs
-    dag_scores = graph.score(data, TYPES, {'base': 2})
+    dag_scores = dag_score(graph, data, TYPES, {'base': 2})
     assert dicts_same(dict(scores.sum()), dict(dag_scores.sum()))
 
     # different bases
 
     scores = bn_score(bn, 4, TYPES, {'base': 10})
-    dag_scores = graph.score(data, TYPES, {'base': 10})
+    dag_scores = dag_score(graph, data, TYPES, {'base': 10})
     assert dicts_same(dict(scores.sum()), dict(dag_scores.sum()))
     scores = bn_score(bn, 4, TYPES, {'base': 'e'})
-    dag_scores = graph.score(data, TYPES, {'base': 'e'})
+    dag_scores = dag_score(graph, data, TYPES, {'base': 'e'})
     assert dicts_same(dict(scores.sum()), dict(dag_scores.sum()))
 
 
@@ -244,16 +244,16 @@ def test_bn_score_ab6():  # A binary, B categorical
     # all parental combos present in data so DAG & BN scores will match
 
     assert bn.estimated_pmfs == {}  # no estimated pmfs
-    dag_scores = graph.score(data, TYPES, {'base': 2})
+    dag_scores = dag_score(graph, data, TYPES, {'base': 2})
     assert dicts_same(dict(scores.sum()), dict(dag_scores.sum()))
 
     # different bases
 
     scores = bn_score(bn, 4, TYPES, {'base': 10})
-    dag_scores = graph.score(data, TYPES, {'base': 10})
+    dag_scores = dag_score(graph, data, TYPES, {'base': 10})
     assert dicts_same(dict(scores.sum()), dict(dag_scores.sum()))
     scores = bn_score(bn, 4, TYPES, {'base': 'e'})
-    dag_scores = graph.score(data, TYPES, {'base': 'e'})
+    dag_scores = dag_score(graph, data, TYPES, {'base': 'e'})
     assert dicts_same(dict(scores.sum()), dict(dag_scores.sum()))
 
 
@@ -270,16 +270,16 @@ def test_bn_score_ab7():  # A and B categorical
     # all parental combos present in data so DAG & BN scores will match
 
     assert bn.estimated_pmfs == {}  # no estimated pmfs
-    dag_scores = graph.score(data, TYPES, {'base': 2})
+    dag_scores = dag_score(graph, data, TYPES, {'base': 2})
     assert dicts_same(dict(scores.sum()), dict(dag_scores.sum()))
 
     # different bases
 
     scores = bn_score(bn, 7, TYPES, {'base': 10})
-    dag_scores = graph.score(data, TYPES, {'base': 10})
+    dag_scores = dag_score(graph, data, TYPES, {'base': 10})
     assert dicts_same(dict(scores.sum()), dict(dag_scores.sum()))
     scores = bn_score(bn, 7, TYPES, {'base': 'e'})
-    dag_scores = graph.score(data, TYPES, {'base': 'e'})
+    dag_scores = dag_score(graph, data, TYPES, {'base': 'e'})
     assert dicts_same(dict(scores.sum()), dict(dag_scores.sum()))
 
 
@@ -297,17 +297,17 @@ def test_bn_score_abc1():  # A-->B-->C, A&B categorical, C binary
     # all parental combos present in data so DAG & BN scores will match
 
     assert bn.estimated_pmfs == {}  # no estimated pmfs
-    dag_scores = graph.score(data, TYPES, {'base': 2})
+    dag_scores = dag_score(graph, data, TYPES, {'base': 2})
     assert dicts_same(dict(scores.sum()), dict(dag_scores.sum()))
     print(scores)
 
     # different bases
 
     scores = bn_score(bn, 7, TYPES, {'base': 10})
-    dag_scores = graph.score(data, TYPES, {'base': 10})
+    dag_scores = dag_score(graph, data, TYPES, {'base': 10})
     assert dicts_same(dict(scores.sum()), dict(dag_scores.sum()))
     scores = bn_score(bn, 7, TYPES, {'base': 'e'})
-    dag_scores = graph.score(data, TYPES, {'base': 'e'})
+    dag_scores = dag_score(graph, data, TYPES, {'base': 'e'})
     assert dicts_same(dict(scores.sum()), dict(dag_scores.sum()))
 
 
@@ -326,17 +326,17 @@ def test_bn_score_abc2():  # A-->B-->C, A, B & C categorical
     # all parental combos present in data so DAG & BN scores will match
 
     assert bn.estimated_pmfs == {}  # no estimated pmfs
-    dag_scores = graph.score(data, TYPES, {'base': 2})
+    dag_scores = dag_score(graph, data, TYPES, {'base': 2})
     assert dicts_same(dict(scores.sum()), dict(dag_scores.sum()))
     print(scores)
 
     # different bases
 
     scores = bn_score(bn, 10, TYPES, {'base': 10})
-    dag_scores = graph.score(data, TYPES, {'base': 10})
+    dag_scores = dag_score(graph, data, TYPES, {'base': 10})
     assert dicts_same(dict(scores.sum()), dict(dag_scores.sum()))
     scores = bn_score(bn, 10, TYPES, {'base': 'e'})
-    dag_scores = graph.score(data, TYPES, {'base': 'e'})
+    dag_scores = dag_score(graph, data, TYPES, {'base': 'e'})
     assert dicts_same(dict(scores.sum()), dict(dag_scores.sum()))
 
 
@@ -351,7 +351,7 @@ def test_bn_score_ac_bc1():  # A-->C<--B, A, B & C binary, ABSENT pvs
     assert free_params(bn.dag, data.sample) == 6  # free params: A=1, B=1, C=4
 
     assert bn.estimated_pmfs == {'C': 2}  # 2 estimated PMFs for node C
-    dag_scores = graph.score(data, TYPES, {'base': 2})
+    dag_scores = dag_score(graph, data, TYPES, {'base': 2})
 
     # BN and DAG scores will be same for nodes A and B
 
@@ -377,7 +377,7 @@ def test_bn_score_ac_bc2():  # A-->C<--B, A, B & C binary, all pvs present
     assert free_params(bn.dag, data.sample) == 6  # free params: A=1, B=1, C=4
 
     assert bn.estimated_pmfs == {}  # no estimated PMFs
-    dag_scores = graph.score(data, TYPES, {'base': 2})
+    dag_scores = dag_score(graph, data, TYPES, {'base': 2})
     assert dicts_same(dict(scores.sum()), dict(dag_scores.sum()))
 
 
@@ -398,14 +398,14 @@ def test_bn_score_cancer():  # Cancer BN, all PVs present
     # all parental combos present in data so DAG & BN scores will match
 
     assert bn.estimated_pmfs == {}  # no estimated pmfs
-    dag_scores = graph.score(data, TYPES, {'base': 2})
+    dag_scores = dag_score(graph, data, TYPES, {'base': 2})
     assert dicts_same(dict(scores.sum()), dict(dag_scores.sum()))
 
     # different bases
 
     scores = bn_score(bn, 4, TYPES, {'base': 10})
-    dag_scores = graph.score(data, TYPES, {'base': 10})
+    dag_scores = dag_score(graph, data, TYPES, {'base': 10})
     assert dicts_same(dict(scores.sum()), dict(dag_scores.sum()))
     scores = bn_score(bn, 4, TYPES, {'base': 'e'})
-    dag_scores = graph.score(data, TYPES, {'base': 'e'})
+    dag_scores = dag_score(graph, data, TYPES, {'base': 'e'})
     assert dicts_same(dict(scores.sum()), dict(dag_scores.sum()))

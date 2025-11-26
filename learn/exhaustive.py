@@ -6,6 +6,7 @@ from itertools import combinations
 
 from data import Data
 from data.oracle import Oracle
+from data.score import dag_score
 from core.graph import DAG, NotDAGError
 
 
@@ -37,7 +38,7 @@ def exhaustive(data, types=['bic', 'loglik', 'bde'], params={'base': 2},
     for edges in AllEdgeLists(data.nodes):
         try:
             dag = DAG(list(data.nodes), edges)
-            scores = dict(dag.score(data, types, params).sum())
+            scores = dict(dag_score(dag, data, types, params).sum())
             scores['dag'] = dag.to_string()
             results.append(scores)
         except (NotDAGError):

@@ -27,6 +27,7 @@ from learn.trace import CONTEXT_FIELDS, Trace, Activity, Detail
 from data.pandas import Pandas
 from data.numpy import NumPy
 from core.graph import PDAG, DAG
+from data.score import dag_score
 from causaliq_core.utils.timing import run_with_timeout, TimeoutError
 
 CAUSAL_ALGORITHMS = {
@@ -123,7 +124,7 @@ def _generate_trace(algorithm: str, graph: GeneralGraph, elapsed: float,
     empty = GeneralGraph(nodes=[GraphNode(n) for n in node_names])
     empty_cl_score = score_g(data, empty, score_func, None)
     empty = DAG(nodes=node_names, edges=[])
-    empty_score = (empty.score(data=data,
+    empty_score = (dag_score(empty, data=data,
                                types=[params['score']],
                                params={'unistate_ok': True})
                    [params['score']]).sum()
@@ -137,7 +138,7 @@ def _generate_trace(algorithm: str, graph: GeneralGraph, elapsed: float,
         learned_cl_score = learned_cl_score.sum()
     pdag = to_causaliq_pdag(graph)
     dag = DAG.extendPDAG(pdag)
-    learned_score = (dag.score(data=data,
+    learned_score = (dag_score(dag, data=data,
                                types=[params["score"]],
                                params={"unistate_ok": True})
                      [params['score']]).sum()

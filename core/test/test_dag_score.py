@@ -23,16 +23,16 @@ BAYESIAN_PARAMS = {'iss': 1.0, 'prior': 'uniform'}
 def test_graph_score_type_error_1():
     graph = dag.ab()
     with pytest.raises(TypeError):
-        graph.score()
+        dag_score(graph)
     with pytest.raises(TypeError):
-        graph.score(10, 'bic', {})
+        dag_score(graph, 10, 'bic', {})
     with pytest.raises(TypeError):
-        graph.score(10, 'bic', {})
+        dag_score(graph, 10, 'bic', {})
     with pytest.raises(TypeError):
-        graph.score(DataFrame({'A': ['0', '0'], 'B': ['1', '1']},
+        dag_score(graph, DataFrame({'A': ['0', '0'], 'B': ['1', '1']},
                               dtype='category'), 37)
     with pytest.raises(TypeError):
-        graph.score(DataFrame({'A': ['0', '0'], 'B': ['1', '1']},
+        dag_score(graph, DataFrame({'A': ['0', '0'], 'B': ['1', '1']},
                               dtype='category'), 'bic', True)
 
 
@@ -40,7 +40,7 @@ def test_graph_score_type_error_1():
 def test_graph_score_type_error_2():
     graph = dag.ab()
     with pytest.raises(TypeError):
-        graph.score(DataFrame({'A': ['0', '1'], 'B': ['1', '1']},
+        dag_score(graph, DataFrame({'A': ['0', '1'], 'B': ['1', '1']},
                               dtype='category'), [37])
 
 
@@ -48,10 +48,10 @@ def test_graph_score_type_error_2():
 def test_graph_score_type_error_3():
     graph = dag.ab()
     with pytest.raises(TypeError):
-        graph.score(DataFrame({'A': ['0', '1'], 'B': ['1', '0']},
+        dag_score(graph, DataFrame({'A': ['0', '1'], 'B': ['1', '0']},
                               dtype='category'), 'bic', {'base': 2.2})
     with pytest.raises(TypeError):
-        graph.score(DataFrame({'A': ['0', '1'], 'B': ['1', '0']},
+        dag_score(graph, DataFrame({'A': ['0', '1'], 'B': ['1', '0']},
                               dtype='category'), 'bic', {'base': True})
 
 
@@ -59,7 +59,7 @@ def test_graph_score_type_error_3():
 def test_graph_score_type_error_4():
     graph = dag.ab()
     with pytest.raises(TypeError):
-        graph.score(DataFrame({'A': ['0', '1'], 'B': ['1', '0']},
+        dag_score(graph, DataFrame({'A': ['0', '1'], 'B': ['1', '0']},
                               dtype='category'), 'bde', {'prior': 12})
 
 
@@ -67,7 +67,7 @@ def test_graph_score_type_error_4():
 def test_graph_score_type_error_5():
     graph = dag.ab()
     with pytest.raises(TypeError):
-        graph.score(DataFrame({'A': ['0', '1'], 'B': ['1', '0']},
+        dag_score(graph, DataFrame({'A': ['0', '1'], 'B': ['1', '0']},
                               dtype='category'),
                     'bds', {'prior': 'uniform', 'iss': 'should be num'})
 
@@ -75,7 +75,7 @@ def test_graph_score_type_error_5():
 def test_graph_score_type_error_6():  # bad 'k' score param type
     graph = dag.ab()
     with pytest.raises(TypeError):
-        graph.score(DataFrame({'A': ['0', '1'], 'B': ['1', '0']},
+        dag_score(graph, DataFrame({'A': ['0', '1'], 'B': ['1', '0']},
                               dtype='category'), 'bic', {'k': 'should be num'})
 
 
@@ -85,7 +85,7 @@ def test_graph_score_value_error_7():
     data = Pandas(DataFrame({'A': ['0', '1'], 'C': ['0', '1']},
                             dtype='category'))
     with pytest.raises(ValueError):
-        graph.score(data, 'aic')
+        dag_score(graph, data, 'aic', {})
 
 
 # single-valued variables
@@ -94,7 +94,7 @@ def test_graph_score_value_error_8():
     data = Pandas(DataFrame({'A': ['1', '0'], 'B': ['0', '0']},
                             dtype='category'))
     with pytest.raises(ValueError):
-        graph.score(data, 'aic')
+        dag_score(graph, data, 'aic', {})
 
 
 # bad arg types

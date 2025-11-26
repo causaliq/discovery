@@ -9,6 +9,7 @@ from causaliq_core.utils.random import Randomise
 from data import EXPTS_DIR
 from data.numpy import NumPy
 from data.oracle import Oracle
+from data.score import dag_score
 from call.r import initialise_r_environment
 from call.bnlearn import bnlearn_learn
 from call.tetrad import tetrad_learn
@@ -87,7 +88,7 @@ def do_experiment(action, series, network, N, existing, props, bn, data,
     if (props['datagen'] != 'none' and 'score' in props['params']
             and sample_num == -1):
         type = props['params']['score']
-        score = bn.dag.score(data=data, types=type,
+        score = dag_score(bn.dag, data=data, types=type,
                              params={'k': 1, 'unistate_ok': True})
         score = round(score[type].sum() / N, 5)
         print('  true graph normalised {} score for sample {} is {}'

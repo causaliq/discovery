@@ -8,6 +8,7 @@ from re import compile
 from datetime import datetime
 
 from core.graph import SDG, PDAG, DAG
+from data.score import dag_score
 from data.score import SCORE_PARAMS
 from learn.trace import Trace, Activity, Detail, CONTEXT_FIELDS
 from call.cmd import dispatch_cmd
@@ -179,13 +180,13 @@ def graph_scores(learnt, data, params, context):
     # determine score of initial empty graph
 
     initial = DAG(list(data.get_order()), [])
-    score1 = (initial.score(data, score_type, score_params)[score_type]).sum()
+    score1 = (dag_score(initial, data, score_type, score_params)[score_type]).sum()
 
     # Try to extend the learnt graph to a DAG to be able to score it
 
     try:
         learnt = learnt if learnt.is_DAG() else DAG.extendPDAG(learnt)
-        score2 = (learnt.score(data, score_type,
+        score2 = (dag_score(learnt, data, score_type,
                                score_params)[score_type]).sum()
     except ValueError as e:
         print('\n*** Cannot extend PDAG for {} {}:\n{}\n'

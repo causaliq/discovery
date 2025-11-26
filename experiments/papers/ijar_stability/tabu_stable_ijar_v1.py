@@ -8,6 +8,7 @@ from experiments.run_analysis import run_analysis
 from experiments.summary_analysis import summary_analysis
 from experiments.plot import relplot
 from core.graph import DAG
+from data.score import dag_score
 from data.score import SCORE_PARAMS
 from data import EXPTS_DIR
 from data.pandas import Pandas
@@ -232,7 +233,7 @@ def values_ijar_stab_score_graphs():
         initial_score = {}
         for N in Ns:
             data.set_N(N)
-            initial_score[N] = (initial.score(data, score,
+            initial_score[N] = (dag_score(initial, data, score,
                                               params)[score]).sum()
 
         # Determine score of each learnt graph and update trace with initial
@@ -247,7 +248,7 @@ def values_ijar_stab_score_graphs():
             learnt = trace.result
             try:
                 learnt = DAG.extendPDAG(learnt)
-                learnt_score = (learnt.score(data, score,
+                learnt_score = (dag_score(learnt, data, score,
                                              params)[score]).sum()
             except ValueError:
                 print('\n*** Cannot extend PDAG for {}\n'.format(id))
@@ -306,7 +307,7 @@ def values_ijar_stab_baselines():
 
             # create a minimal trace for empty graph which includes its score
 
-            score_e = (empty.score(data, score, _params)[score]).sum()
+            score_e = (dag_score(empty, data, score, _params)[score]).sum()
             id = 'HC/SCORE/EMPTY/{}/N{}_0'.format(network, N)
             context = {'id': id, 'in': _in, 'algorithm': 'DAG_SCORE',
                        'N': data.N, 'params': params, 'dataset': True}
@@ -319,7 +320,7 @@ def values_ijar_stab_baselines():
 
             # create a minimal trace for ref graph which includes its score
 
-            score_r = (ref.score(data, score, _params)[score]).sum()
+            score_r = (dag_score(ref, data, score, _params)[score]).sum()
             context.update({'id':
                             'HC/SCORE/REF/{}/N{}_0'.format(network, N)})
             trace = Trace(context.copy())

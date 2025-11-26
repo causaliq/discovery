@@ -6,11 +6,8 @@ from numpy import zeros
 from pandas import DataFrame
 
 from core.metrics import pdag_compare
-from data.score import dag_score
 from causaliq_core.graph import EdgeType
 from causaliq_core.graph import BAYESYS_VERSIONS
-from data import Data
-from data.oracle import Oracle
 
 
 class SDG():
@@ -643,25 +640,6 @@ class DAG(PDAG):
 
         return DAG(dag.nodes, [(e[0], '->' if t == EdgeType.DIRECTED else '?',
                                 e[1]) for e, t in dag.edges.items()])
-
-    def score(self, data, types, params={}):
-        """
-            Score a particular data set against the DAG.
-
-            :param Data data: data(file) to score against graph
-            :param str/list types: type(s) of score e.g. 'loglik', 'bic', 'bde'
-            :param dict params: score parameters e.g. log base
-
-            :raises TypeError: if arguments have bad type
-            :raises ValueError: if arguments have bad values
-            :raises FileNotFoundError: if data file not found
-
-            :returns DataFrame: requested score types (col) for each node (row)
-        """
-        if not isinstance(data, Data) or isinstance(data, Oracle):
-            raise TypeError('DAG.score() bad arg types')
-
-        return dag_score(self, data, types, params)
 
     def ordered_nodes(self):
         """
