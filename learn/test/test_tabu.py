@@ -10,7 +10,7 @@ from core.bn import BN
 from learn.hc import hc
 from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_learn
-from core.graph import PDAG
+from core.graph_new.pdag import PDAG
 
 
 # Fixture setting pandas options to display the whold dataframe

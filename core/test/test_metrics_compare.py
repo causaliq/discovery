@@ -3,7 +3,8 @@
 
 import pytest
 
-from core.graph import PDAG, DAG
+from core.graph_new.pdag import PDAG
+from core.graph_new.dag import DAG
 from core.metrics import pdag_compare
 from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_compare

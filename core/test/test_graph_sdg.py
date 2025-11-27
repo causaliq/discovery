@@ -1,5 +1,5 @@
 
-from core.graph import SDG
+from core.graph_new.sdg import SDG
 import testdata.example_sdgs as ex
 
 import pytest

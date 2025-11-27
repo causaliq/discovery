@@ -26,7 +26,8 @@ from causallearn.utils.DAG2CPDAG import dag2cpdag
 from learn.trace import CONTEXT_FIELDS, Trace, Activity, Detail
 from data.pandas import Pandas
 from data.numpy import NumPy
-from core.graph import PDAG, DAG
+from core.graph_new.pdag import PDAG
+from core.graph_new.dag import DAG
 from data.score import dag_score
 from causaliq_core.utils.timing import run_with_timeout, TimeoutError
 

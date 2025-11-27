@@ -7,7 +7,7 @@ from itertools import combinations
 from data import Data
 from data.oracle import Oracle
 from data.score import dag_score
-from core.graph import DAG, NotDAGError
+from core.graph_new.dag import DAG, NotDAGError
 
 
 def exhaustive(data, types=['bic', 'loglik', 'bde'], params={'base': 2},

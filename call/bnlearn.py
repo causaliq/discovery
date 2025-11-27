@@ -10,7 +10,8 @@ from re import compile
 
 from call.r import dispatch_r
 from causaliq_core.graph import EdgeType
-from core.graph import DAG, PDAG
+from core.graph_new.dag import DAG
+from core.graph_new.pdag import PDAG
 from core.bn import BN
 from core.lingauss import LinGauss
 from data.score import SCORES, SCORE_PARAMS, check_score_params

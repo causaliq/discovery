@@ -9,7 +9,7 @@ from data import TESTDATA_DIR
 from fileio.bayesys import read_constraints
 from data.numpy import NumPy
 from causaliq_core.graph import EdgeType
-from core.graph import DAG
+from core.graph_new.dag import DAG
 from core.bn import BN
 from learn.knowledge import Knowledge
 from learn.knowledge_rule import RuleSet

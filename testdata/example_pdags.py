@@ -8,7 +8,7 @@
 
 from causaliq_core.graph import adjmat
 from causaliq_core.graph import EdgeType
-from core.graph import PDAG
+from core.graph_new.pdag import PDAG
 
 
 def empty(check=None):

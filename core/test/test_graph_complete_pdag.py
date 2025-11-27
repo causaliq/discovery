@@ -3,7 +3,7 @@
 
 import pytest
 
-from core.graph import PDAG
+from core.graph_new.pdag import PDAG
 from data import TESTDATA_DIR
 from core.bn import BN
 from call.r import requires_r_and_bnlearn

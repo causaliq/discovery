@@ -7,7 +7,8 @@ from statistics import mean, stdev
 from scipy.optimize import root_scalar
 from itertools import chain, combinations
 
-from core.graph import DAG, PDAG
+from core.graph_new.dag import DAG
+from core.graph_new.pdag import PDAG
 from core.bn import BN
 from core.cpt import CPT
 from core.metrics import kl

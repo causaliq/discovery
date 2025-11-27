@@ -5,7 +5,7 @@ from pandas import DataFrame
 
 from data import TESTDATA_DIR
 from data.pandas import Pandas
-from core.graph import DAG
+from core.graph_new.dag import DAG
 from core.bn import BN
 from core.cpt import NodeValueCombinations
 from core.metrics import dists_same

@@ -11,7 +11,7 @@ from call.bnlearn import bnlearn_score
 from data.score import dag_score
 import testdata.example_dags as dag
 from data import TESTDATA_DIR
-from core.graph import DAG
+from core.graph_new.dag import DAG
 from core.metrics import dicts_same
 from core.bn import BN
 from data.pandas import Pandas

@@ -5,7 +5,8 @@
 import re
 
 from data import is_valid_path, FileFormatError
-from core.graph import DAG, PDAG
+from core.graph_new.dag import DAG
+from core.graph_new.pdag import PDAG
 
 EDGE = re.compile(r'^\d+\.\s(\w+)\s(\-\-[\>\-])\s(\w+)$')
 

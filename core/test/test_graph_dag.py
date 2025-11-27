@@ -1,5 +1,5 @@
 
-from core.graph import DAG, NotDAGError
+from core.graph_new.dag import DAG, NotDAGError
 import testdata.example_dags as dag
 import testdata.example_pdags as ex_pdag
 import testdata.example_sdgs as ex_sdg

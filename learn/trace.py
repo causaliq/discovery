@@ -44,6 +44,12 @@ class CompatibilityUnpickler(pickle.Unpickler):
         ('core.timing', 'TimeoutError'): 'causaliq_core.utils.timing',
         ('core.timing', 'run_with_timeout'): 'causaliq_core.utils.timing',
         ('core.timing', 'with_timeout'): 'causaliq_core.utils.timing',
+        # Graph class mappings for the modular refactoring
+        ('core.graph', 'SDG'): 'core.graph_new.sdg',
+        ('core.graph', 'PDAG'): 'core.graph_new.pdag',
+        ('core.graph', 'DAG'): 'core.graph_new.dag',
+        ('core.graph', 'NotDAGError'): 'core.graph_new.dag',
+        ('core.graph', 'NotPDAGError'): 'core.graph_new.pdag',
         # Add more specific class mappings as needed
     }
     
@@ -83,7 +89,8 @@ from causaliq_core.utils.random import Randomise
 from causaliq_core.utils import environment
 from causaliq_core.utils import EnumWithAttrs
 from core.metrics import values_same
-from core.graph import SDG, DAG
+from core.graph_new.sdg import SDG
+from core.graph_new.dag import DAG
 from data.score import dag_score
 from learn.common import TreeStats
 from data import EXPTS_DIR, is_valid_path

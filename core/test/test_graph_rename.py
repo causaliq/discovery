@@ -5,7 +5,9 @@ import pytest
 
 from causaliq_core.graph import EdgeType
 from causaliq_core.graph import adjmat
-from core.graph import SDG, PDAG, DAG
+from core.graph_new.sdg import SDG
+from core.graph_new.pdag import PDAG
+from core.graph_new.dag import DAG
 import testdata.example_sdgs as ex_sdg
 import testdata.example_pdags as ex_pdag
 import testdata.example_dags as ex_dag

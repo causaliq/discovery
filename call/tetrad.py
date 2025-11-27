@@ -7,7 +7,9 @@ from random import random
 from re import compile
 from datetime import datetime
 
-from core.graph import SDG, PDAG, DAG
+from core.graph_new.sdg import SDG
+from core.graph_new.pdag import PDAG
+from core.graph_new.dag import DAG
 from data.score import dag_score
 from data.score import SCORE_PARAMS
 from learn.trace import Trace, Activity, Detail, CONTEXT_FIELDS

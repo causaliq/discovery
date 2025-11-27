@@ -8,7 +8,7 @@ from statistics import mean, stdev
 
 from data import EXPTS_DIR
 from experiments.common import SERIES_GROUPS, reference_bn
-from core.graph import PDAG
+from core.graph_new.pdag import PDAG
 from core.metrics import pdag_compare
 from learn.trace import Trace
 from analysis.trace import TraceAnalysis

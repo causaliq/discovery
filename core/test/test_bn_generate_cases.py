@@ -5,7 +5,7 @@ from os import remove
 
 from data import TESTDATA_DIR
 from data.pandas import Pandas
-from core.graph import DAG
+from core.graph_new.dag import DAG
 from core.bn import BN
 from core.metrics import values_same
 import testdata.example_bns as ex_bn

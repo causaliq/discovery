@@ -148,7 +148,7 @@ def pdag_compare(graph, reference, bayesys=None, identify_edges=False):
         :returns dict: structural comparison metrics
     """
     # Import PDAG here to avoid circular imports
-    from core.graph import PDAG
+    from core.graph_new.pdag import PDAG
     
     # Validation logic from compared_to method
     if not isinstance(reference, PDAG) \

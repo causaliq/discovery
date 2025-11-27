@@ -7,7 +7,7 @@ from time import asctime, localtime
 from causaliq_core.utils import EnumWithAttrs
 from data.score import node_score
 from core.metrics import values_same
-from core.graph import DAG
+from core.graph_new.dag import DAG
 from data.pandas import Pandas
 from learn.trace import Trace
 from learn.tabulist import TabuList

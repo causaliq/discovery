@@ -6,7 +6,7 @@ from pandas import DataFrame, MultiIndex
 
 from causaliq_core.utils.random import set_random_seed
 from causaliq_core.utils import ln
-from core.graph import DAG
+from core.graph_new.dag import DAG
 from core.cnd import CND
 from core.cpt import CPT, NodeValueCombinations
 from core.lingauss import LinGauss

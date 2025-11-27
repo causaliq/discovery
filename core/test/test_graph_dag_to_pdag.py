@@ -1,5 +1,5 @@
 
-from core.graph import PDAG
+from core.graph_new.pdag import PDAG
 import testdata.example_dags as ex_dag
 import testdata.example_pdags as ex_pdag
 import pytest

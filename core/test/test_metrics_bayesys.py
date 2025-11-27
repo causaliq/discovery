@@ -1,7 +1,7 @@
 
 # Test Bayesys metrics
 
-from core.graph import PDAG
+from core.graph_new.pdag import PDAG
 from core.metrics import dicts_same, values_same, pdag_compare
 from fileio.noisy import evaluate_noisy
 from fileio.bayesys import read

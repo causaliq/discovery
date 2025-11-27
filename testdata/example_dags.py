@@ -7,7 +7,7 @@
 #
 
 from causaliq_core.graph import adjmat
-from core.graph import DAG
+from core.graph_new.dag import DAG
 from causaliq_core.graph import EdgeType
 from core.bn import BN
 

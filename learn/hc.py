@@ -13,7 +13,8 @@ from learn.hc_worker import HCWorker, Prefer
 from data import Data
 from data.pandas import Pandas
 from data.numpy import NumPy
-from core.graph import DAG, SDG
+from core.graph_new.dag import DAG
+from core.graph_new.sdg import SDG
 from data.score import check_score_params, SCORE_PARAMS
 from core.metrics import values_same
 from learn.tabulist import TabuList

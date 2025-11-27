@@ -7,7 +7,7 @@ from experiments.common import reference_bn, sample_sizes
 from experiments.run_analysis import run_analysis
 from experiments.summary_analysis import summary_analysis
 from experiments.plot import relplot
-from core.graph import DAG
+from core.graph_new.dag import DAG
 from data.score import dag_score
 from data.score import SCORE_PARAMS
 from data import EXPTS_DIR

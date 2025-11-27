@@ -24,7 +24,7 @@ from fileio.xdsl import write as write_xdsl
 from fileio.tetrad import read as read_tetrad, write as write_tetrad
 from call.bnlearn import bnlearn_learn
 from call.tetrad import tetrad_learn
-from core.graph import PDAG, NotPDAGError
+from core.graph_new.pdag import PDAG, NotPDAGError
 from core.bn import BN
 from experiments.common import reference_bn
 

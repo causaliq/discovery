@@ -7,7 +7,7 @@
 #
 
 from causaliq_core.graph import adjmat
-from core.graph import SDG
+from core.graph_new.sdg import SDG
 from causaliq_core.graph import EdgeType
 
 

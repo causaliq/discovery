@@ -5,7 +5,8 @@
 import csv
 
 from data import is_valid_path, FileFormatError
-from core.graph import PDAG, DAG
+from core.graph_new.pdag import PDAG
+from core.graph_new.dag import DAG
 from learn.knowledge import Knowledge, RuleSet
 
 

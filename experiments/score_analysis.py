@@ -11,7 +11,7 @@ from experiments.plot import relplot
 from learn.trace import Trace
 from analysis.trace import TraceAnalysis
 from data.score import node_score
-from core.graph import DAG
+from core.graph_new.dag import DAG
 from core.bn import BN
 from core.cpt import CPT
 from core.metrics import kl

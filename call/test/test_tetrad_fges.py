@@ -8,7 +8,8 @@ from call.tetrad import tetrad_learn
 from data import TESTDATA_DIR
 from data.numpy import NumPy
 from core.bn import BN
-from core.graph import PDAG, DAG
+from core.graph_new.pdag import PDAG
+from core.graph_new.dag import DAG
 
 
 @pytest.fixture(scope="module")  # simple ab DataFrame
