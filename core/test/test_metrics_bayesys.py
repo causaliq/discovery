@@ -3,7 +3,6 @@
 
 from core.graph_new.pdag import PDAG
 from core.metrics import dicts_same, values_same, pdag_compare
-from fileio.noisy import evaluate_noisy
 from fileio.bayesys import read
 from data import TESTDATA_DIR
 from experiments.common import reference_bn
@@ -112,15 +111,6 @@ def test_core_metrics_bayesys_single_edge():
             print(graph)
             print(metrics)
             assert dicts_same(expected, metrics, sf=6) is True
-
-
-def test_core_metrics_bayesys_noisy():
-    print('\nstart test')
-    filter = {'noise': 'N'}
-    evaluate_noisy(TESTDATA_DIR + '/noisy/Graphs learned',
-                   TESTDATA_DIR + '/noisy/Graphs true',
-                   TESTDATA_DIR + '/noisy/Results',
-                   strict=False, warnings=True, filter=filter)
 
 
 def test_core_metrics_bayesys_dhs():

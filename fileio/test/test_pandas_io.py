@@ -7,7 +7,8 @@ from os import remove
 from pandas import DataFrame
 
 from data.pandas import Pandas
-from data import FileFormatError, TESTDATA_DIR, EXPTS_DIR
+from data import TESTDATA_DIR, EXPTS_DIR
+from causaliq_core.utils import FileFormatError
 from core.metrics import dicts_same
 
 

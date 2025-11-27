@@ -6,7 +6,7 @@ import pytest
 from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_learn
 from data import TESTDATA_DIR
-from fileio.bayesys import read_constraints
+from knowledge.bayesys import read_constraints
 from data.numpy import NumPy
 from causaliq_core.graph import EdgeType
 from core.graph_new.dag import DAG

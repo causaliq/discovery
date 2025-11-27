@@ -8,7 +8,7 @@ import pandas as pd
 
 from core.metrics import pdag_compare
 from fileio.bayesys import read
-from data import FileFormatError, is_valid_path
+from causaliq_core.utils import FileFormatError, is_valid_path
 from core.metrics import dicts_same
 
 

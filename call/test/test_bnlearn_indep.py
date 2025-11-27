@@ -7,7 +7,8 @@ from pandas import DataFrame
 from core.metrics import dicts_same
 from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_indep
-from data import FileFormatError, TESTDATA_DIR
+from data import TESTDATA_DIR
+from causaliq_core.utils import FileFormatError
 
 
 # --- Failure cases

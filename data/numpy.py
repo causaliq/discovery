@@ -10,7 +10,8 @@ from pandas.errors import EmptyDataError
 from gzip import BadGzipFile
 
 from causaliq_core.utils.timing import Timing
-from data import DatasetType, is_valid_path, FileFormatError
+from causaliq_core.utils import is_valid_path, FileFormatError
+from data import DatasetType
 from data.pandas import Pandas
 from data import Data
 

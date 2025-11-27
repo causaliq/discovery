@@ -1,7 +1,8 @@
 
 import pytest
 
-from data import is_valid_path, TESTDATA_DIR
+from data import TESTDATA_DIR
+from causaliq_core.utils import is_valid_path
 
 
 def test_fileio_common_is_valid_path_type_error():

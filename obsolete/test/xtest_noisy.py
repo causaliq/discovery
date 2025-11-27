@@ -1,6 +1,7 @@
 
 import fileio.noisy as noisy
-from data import FileFormatError, TESTDATA_DIR
+from data import TESTDATA_DIR
+from causaliq_core.utils import FileFormatError
 import pytest
 import testdata.example_dags as dag
 

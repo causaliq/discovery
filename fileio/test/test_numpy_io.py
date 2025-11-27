@@ -7,7 +7,8 @@ from numpy import array
 from os import remove
 from random import random
 
-from data import TESTDATA_DIR, FileFormatError
+from data import TESTDATA_DIR
+from causaliq_core.utils import FileFormatError
 from data.numpy import NumPy
 
 AB_3 = TESTDATA_DIR + '/simple/ab_3.csv'

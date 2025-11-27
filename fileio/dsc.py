@@ -4,7 +4,7 @@
 
 import re
 
-from data import is_valid_path, FileFormatError
+from causaliq_core.utils import is_valid_path, FileFormatError
 from core.metrics import values_same
 from core.cpt import CPT
 

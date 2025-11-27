@@ -6,7 +6,8 @@ from os import remove
 from random import random
 
 from fileio.xdsl import read, write
-from data import TESTDATA_DIR, FileFormatError
+from data import TESTDATA_DIR
+from causaliq_core.utils import FileFormatError
 import fileio.bayesys
 from core.bn import BN
 import testdata.example_bns as ex_bn

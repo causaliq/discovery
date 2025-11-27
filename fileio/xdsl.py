@@ -5,7 +5,7 @@ from xml.dom import minidom
 from math import prod
 from re import compile, sub, findall
 
-from data import is_valid_path, FileFormatError
+from causaliq_core.utils import is_valid_path, FileFormatError
 from core.cpt import CPT, NodeValueCombinations
 from core.lingauss import LinGauss
 

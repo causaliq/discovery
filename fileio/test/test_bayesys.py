@@ -5,8 +5,10 @@ import pytest
 from random import random
 from os import remove
 
-from fileio.bayesys import read, write, read_constraints
-from data import FileFormatError, TESTDATA_DIR
+from fileio.bayesys import read, write
+from knowledge.bayesys import read_constraints
+from data import TESTDATA_DIR
+from causaliq_core.utils import FileFormatError
 import testdata.example_dags as ex_dag
 import testdata.example_pdags as ex_pdag
 from core.bn import BN

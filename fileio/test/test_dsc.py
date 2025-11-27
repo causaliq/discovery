@@ -5,7 +5,8 @@ from random import random
 from os import remove
 import pytest
 
-from data import FileFormatError, TESTDATA_DIR
+from data import TESTDATA_DIR
+from causaliq_core.utils import FileFormatError
 from core.bn import BN
 
 

@@ -8,8 +8,8 @@ from pandas.errors import EmptyDataError
 from gzip import BadGzipFile
 from csv import QUOTE_MINIMAL
 
-from data import Data, is_valid_path, FileFormatError, DatasetType
-from causaliq_core.utils import rndsf
+from data import Data, DatasetType
+from causaliq_core.utils import rndsf, is_valid_path, FileFormatError
 from causaliq_core.utils.timing import Timing
 
 

@@ -93,7 +93,8 @@ from core.graph_new.sdg import SDG
 from core.graph_new.dag import DAG
 from data.score import dag_score
 from learn.common import TreeStats
-from data import EXPTS_DIR, is_valid_path
+from data import EXPTS_DIR
+from causaliq_core.utils import is_valid_path
 from data.numpy import NumPy
 
 CONTEXT_FIELDS = {'id': str, 'algorithm': str, 'params': dict, 'in': str,

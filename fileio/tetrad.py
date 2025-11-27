@@ -4,7 +4,7 @@
 
 import re
 
-from data import is_valid_path, FileFormatError
+from causaliq_core.utils import is_valid_path, FileFormatError
 from core.graph_new.dag import DAG
 from core.graph_new.pdag import PDAG
 
