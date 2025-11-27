@@ -7,12 +7,12 @@ from data import EXPTS_DIR
 from data.pandas import Pandas
 from data.numpy import NumPy
 from core.metrics import pdag_compare
-from fileio.bayesys import read
+from core.graph_new.io.bayesys import read
 from learn.hc import hc
 from call.bnlearn import bnlearn_learn
 from call.tetrad import tetrad_learn
-from fileio.tetrad import write as write_tetrad, read as read_tetrad
-from fileio.bayesys import write as write_bayesys
+from core.graph_new.io.tetrad import write as write_tetrad, read as read_tetrad
+from core.graph_new.io.bayesys import write as write_bayesys
 from core.bn import BN
 from core.graph_new.dag import DAG
 from causaliq_core.utils.timing import Timing

@@ -7,7 +7,7 @@ from re import compile
 import pandas as pd
 
 from core.metrics import pdag_compare
-from fileio.bayesys import read
+from core.graph_new.io.bayesys import read
 from causaliq_core.utils import FileFormatError, is_valid_path
 from core.metrics import dicts_same
 

@@ -3,7 +3,7 @@
 
 from core.graph_new.pdag import PDAG
 from core.metrics import dicts_same, values_same, pdag_compare
-from fileio.bayesys import read
+from core.graph_new.io.bayesys import read
 from data import TESTDATA_DIR
 from experiments.common import reference_bn
 

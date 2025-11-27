@@ -5,7 +5,7 @@ import pytest
 from random import random
 from os import remove
 
-from fileio.bayesys import read, write
+from core.graph_new.io.bayesys import read, write
 from knowledge.bayesys import read_constraints
 from data import TESTDATA_DIR
 from causaliq_core.utils import FileFormatError

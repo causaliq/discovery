@@ -4,7 +4,7 @@
 from pandas import DataFrame
 
 from data import EXPTS_DIR
-from fileio.bayesys import write
+from core.graph_new.io.bayesys import write
 from data.pandas import Pandas
 from analysis.bn import BNAnalysis
 from experiments.plot import plot_degree_distribution

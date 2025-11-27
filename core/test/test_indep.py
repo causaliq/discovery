@@ -12,7 +12,7 @@ from core.metrics import dicts_same, values_same
 from data import TESTDATA_DIR
 from causaliq_core.utils import FileFormatError
 from data.pandas import Pandas
-from fileio.bayesys import read as read_dag
+from core.graph_new.io.bayesys import read as read_dag
 
 TYPES = ['x2', 'mi']
 

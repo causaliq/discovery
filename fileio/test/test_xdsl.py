@@ -8,7 +8,7 @@ from random import random
 from fileio.xdsl import read, write
 from data import TESTDATA_DIR
 from causaliq_core.utils import FileFormatError
-import fileio.bayesys
+from core.graph_new.io.bayesys import write as write_bayesys
 from core.bn import BN
 import testdata.example_bns as ex_bn
 
@@ -412,7 +412,7 @@ def test_xdsl_read_heartdisease_ok():  # successfully reads heart file
 
     bn.generate_cases(1000, TESTDATA_DIR + '/tmp/heartdisease.dat')
 
-    fileio.bayesys.write(bn.dag, TESTDATA_DIR + '/tmp/heartdisease.csv')
+    write_bayesys(bn.dag, TESTDATA_DIR + '/tmp/heartdisease.csv')
 
 
 def test_xdsl_read_property_ok():  # successfully reads property file

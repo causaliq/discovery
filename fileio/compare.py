@@ -5,7 +5,7 @@ from os.path import sep
 from causaliq_core.graph import BAYESYS_VERSIONS
 from core.metrics import pdag_compare
 from causaliq_core.utils import is_valid_path
-from fileio.bayesys import read
+from core.graph_new.io.bayesys import read
 
 
 def compare_all(dir, metric, bayesys):
