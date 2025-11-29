@@ -5,8 +5,8 @@
 import re
 
 from causaliq_core.utils import is_valid_path, FileFormatError
-from ..dag import DAG
-from ..pdag import PDAG
+from causaliq_core.graph import DAG, PDAG
+
 
 EDGE = re.compile(r'^\d+\.\s(\w+)\s(\-\-[\>\-])\s(\w+)$')
 

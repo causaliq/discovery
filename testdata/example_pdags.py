@@ -6,9 +6,7 @@
 #   graph, and ab(graph) validates graph as being A-->B
 #
 
-from causaliq_core.graph import adjmat
-from causaliq_core.graph import EdgeType
-from core.graph_new.pdag import PDAG
+from causaliq_core.graph import adjmat, EdgeType, PDAG
 
 
 def empty(check=None):

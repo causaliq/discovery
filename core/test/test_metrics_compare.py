@@ -3,8 +3,7 @@
 
 import pytest
 
-from core.graph_new.pdag import PDAG
-from core.graph_new.dag import DAG
+from causaliq_core.graph import DAG, PDAG, toCPDAG
 from core.metrics import pdag_compare
 from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_compare
@@ -117,7 +116,7 @@ def test_pdag_compare_ab_ok1(expected):
     expected.update({'arc_matched': 1, 'p': 1.0, 'r': 1.0, 'f1': 1.0})
     assert metrics == expected  # compare the DAGs
 
-    cpdag1 = PDAG.toCPDAG(dag1)
+    cpdag1 = toCPDAG(dag1)
     metrics2 = pdag_compare(cpdag1, cpdag1)
     expected2.update({'edge_matched': 1, 'p': 1.0, 'r': 1.0, 'f1': 1.0})
     print('\nComparing DAG A->B with itself:\n{}\n .. and CPDAGs:\n{}\n'
@@ -155,8 +154,8 @@ def test_pdag_compare_ab_ok3(expected):
     expected.update({'arc_reversed': 1, 'shd': 1, 'p': 0.0, 'r': 0.0})
     assert metrics == expected  # compare the DAGs
 
-    cpdag1 = PDAG.toCPDAG(dag1)
-    cpdag2 = PDAG.toCPDAG(dag2)
+    cpdag1 = toCPDAG(dag1)
+    cpdag2 = toCPDAG(dag2)
     metrics2 = pdag_compare(cpdag1, cpdag2)
     expected2.update({'edge_matched': 1, 'p': 1.0, 'r': 1.0, 'f1': 1.0})
     print('\nComparing DAG A->B with A<-B:\n{}\n .. and CPDAGs:\n{}\n'
@@ -212,8 +211,8 @@ def test_pdag_compare_abc_ok1(expected2):
 
     # dag1 has 1 extra, 1 arc not edge & shd=2 compared to dag2
 
-    cpdag1 = PDAG.toCPDAG(dag1)
-    cpdag2 = PDAG.toCPDAG(dag2)
+    cpdag1 = toCPDAG(dag1)
+    cpdag2 = toCPDAG(dag2)
     metrics2 = pdag_compare(cpdag1, cpdag2)
     assert metrics2 == {'arc_matched': 0, 'arc_reversed': 0, 'edge_not_arc': 0,
                         'arc_not_edge': 1, 'edge_matched': 0, 'arc_extra': 1,
@@ -239,8 +238,8 @@ def test_pdag_compare_and4_12_13_ok1(expected):
                      'shd': 2, 'p': 0.5, 'r': 0.5, 'f1': 0.5})
     assert metrics == expected  # compare the DAGs
 
-    cpdag1 = PDAG.toCPDAG(dag1)
-    cpdag2 = PDAG.toCPDAG(dag2)
+    cpdag1 = toCPDAG(dag1)
+    cpdag2 = toCPDAG(dag2)
     metrics2 = pdag_compare(cpdag1, cpdag2)
     expected2.update({'edge_matched': 1, 'edge_not_arc': 3,
                       'missing_matched': 2, 'shd': 3, 'p': 0.25, 'r': 0.25,
@@ -285,8 +284,8 @@ def test_pdag_compare_and4_5_17_ok1(expected):
                      'shd': 5, 'p': 0.5, 'r': 0.2, 'f1': 0.2 / 0.7})
     assert metrics == expected
 
-    cpdag1 = PDAG.toCPDAG(dag1)
-    cpdag2 = PDAG.toCPDAG(dag2)
+    cpdag1 = toCPDAG(dag1)
+    cpdag2 = toCPDAG(dag2)
     metrics2 = pdag_compare(cpdag1, cpdag2)
     expected2.update({'arc_not_edge': 1, 'arc_extra': 1, 'edge_missing': 4,
                       'shd': 6, 'p': 0.0, 'r': 0.0})
@@ -333,8 +332,8 @@ def test_pdag_compare_dhs1():
     assert metrics['r'] == 69 / (23 + 19 + 69)
     assert metrics['f1'] == 2 * 69 / (23 + 14 + 69 + 23 + 19 + 69)
 
-    cpdag1 = PDAG.toCPDAG(dag1)
-    cpdag2 = PDAG.toCPDAG(dag2)
+    cpdag1 = toCPDAG(dag1)
+    cpdag2 = toCPDAG(dag2)
     metrics2 = pdag_compare(cpdag1, cpdag2, bayesys='v1.5+')
     print('\nComparing d7a-fges & d7a-tabu:\n{}\n .. and CPDAGs:\n{}\n'
           .format(metrics, metrics2))
@@ -358,8 +357,8 @@ def test_pdag_compare_dhs2():
     dag2 = bayesys.read(TESTDATA_DIR + '/dhs/d8atr/d8atr-fges3.csv')
     metrics = pdag_compare(dag1, dag2, bayesys='v1.5+')
 
-    cpdag1 = PDAG.toCPDAG(dag1)
-    cpdag2 = PDAG.toCPDAG(dag2)
+    cpdag1 = toCPDAG(dag1)
+    cpdag2 = toCPDAG(dag2)
     metrics2 = pdag_compare(cpdag1, cpdag2, bayesys='v1.5+')
     print('\nComparing d8atr-fges with d8atr-fges3:\n{}\n .. and CPDAGs:\n{}\n'
           .format(metrics, metrics2))
@@ -391,8 +390,8 @@ def test_pdag_compare_asia(print_shd):
             metrics = pdag_compare(learnt, true, bayesys='v1.5+')
             print_shd('{:>4s} {:>4s}k   DAG'.format(algo, size), metrics)
 
-            true_cpdag = PDAG.toCPDAG(true)
-            learnt_cpdag = PDAG.toCPDAG(learnt)
+            true_cpdag = toCPDAG(true)
+            learnt_cpdag = toCPDAG(learnt)
             metrics_cpdag = pdag_compare(learnt_cpdag, true_cpdag,
                                          bayesys='v1.5+')
             print_shd('{:>4s} {:>4s}k CPDAG'.format(algo, size), metrics_cpdag)
@@ -426,8 +425,8 @@ def test_pdag_compare_sports(print_shd):
             metrics = pdag_compare(learnt, true, bayesys='v1.5+')
             print_shd('{:>4s} {:>4s}k   DAG'.format(algo, size), metrics)
 
-            true_cpdag = PDAG.toCPDAG(true)
-            learnt_cpdag = PDAG.toCPDAG(learnt)
+            true_cpdag = toCPDAG(true)
+            learnt_cpdag = toCPDAG(learnt)
             metrics_cpdag = pdag_compare(learnt_cpdag, true_cpdag,
                                          bayesys='v1.5+')
             print_shd('{:>4s} {:>4s}k CPDAG'.format(algo, size), metrics_cpdag)
@@ -461,8 +460,8 @@ def test_pdag_compare_alarm(print_shd):
             metrics = pdag_compare(learnt, true, bayesys='v1.5+')
             print_shd('{:>4s} {:>4s}k   DAG'.format(algo, size), metrics)
 
-            true_cpdag = PDAG.toCPDAG(true)
-            learnt_cpdag = PDAG.toCPDAG(learnt)
+            true_cpdag = toCPDAG(true)
+            learnt_cpdag = toCPDAG(learnt)
             metrics_cpdag = pdag_compare(learnt_cpdag, true_cpdag,
                                          bayesys='v1.5+')
             print_shd('{:>4s} {:>4s}k CPDAG'.format(algo, size), metrics_cpdag)
@@ -496,8 +495,8 @@ def test_pdag_compare_property(print_shd):
             metrics = pdag_compare(learnt, true, bayesys='v1.5+')
             print_shd('{:>4s} {:>4s}k   DAG'.format(algo, size), metrics)
 
-            true_cpdag = PDAG.toCPDAG(true)
-            learnt_cpdag = PDAG.toCPDAG(learnt)
+            true_cpdag = toCPDAG(true)
+            learnt_cpdag = toCPDAG(learnt)
             metrics_cpdag = pdag_compare(learnt_cpdag, true_cpdag,
                                          bayesys='v1.5+')
             print_shd('{:>4s} {:>4s}k CPDAG'.format(algo, size), metrics_cpdag)
@@ -531,8 +530,8 @@ def test_pdag_compare_formed(print_shd):
             metrics = pdag_compare(learnt, true, bayesys='v1.5+')
             print_shd('{:>4s} {:>4s}k   DAG'.format(algo, size), metrics)
 
-            true_cpdag = PDAG.toCPDAG(true)
-            learnt_cpdag = PDAG.toCPDAG(learnt)
+            true_cpdag = toCPDAG(true)
+            learnt_cpdag = toCPDAG(learnt)
             metrics_cpdag = pdag_compare(learnt_cpdag, true_cpdag,
                                          bayesys='v1.5+')
             print_shd('{:>4s} {:>4s}k CPDAG'.format(algo, size), metrics_cpdag)
@@ -566,8 +565,8 @@ def test_pdag_compare_pathfinder(print_shd):
             metrics = pdag_compare(learnt, true, bayesys='v1.5+')
             print_shd('{:>4s} {:>4s}k   DAG'.format(algo, size), metrics)
 
-            true_cpdag = PDAG.toCPDAG(true)
-            learnt_cpdag = PDAG.toCPDAG(learnt)
+            true_cpdag = toCPDAG(true)
+            learnt_cpdag = toCPDAG(learnt)
             metrics_cpdag = pdag_compare(learnt_cpdag, true_cpdag,
                                          bayesys='v1.5+')
             print_shd('{:>4s} {:>4s}k CPDAG'.format(algo, size), metrics_cpdag)

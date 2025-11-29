@@ -5,8 +5,7 @@
 import csv
 
 from causaliq_core.utils import is_valid_path, FileFormatError
-from ..pdag import PDAG
-from ..dag import DAG
+from causaliq_core.graph import DAG, PDAG
 
 
 def read(path, all_nodes=None, strict=True):

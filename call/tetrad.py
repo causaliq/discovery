@@ -7,9 +7,7 @@ from random import random
 from re import compile
 from datetime import datetime
 
-from core.graph_new.sdg import SDG
-from core.graph_new.pdag import PDAG
-from core.graph_new.dag import DAG
+from causaliq_core.graph import DAG, PDAG, SDG, extendPDAG
 from data.score import dag_score
 from data.score import SCORE_PARAMS
 from learn.trace import Trace, Activity, Detail, CONTEXT_FIELDS
@@ -187,7 +185,7 @@ def graph_scores(learnt, data, params, context):
     # Try to extend the learnt graph to a DAG to be able to score it
 
     try:
-        learnt = learnt if learnt.is_DAG() else DAG.extendPDAG(learnt)
+        learnt = learnt if learnt.is_DAG() else extendPDAG(learnt)
         score2 = (dag_score(learnt, data, score_type,
                                score_params)[score_type]).sum()
     except ValueError as e:

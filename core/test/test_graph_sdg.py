@@ -1,5 +1,5 @@
 
-from core.graph_new.sdg import SDG
+from causaliq_core.graph import SDG
 import testdata.example_sdgs as ex
 
 import pytest

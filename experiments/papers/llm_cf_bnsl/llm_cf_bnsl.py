@@ -24,7 +24,7 @@ from fileio.xdsl import write as write_xdsl
 from core.graph_new.io.tetrad import read as read_tetrad, write as write_tetrad
 from call.bnlearn import bnlearn_learn
 from call.tetrad import tetrad_learn
-from core.graph_new.pdag import PDAG, NotPDAGError
+from causaliq_core.graph import PDAG, NotPDAGError, fromDAG
 from core.bn import BN
 from experiments.common import reference_bn
 
@@ -74,7 +74,7 @@ def learn_graph(netw, algo):
         bn = BN.fit(graph, data)
         print('Writing graph (DAG) in Genie format ...')
         write_xdsl(bn, OUTPUT.format(netw, algo, 'xdsl'), True)
-        cpdag = PDAG.fromDAG(graph)
+        cpdag = fromDAG(graph)
     else:
         cpdag = graph
 
@@ -87,7 +87,7 @@ def learn_graph(netw, algo):
 
     # Structural comparison between CPDAGs
 
-    ref_cpdag = PDAG.fromDAG(ref.dag)
+    ref_cpdag = fromDAG(ref.dag)
     print('\nCPDAG comparison with reference:')
     for metric, value in pdag_compare(cpdag, ref_cpdag).items():
         print('{}: {}'.format(metric, round(value, 3)))
@@ -175,8 +175,8 @@ def xgraph_diarrhoea_pc():
 
     # Structural comparison between CPDAGs
 
-    cpdag = PDAG.fromDAG(graph)
-    ref_cpdag = PDAG.fromDAG(ref.dag)
+    cpdag = fromDAG(graph)
+    ref_cpdag = fromDAG(ref.dag)
     print('\nCPDAG comparison with reference:')
     for metric, value in pdag_compare(cpdag, ref_cpdag).items():
         print('{}: {}'.format(metric, round(value, 3)))

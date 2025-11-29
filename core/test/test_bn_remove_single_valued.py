@@ -6,7 +6,7 @@ import pytest
 from pandas import DataFrame
 
 from core.bn import BN
-from core.graph_new.dag import DAG
+from causaliq_core.graph import DAG
 from data import TESTDATA_DIR
 from data.pandas import Pandas
 import testdata.example_dags as ex_dag

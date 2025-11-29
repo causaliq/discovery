@@ -45,11 +45,11 @@ class CompatibilityUnpickler(pickle.Unpickler):
         ('core.timing', 'run_with_timeout'): 'causaliq_core.utils.timing',
         ('core.timing', 'with_timeout'): 'causaliq_core.utils.timing',
         # Graph class mappings for the modular refactoring
-        ('core.graph', 'SDG'): 'core.graph_new.sdg',
-        ('core.graph', 'PDAG'): 'core.graph_new.pdag',
-        ('core.graph', 'DAG'): 'core.graph_new.dag',
-        ('core.graph', 'NotDAGError'): 'core.graph_new.dag',
-        ('core.graph', 'NotPDAGError'): 'core.graph_new.pdag',
+        ('core.graph', 'SDG'): 'causaliq_core.graph.sdg',
+        ('core.graph', 'PDAG'): 'causaliq_core.graph.pdag',
+        ('core.graph', 'DAG'): 'causaliq_core.graph.dag',
+        ('core.graph', 'NotDAGError'): 'causaliq_core.graph.dag',
+        ('core.graph', 'NotPDAGError'): 'causaliq_core.graph.pdag',
         # Add more specific class mappings as needed
     }
     
@@ -89,8 +89,7 @@ from causaliq_core.utils.random import Randomise
 from causaliq_core.utils import environment
 from causaliq_core.utils import EnumWithAttrs
 from core.metrics import values_same
-from core.graph_new.sdg import SDG
-from core.graph_new.dag import DAG
+from causaliq_core.graph import DAG, SDG, extendPDAG
 from data.score import dag_score
 from learn.common import TreeStats
 from data import EXPTS_DIR
@@ -388,7 +387,7 @@ class Trace():
                 # ensure learnt CPDAG turned to DAG then score it
 
                 try:
-                    learnt = DAG.extendPDAG(learnt)
+                    learnt = extendPDAG(learnt)
                     learnt_score = (dag_score(learnt, data, score + gauss,
                                                  params)[score + gauss]).sum()
                 except ValueError:

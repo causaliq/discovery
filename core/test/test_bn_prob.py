@@ -5,7 +5,7 @@ from pandas import DataFrame
 from data import TESTDATA_DIR
 from data.pandas import Pandas
 from data.score import bn_score
-from core.graph_new.dag import DAG
+from causaliq_core.graph import DAG
 from core.bn import BN
 from core.metrics import values_same, dicts_same
 import testdata.example_dags as dag

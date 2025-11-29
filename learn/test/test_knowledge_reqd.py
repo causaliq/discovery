@@ -9,7 +9,7 @@ from learn.trace import Activity
 from learn.dagchange import DAGChange, BestDAGChanges
 from data import TESTDATA_DIR
 from core.bn import BN
-from core.graph_new.dag import DAG
+from causaliq_core.graph import DAG
 
 
 @pytest.fixture

@@ -4,8 +4,7 @@
 import pytest
 from copy import deepcopy
 
-from causaliq_core.graph import EdgeType
-from core.graph_new.dag import DAG
+from causaliq_core.graph import DAG, EdgeType
 from core.bn import BN
 from data import TESTDATA_DIR
 
