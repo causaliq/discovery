@@ -8,7 +8,7 @@ from statistics import mean, stdev
 
 from data import EXPTS_DIR
 from experiments.common import SERIES_GROUPS, reference_bn
-from causaliq_core.graph import toCPDAG
+from causaliq_core.graph import pdag_to_cpdag
 from core.metrics import pdag_compare
 from learn.trace import Trace
 from analysis.trace import TraceAnalysis
@@ -281,10 +281,10 @@ def summary_analysis(series, networks, Ns, Ss=None, metrics=None, maxtime=None,
                         analysis.summary.update({'lltest': lltest})
                     if 'p-e' in metrics or 'r-e' in metrics:
                         try:
-                            graph = toCPDAG(trace.result)
+                            graph = pdag_to_cpdag(trace.result)
                         except ValueError:
                             graph = trace.result
-                        ref_cpdag = toCPDAG(ref.dag)
+                        ref_cpdag = pdag_to_cpdag(ref.dag)
                         metrics_e = pdag_compare(graph, ref_cpdag)
                         analysis.summary.update({'p-e': (metrics_e['p'] if
                                                          metrics_e['p'] is not

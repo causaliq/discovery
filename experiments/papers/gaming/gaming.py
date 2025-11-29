@@ -14,7 +14,7 @@ from call.tetrad import tetrad_learn
 from core.graph_new.io.tetrad import write as write_tetrad, read as read_tetrad
 from core.graph_new.io.bayesys import write as write_bayesys
 from core.bn import BN
-from causaliq_core.graph import DAG, is_CPDAG, extendPDAG
+from causaliq_core.graph import DAG, is_cpdag, extend_pdag
 from causaliq_core.utils.timing import Timing
 
 PATH = EXPTS_DIR + '/papers/gaming/'
@@ -244,7 +244,7 @@ def graph_gaming_analysis():
             kind = 'DAG'
         else:
             try:
-                kind = 'CPDAG' if is_CPDAG(graph) else 'PDAG'
+                kind = 'CPDAG' if is_cpdag(graph) else 'PDAG'
             except ValueError:
                 kind = 'NONEX'
         comparison = {'algo': algo, 'type': kind}
@@ -260,12 +260,12 @@ def graph_gaming_extend():
     """
     cpdag = read_tetrad(TETRAD_FILE.format('bnlearn_gs'))
     print('\n\nExtending bnlearn_gs ...\n')
-    dag = extendPDAG(cpdag)
+    dag = extend_pdag(cpdag)
     write_tetrad(dag, PATH + 'tetrad/bnlearn_gs_disc_dag.tetrad')
     write_bayesys(dag, PATH + 'bayesys/bnlearn_gs_disc_dag.csv')
 
     cpdag = read_tetrad(TETRAD_FILE.format('tetrad_fges'))
     print('\n\nExtending tetrad_fges ...\n')
-    dag = extendPDAG(cpdag)
+    dag = extend_pdag(cpdag)
     write_tetrad(dag, PATH + 'tetrad/tetrad_fges_disc_dag.tetrad')
     write_bayesys(dag, PATH + 'bayesys/tetrad_fges_disc_dag.csv')

@@ -10,7 +10,7 @@ from core.bn import BN
 from learn.hc import hc
 from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_learn
-from causaliq_core.graph import fromDAG
+from causaliq_core.graph import dag_to_pdag
 
 
 # Fixture setting pandas options to display the whold dataframe
@@ -710,7 +710,7 @@ def test_tabu_abc_100_ok(showall):
                                                context=context)
     assert dag.to_string() == '[A][B|A][C|B]'
     assert dag.number_components() == 1
-    assert fromDAG(dag) == fromDAG(dag_bnlearn)
+    assert dag_to_pdag(dag) == dag_to_pdag(dag_bnlearn)
     assert trace.result == dag
     assert trace.diffs_from(trace_bnlearn, strict=False) is None
 
@@ -792,7 +792,7 @@ def test_tabu_abc_1k_3_ok(showall):
                                                context=context, params=params)
     assert dag.to_string() == '[A][B|A][C|B]'
     assert dag.number_components() == 1
-    assert fromDAG(dag) == fromDAG(dag_bnlearn)
+    assert dag_to_pdag(dag) == dag_to_pdag(dag_bnlearn)
     assert trace.result == dag
     major, minor, _ = trace.diffs_from(trace_bnlearn, strict=False)
     assert major == {}  # no major tracdifferences
@@ -1445,7 +1445,7 @@ def test_tabu_and4_10_5_ok(showall):
 
     # bnlearn and bnbench return different but equivalent DAGs
 
-    assert fromDAG(dag) == fromDAG(dag_bnlearn)
+    assert dag_to_pdag(dag) == dag_to_pdag(dag_bnlearn)
     major, minor, _ = trace.diffs_from(trace_bnlearn, strict=False)
     assert major == {}  # no major tracdifferences
     assert minor == [4]  # differences in blocked reporting
@@ -1478,7 +1478,7 @@ def test_tabu_and4_10_6_ok(showall):
 
     # bnlearn and bnbench return different but equivalent DAGs
 
-    assert fromDAG(dag) == fromDAG(dag_bnlearn)
+    assert dag_to_pdag(dag) == dag_to_pdag(dag_bnlearn)
     assert trace.result == dag
     major, minor, _ = trace.diffs_from(trace_bnlearn, strict=False)
     assert major == {}  # no major tracdifferences
@@ -1957,7 +1957,7 @@ def test_tabu_asia_5_ok(showall):
     assert ('[asia][bronc|smoke][dysp|bronc:either][either|asia:lung:tub]' +
             '[lung][smoke|lung][tub][xray|either]') == dag.to_string()
     assert dag.number_components() == 1
-    assert fromDAG(dag) == fromDAG(dag_bnlearn)
+    assert dag_to_pdag(dag) == dag_to_pdag(dag_bnlearn)
     assert trace.result == dag
     major, minor, _ = trace.diffs_from(trace_bnlearn, strict=False)
     assert {('reverse', 'missing'): {('smoke', 'lung'): (None, 23),
@@ -1995,7 +1995,7 @@ def test_tabu_asia_6_ok(showall):
     assert ('[asia][bronc|smoke][dysp|bronc:either][either|asia:lung:tub]' +
             '[lung][smoke|lung][tub][xray|either]') == dag.to_string()
     assert dag.number_components() == 1
-    assert fromDAG(dag) == fromDAG(dag_bnlearn)
+    assert dag_to_pdag(dag) == dag_to_pdag(dag_bnlearn)
     assert trace.result == dag
     major, minor, _ = trace.diffs_from(trace_bnlearn, strict=False)
     assert major == {}
@@ -2026,7 +2026,7 @@ def test_tabu_asia_7_ok(showall):
     assert ('[asia][bronc|smoke][dysp|bronc:either][either|lung:tub][lung]' +
             '[smoke|lung][tub][xray|either]') == dag.to_string()
     assert dag.number_components() == 2
-    assert fromDAG(dag) == fromDAG(dag_bnlearn)
+    assert dag_to_pdag(dag) == dag_to_pdag(dag_bnlearn)
     assert trace.result == dag
     major, minor, _ = trace.diffs_from(trace_bnlearn, strict=False)
     assert {('add', 'missing'): {('lung', 'asia'): (None, 21)},
@@ -2065,7 +2065,7 @@ def test_tabu_asia_8_ok(showall):
     assert ('[asia][bronc|smoke][dysp|bronc:either][either|lung:tub]' +
             '[lung|smoke][smoke][tub][xray|either]') == dag.to_string()
     assert dag.number_components() == 2
-    assert fromDAG(dag) == fromDAG(dag_bnlearn)
+    assert dag_to_pdag(dag) == dag_to_pdag(dag_bnlearn)
     assert trace.result == dag
     major, minor, _ = trace.diffs_from(trace_bnlearn, strict=False)
     assert {} == major
@@ -2347,7 +2347,7 @@ def test_tabu_insurance_1_ok(showall):
     print(dag_bnlearn.to_string())
 
     print(dag == dag_bnlearn)
-    print(fromDAG(dag) == fromDAG(dag_bnlearn))
+    print(dag_to_pdag(dag) == dag_to_pdag(dag_bnlearn))
     print(dag.number_components())
     # assert dag.number_components() == 2
     # assert dag == dag_bnlearn
@@ -2379,7 +2379,7 @@ def test_tabu_insurance_10k_ok(showall):
     print(dag_bnlearn.to_string())
 
     print(dag == dag_bnlearn)
-    print(fromDAG(dag) == fromDAG(dag_bnlearn))
+    print(dag_to_pdag(dag) == dag_to_pdag(dag_bnlearn))
     print(dag.number_components())
     # assert dag.number_components() == 2
     # assert dag == dag_bnlearn

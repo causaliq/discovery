@@ -7,7 +7,7 @@ from experiments.common import reference_bn, sample_sizes
 from experiments.run_analysis import run_analysis
 from experiments.summary_analysis import summary_analysis
 from experiments.plot import relplot
-from causaliq_core.graph import DAG, extendPDAG
+from causaliq_core.graph import DAG, extend_pdag
 from data.score import dag_score
 from data.score import SCORE_PARAMS
 from data import EXPTS_DIR
@@ -247,7 +247,7 @@ def values_ijar_stab_score_graphs():
                 data.set_N(N)
             learnt = trace.result
             try:
-                learnt = extendPDAG(learnt)
+                learnt = extend_pdag(learnt)
                 learnt_score = (dag_score(learnt, data, score,
                                              params)[score]).sum()
             except ValueError:

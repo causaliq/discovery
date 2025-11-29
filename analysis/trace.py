@@ -5,7 +5,7 @@ from enum import Enum
 from pandas import DataFrame
 
 from causaliq_core.graph import EdgeType, BAYESYS_VERSIONS
-from causaliq_core.graph import DAG, fromDAG, is_CPDAG, toCPDAG
+from causaliq_core.graph import DAG, dag_to_pdag, is_cpdag, pdag_to_cpdag
 from core.bn import BN
 from core.metrics import pdag_compare
 from data.indep import indep
@@ -76,7 +76,7 @@ class TraceAnalysis():
 
         ref_parents = {n: set(ref.parents[n]) if n in ref.parents else set()
                        for n in ref.nodes}
-        ref_pdag = fromDAG(ref)
+        ref_pdag = dag_to_pdag(ref)
 
         t = self.trace
         status = []
@@ -147,18 +147,18 @@ class TraceAnalysis():
                                identify_edges=True)
         if isinstance(graph, DAG):
             graph_type = 'DAG'
-            pdag = fromDAG(graph)  # will always be a CPDAG
+            pdag = dag_to_pdag(graph)  # will always be a CPDAG
         elif graph.is_PDAG():
             try:
-                graph_type = 'CPDAG' if is_CPDAG(graph) else 'PDAG'
+                graph_type = 'CPDAG' if is_cpdag(graph) else 'PDAG'
             except ValueError:
                 graph_type = 'NONEX'
-            pdag = toCPDAG(graph) if graph_type == 'PDAG' else graph
+            pdag = pdag_to_cpdag(graph) if graph_type == 'PDAG' else graph
         else:
             graph_type = 'MIXED'
             pdag is None
 
-        ref_cpdag = fromDAG(ref)
+        ref_cpdag = dag_to_pdag(ref)
         equiv_metrics = (pdag_compare(pdag, ref_cpdag,
                                       bayesys=BAYESYS_VERSIONS[-1],
                                       identify_edges=True)

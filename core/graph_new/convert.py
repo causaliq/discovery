@@ -2,7 +2,7 @@
 #   Graph conversion operations
 #
 
-def fromDAG(dag):
+def dag_to_pdag(dag):
     """
         Generates PDAG representing equivalence class DAG belongs to.
 
@@ -66,7 +66,7 @@ def fromDAG(dag):
                 and e[2] == y else e for e in edges]
 
     if not isinstance(dag, DAG):
-        raise TypeError("dag arg in fromDAG not a DAG")
+        raise TypeError("dag arg in dag_to_pdag not a DAG")
 
     nodes = [n for n in dag.ordered_nodes()]  # nodes in topological order
     parents = {n: [p for p in nodes if p in  # node parents in topo order
@@ -74,7 +74,7 @@ def fromDAG(dag):
                for n in nodes}
     edges = [(p, '?', n) for n in reversed(nodes) for p in parents[n]]
     edges = [e for e in reversed(edges)]
-    # print('fromDAG: reversed ordered edges are: {}'.format(edges))
+    # print('dag_to_pdag: reversed ordered edges are: {}'.format(edges))
 
     while any([t == '?'for (_, t, _) in edges]):  # 3 some edges unknown
         for i, (x, _, y) in enumerate(edges):
@@ -91,7 +91,7 @@ def fromDAG(dag):
     return PDAG(dag.nodes, edges)
 
 
-def toCPDAG(pdag):
+def pdag_to_cpdag(pdag):
     """
         Generates a completed PDAG (CPDAG) from supplied PDAG
 
@@ -106,11 +106,11 @@ def toCPDAG(pdag):
     from .dag import DAG
     from .pdag import PDAG
 
-    dag = extendPDAG(pdag)
-    return fromDAG(dag) if dag is not None else None
+    dag = extend_pdag(pdag)
+    return dag_to_pdag(dag) if dag is not None else None
 
 
-def extendPDAG(pdag):
+def extend_pdag(pdag):
     """
         Generates a DAG which extends a PDAG (i.e. is a member of the
         equivalence class the PDAG represents)
@@ -175,7 +175,7 @@ def extendPDAG(pdag):
         return None  # no node found that has properties a and b
 
     if not isinstance(pdag, PDAG):
-        raise TypeError("pdag arg in extendPDAG not a PDAG")
+        raise TypeError("pdag arg in extend_pdag not a PDAG")
 
     if pdag.is_directed:  # if already directed just return as DAG class
         return DAG(pdag.nodes, [(e[0], '->', e[1])

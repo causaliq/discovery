@@ -51,7 +51,7 @@ class PDAG(SDG):
         e = (min(edge), max(edge))
         return e in self.edges and self.edges[e] == EdgeType.UNDIRECTED
 
-    def is_CPDAG(self):
+    def is_cpdag(self):
         """
             Whether the PDAG is a Completed PDAG (CPDAG)
 
@@ -59,21 +59,21 @@ class PDAG(SDG):
 
             return bool: True if CPDAG, otherwise False
         """
-        from .convert import toCPDAG
-        return toCPDAG(self) == self
+        from .convert import pdag_to_cpdag
+        return pdag_to_cpdag(self) == self
 
     @classmethod
-    def fromDAG(cls, dag):
+    def dag_to_pdag(cls, dag):
         """
             Generates PDAG representing equivalence class DAG belongs to.
         """
-        from .convert import fromDAG
-        return fromDAG(dag)
+        from .convert import dag_to_pdag
+        return dag_to_pdag(dag)
 
     @classmethod
-    def toCPDAG(cls, pdag):
+    def pdag_to_cpdag(cls, pdag):
         """
             Generates a completed PDAG (CPDAG) from supplied PDAG
         """
-        from .convert import toCPDAG
-        return toCPDAG(pdag)
+        from .convert import pdag_to_cpdag
+        return pdag_to_cpdag(pdag)

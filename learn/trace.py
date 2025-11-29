@@ -89,7 +89,7 @@ from causaliq_core.utils.random import Randomise
 from causaliq_core.utils import environment
 from causaliq_core.utils import EnumWithAttrs
 from core.metrics import values_same
-from causaliq_core.graph import DAG, SDG, extendPDAG
+from causaliq_core.graph import DAG, SDG, extend_pdag
 from data.score import dag_score
 from learn.common import TreeStats
 from data import EXPTS_DIR
@@ -387,7 +387,7 @@ class Trace():
                 # ensure learnt CPDAG turned to DAG then score it
 
                 try:
-                    learnt = extendPDAG(learnt)
+                    learnt = extend_pdag(learnt)
                     learnt_score = (dag_score(learnt, data, score + gauss,
                                                  params)[score + gauss]).sum()
                 except ValueError:

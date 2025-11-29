@@ -77,9 +77,9 @@ class DAG(PDAG):
         return graph_desc
 
     @classmethod
-    def extendPDAG(cls, pdag):
+    def extend_pdag(cls, pdag):
         """
             Generates a DAG which extends a PDAG
         """
-        from .convert import extendPDAG
-        return extendPDAG(pdag)
+        from .convert import extend_pdag
+        return extend_pdag(pdag)

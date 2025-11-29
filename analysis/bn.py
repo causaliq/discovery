@@ -7,7 +7,7 @@ from statistics import mean, stdev
 from scipy.optimize import root_scalar
 from itertools import chain, combinations
 
-from causaliq_core.graph import DAG, PDAG, fromDAG
+from causaliq_core.graph import DAG, PDAG, dag_to_pdag
 from core.bn import BN
 from core.cpt import CPT
 from core.metrics import kl
@@ -261,7 +261,7 @@ class DAGAnalysis():
         node_pos = {p: pos for pos, ps in enumerate(dag.partial_order(parents))
                     for p in ps}
         children = {p: [] for p in dag.nodes}
-        pdag = fromDAG(dag)
+        pdag = dag_to_pdag(dag)
 
         if len(dag.edges):
             self.arcs = []

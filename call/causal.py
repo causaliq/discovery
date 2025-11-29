@@ -26,7 +26,7 @@ from causallearn.utils.DAG2CPDAG import dag2cpdag
 from learn.trace import CONTEXT_FIELDS, Trace, Activity, Detail
 from data.pandas import Pandas
 from data.numpy import NumPy
-from causaliq_core.graph import DAG, PDAG, extendPDAG
+from causaliq_core.graph import DAG, PDAG, extend_pdag
 from data.score import dag_score
 from causaliq_core.utils.timing import run_with_timeout, TimeoutError
 
@@ -137,7 +137,7 @@ def _generate_trace(algorithm: str, graph: GeneralGraph, elapsed: float,
     if isinstance(learned_cl_score, ndarray):
         learned_cl_score = learned_cl_score.sum()
     pdag = to_causaliq_pdag(graph)
-    dag = extendPDAG(pdag)
+    dag = extend_pdag(pdag)
     learned_score = (dag_score(dag, data=data,
                                types=[params["score"]],
                                params={"unistate_ok": True})

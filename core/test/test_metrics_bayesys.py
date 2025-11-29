@@ -1,7 +1,7 @@
 
 # Test Bayesys metrics
 
-from causaliq_core.graph import PDAG, fromDAG
+from causaliq_core.graph import PDAG, dag_to_pdag
 from core.metrics import dicts_same, values_same, pdag_compare
 from core.graph_new.io.bayesys import read
 from data import TESTDATA_DIR
@@ -125,7 +125,7 @@ def test_core_metrics_bayesys_dhs():
 def test_core_metrics_bayesys_sachs():
     dag = (reference_bn('sachs')[0]).dag
     print('\n\n{}'.format(dag))
-    pdag = fromDAG(dag)
+    pdag = dag_to_pdag(dag)
     print(pdag)
 
     metrics = pdag_compare(dag, dag, bayesys='v1.5+')

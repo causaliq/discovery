@@ -3,7 +3,7 @@
 
 import pytest
 
-from causaliq_core.graph import toCPDAG
+from causaliq_core.graph import pdag_to_cpdag
 from data import TESTDATA_DIR
 from core.bn import BN
 from call.r import requires_r_and_bnlearn
@@ -17,11 +17,11 @@ import testdata.example_dags as ex_dag
 # bad agrument types
 def test_graph_complete_pdag_type_error():
     with pytest.raises(TypeError):
-        toCPDAG()
+        pdag_to_cpdag()
     with pytest.raises(TypeError):
-        toCPDAG(32)
+        pdag_to_cpdag(32)
     with pytest.raises(TypeError):
-        toCPDAG('[not][supported]')
+        pdag_to_cpdag('[not][supported]')
 
 
 # --- Validate against small internal test PDAGs/DAGs
@@ -29,7 +29,7 @@ def test_graph_complete_pdag_type_error():
 # empty PDAG
 def test_graph_complete_pdag_empty_ok1():
     pdag = ex_pdag.empty()
-    cpdag = toCPDAG(pdag)
+    cpdag = pdag_to_cpdag(pdag)
     print('\n{}\ncompleted to\n{}\n'.format(pdag, cpdag))
     assert pdag == cpdag  # empty PDAG
 
@@ -37,7 +37,7 @@ def test_graph_complete_pdag_empty_ok1():
 # empty DAG
 def test_graph_complete_pdag_empty_ok2():
     dag = ex_dag.empty()
-    cpdag = toCPDAG(dag)
+    cpdag = pdag_to_cpdag(dag)
     print('\n{}\ncompleted to\n{}\n'.format(dag, cpdag))
     assert dag == cpdag  # empty PDAG
 
@@ -45,7 +45,7 @@ def test_graph_complete_pdag_empty_ok2():
 # single node PDAG
 def test_graph_complete_pdag_a_ok1():
     pdag = ex_pdag.a()
-    cpdag = toCPDAG(pdag)
+    cpdag = pdag_to_cpdag(pdag)
     print('\n{}\ncompleted to\n{}\n'.format(pdag, cpdag))
     assert pdag == cpdag  # A  PDAG
 
@@ -53,7 +53,7 @@ def test_graph_complete_pdag_a_ok1():
 # single node DAG
 def test_graph_complete_pdag_a_ok2():
     dag = ex_dag.a()
-    cpdag = toCPDAG(dag)
+    cpdag = pdag_to_cpdag(dag)
     print('\n{}\ncompleted to\n{}\n'.format(dag, cpdag))
     assert dag == cpdag  # A PDAG
 
@@ -61,7 +61,7 @@ def test_graph_complete_pdag_a_ok2():
 # A->B PDAG
 def test_graph_complete_pdag_ab_ok1():
     pdag = ex_pdag.ab()
-    cpdag = toCPDAG(pdag)
+    cpdag = pdag_to_cpdag(pdag)
     print('\n{}\ncompleted to\n{}\n'.format(pdag, cpdag))
     assert cpdag == ex_pdag.ab3()  # A-B PDAG
 
@@ -69,7 +69,7 @@ def test_graph_complete_pdag_ab_ok1():
 # A->B->C PDAG
 def test_graph_complete_pdag_abc_ok1():
     pdag = ex_pdag.abc()
-    cpdag = toCPDAG(pdag)
+    cpdag = pdag_to_cpdag(pdag)
     print('\n{}\ncompleted to\n{}\n'.format(pdag, cpdag))
     assert cpdag == ex_pdag.abc4()  # A-B-C PDAG
 
@@ -77,7 +77,7 @@ def test_graph_complete_pdag_abc_ok1():
 # A<-B->C PDAG
 def test_graph_complete_pdag_ba_bc_ok1():
     pdag = ex_pdag.ba_bc()
-    cpdag = toCPDAG(pdag)
+    cpdag = pdag_to_cpdag(pdag)
     print('\n{}\ncompleted to\n{}\n'.format(pdag, cpdag))
     assert cpdag == ex_pdag.abc4()  # A-B-C PDAG
 
@@ -88,7 +88,7 @@ def test_graph_complete_pdag_ba_bc_ok1():
 @requires_r_and_bnlearn
 def test_graph_complete_pdag_cancer_ok1():
     dag = (BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')).dag
-    cpdag = toCPDAG(dag)
+    cpdag = pdag_to_cpdag(dag)
     print('\n{}\nCANCER completed to\n{}\n'.format(dag, cpdag))
     assert cpdag == ex_pdag.cancer1()
     assert cpdag == bnlearn_cpdag(dag)
@@ -98,7 +98,7 @@ def test_graph_complete_pdag_cancer_ok1():
 @requires_r_and_bnlearn
 def test_graph_complete_pdag_cancer_ok2():
     pdag = ex_pdag.cancer2()
-    cpdag = toCPDAG(pdag)
+    cpdag = pdag_to_cpdag(pdag)
     print('\n{}\nCANCER (collider-only) completed to\n{}\n'
           .format(pdag, cpdag))
     assert cpdag == ex_pdag.cancer1()
@@ -109,7 +109,7 @@ def test_graph_complete_pdag_cancer_ok2():
 @requires_r_and_bnlearn
 def test_graph_complete_pdag_asia_ok1():
     dag = (BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')).dag
-    cpdag = toCPDAG(dag)
+    cpdag = pdag_to_cpdag(dag)
     print('\n{}\nASIA completed to\n{}\n'.format(dag, cpdag))
     assert cpdag == ex_pdag.asia()
     assert cpdag == bnlearn_cpdag(dag)
@@ -119,7 +119,7 @@ def test_graph_complete_pdag_asia_ok1():
 @requires_r_and_bnlearn
 def test_graph_complete_pdag_sports_ok():
     dag = (BN.read(TESTDATA_DIR + '/discrete/small/sports.dsc')).dag
-    cpdag = toCPDAG(dag)
+    cpdag = pdag_to_cpdag(dag)
     print('\n{}\nSports completed to\n{}\n'.format(dag, cpdag))
     assert cpdag == bnlearn_cpdag(dag)
 
@@ -130,7 +130,7 @@ def test_graph_complete_pdag_sports_ok():
 @requires_r_and_bnlearn
 def test_graph_complete_pdag_child_ok1():
     dag = (BN.read(TESTDATA_DIR + '/discrete/medium/child.dsc')).dag
-    cpdag = toCPDAG(dag)
+    cpdag = pdag_to_cpdag(dag)
     print('\n{}\nCHILD completed to\n{}\n'.format(dag, cpdag))
     assert cpdag == bnlearn_cpdag(dag)
 
@@ -139,7 +139,7 @@ def test_graph_complete_pdag_child_ok1():
 @requires_r_and_bnlearn
 def test_graph_complete_pdag_insurance_ok1():
     dag = (BN.read(TESTDATA_DIR + '/discrete/medium/insurance.dsc')).dag
-    cpdag = toCPDAG(dag)
+    cpdag = pdag_to_cpdag(dag)
     print('\n{}\nINSURANCE completed to\n{}\n'.format(dag, cpdag))
     assert cpdag == bnlearn_cpdag(dag)
 
@@ -148,7 +148,7 @@ def test_graph_complete_pdag_insurance_ok1():
 @requires_r_and_bnlearn
 def test_graph_complete_pdag_water_ok1():
     dag = (BN.read(TESTDATA_DIR + '/discrete/medium/water.dsc')).dag
-    cpdag = toCPDAG(dag)
+    cpdag = pdag_to_cpdag(dag)
     print('\n{}\nWATER completed to\n{}\n'.format(dag, cpdag))
     assert cpdag == bnlearn_cpdag(dag)
 
@@ -157,7 +157,7 @@ def test_graph_complete_pdag_water_ok1():
 @requires_r_and_bnlearn
 def test_graph_complete_pdag_alarm_ok1():
     dag = (BN.read(TESTDATA_DIR + '/discrete/medium/alarm.dsc')).dag
-    cpdag = toCPDAG(dag)
+    cpdag = pdag_to_cpdag(dag)
     print('\n{}\nALARM completed to\n{}\n'.format(dag, cpdag))
     assert cpdag == bnlearn_cpdag(dag)
 
@@ -168,7 +168,7 @@ def test_graph_complete_pdag_alarm_ok1():
 @requires_r_and_bnlearn
 def test_graph_complete_pdag_hailfinder_ok1():
     dag = (BN.read(TESTDATA_DIR + '/discrete/large/hailfinder.dsc')).dag
-    cpdag = toCPDAG(dag)
+    cpdag = pdag_to_cpdag(dag)
     print('\n{}\nHAILFINDER completed to\n{}\n'.format(dag, cpdag))
     assert cpdag == bnlearn_cpdag(dag)
 
@@ -177,7 +177,7 @@ def test_graph_complete_pdag_hailfinder_ok1():
 @requires_r_and_bnlearn
 def test_graph_complete_pdag_hepar2_ok1():
     dag = (BN.read(TESTDATA_DIR + '/discrete/large/hepar2.dsc')).dag
-    cpdag = toCPDAG(dag)
+    cpdag = pdag_to_cpdag(dag)
     print('\n{}\nHAILFINDER completed to\n{}\n'.format(dag, cpdag))
     assert cpdag == bnlearn_cpdag(dag)
 
@@ -186,7 +186,7 @@ def test_graph_complete_pdag_hepar2_ok1():
 @requires_r_and_bnlearn
 def test_graph_complete_pdag_win95pts_ok1():
     dag = (BN.read(TESTDATA_DIR + '/discrete/large/win95pts.dsc')).dag
-    cpdag = toCPDAG(dag)
+    cpdag = pdag_to_cpdag(dag)
     print('\n{}\nWIN95PTS completed to\n{}\n'.format(dag, cpdag))
     assert cpdag == bnlearn_cpdag(dag)
 
@@ -197,6 +197,6 @@ def test_graph_complete_pdag_win95pts_ok1():
 @requires_r_and_bnlearn
 def test_graph_complete_pdag_pathfinder_ok1():
     dag = (BN.read(TESTDATA_DIR + '/discrete/verylarge/pathfinder.dsc')).dag
-    cpdag = toCPDAG(dag)
+    cpdag = pdag_to_cpdag(dag)
     print('\n{}\nPATHFINDER completed to\n{}\n'.format(dag, cpdag))
     assert cpdag == bnlearn_cpdag(dag)
