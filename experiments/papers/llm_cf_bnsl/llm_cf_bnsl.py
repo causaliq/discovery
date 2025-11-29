@@ -18,7 +18,7 @@ from glob import glob
 from data import EXPTS_DIR
 from data.pandas import Pandas
 from core.metrics import pdag_compare
-from core.graph_new.io.bayesys import write as write_bayesys, read as read_bayesys
+from causaliq_core.graph.io.bayesys import write as write_bayesys, read as read_bayesys
 from knowledge.bayesys import read_constraints
 from fileio.xdsl import write as write_xdsl
 from core.graph_new.io.tetrad import read as read_tetrad, write as write_tetrad

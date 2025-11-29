@@ -8,7 +8,7 @@ from core.metrics import pdag_compare
 from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_compare
 from data import TESTDATA_DIR
-import core.graph_new.io.bayesys as bayesys
+import causaliq_core.graph.io.bayesys as bayesys
 import testdata.example_dags as ex_dag
 import testdata.example_sdgs as ex_sdg
 

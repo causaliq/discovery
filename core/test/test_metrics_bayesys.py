@@ -3,7 +3,7 @@
 
 from causaliq_core.graph import PDAG, dag_to_pdag
 from core.metrics import dicts_same, values_same, pdag_compare
-from core.graph_new.io.bayesys import read
+from causaliq_core.graph.io.bayesys import read
 from data import TESTDATA_DIR
 from experiments.common import reference_bn
 
