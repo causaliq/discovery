@@ -3,7 +3,8 @@
 
 import pytest
 
-from causaliq_core.graph import adjmat, EdgeType
+from causaliq_core.graph.convert import dict_to_adjmat
+from causaliq_core.graph import EdgeType
 from causaliq_core.graph import DAG, PDAG, SDG
 import testdata.example_sdgs as ex_sdg
 import testdata.example_pdags as ex_pdag
@@ -131,7 +132,7 @@ def test_graph_rename_pdag_a_1_ok():  # single node PDAG
     assert graph.is_partially_directed is True
     assert graph.has_directed_cycles is False
     assert graph.parents == {}
-    assert graph.to_adjmat().equals(adjmat({'Z': [0]}))
+    assert graph.to_adjmat().equals(dict_to_adjmat({'Z': [0]}))
 
 
 def test_graph_rename_pdag_ba_1_ok():  # A<--B PDAG
@@ -145,7 +146,7 @@ def test_graph_rename_pdag_ba_1_ok():  # A<--B PDAG
     assert graph.is_partially_directed is True
     assert graph.has_directed_cycles is False
     assert graph.parents == {'Z': ['Y']}
-    assert graph.to_adjmat().equals(adjmat({'Y': [0, 0],
+    assert graph.to_adjmat().equals(dict_to_adjmat({'Y': [0, 0],
                                             'Z': [1, 0]}))
 
 
@@ -161,7 +162,7 @@ def test_graph_rename_pdag_ab3_1_ok():  # A--B PDAG
     assert graph.has_directed_cycles is False
     assert graph.parents == {}
     print(graph.to_adjmat())
-    assert graph.to_adjmat().equals(adjmat({'B': [0, 0],
+    assert graph.to_adjmat().equals(dict_to_adjmat({'B': [0, 0],
                                             'Z': [2, 0]}))
 
 
@@ -178,7 +179,7 @@ def test_graph_rename_pdag_and4_8_1_ok():
     assert graph.is_partially_directed is True
     assert graph.has_directed_cycles is False
     assert graph.parents == {'X2': ['Q3', 'X1']}
-    assert graph.to_adjmat().equals(adjmat({'Q3': [0, 0, 0, 0],
+    assert graph.to_adjmat().equals(dict_to_adjmat({'Q3': [0, 0, 0, 0],
                                             'X1': [0, 0, 0, 0],
                                             'X2': [1, 1, 0, 0],
                                             'X4': [2, 0, 0, 0]}))
@@ -203,7 +204,7 @@ def test_graph_rename_pdag_cancer2_1_ok():  # Cancer with 2 undirected edges
     assert graph.is_PDAG() is True
     assert graph.number_components() == 1
     assert graph.parents == {'LungCancer': ['Pollution', 'Smoker']}
-    assert graph.to_adjmat().equals(adjmat({'Dyspnoea': [0, 0, 0, 0, 0],
+    assert graph.to_adjmat().equals(dict_to_adjmat({'Dyspnoea': [0, 0, 0, 0, 0],
                                             'LungCancer': [2, 0, 1, 1, 0],
                                             'Pollution': [0, 0, 0, 0, 0],
                                             'Smoker': [0, 0, 0, 0, 0],
@@ -227,7 +228,7 @@ def test_graph_rename_dag_ac_bc_1_ok():  # Cancer with 2 undirected edges
     assert graph.number_components() == 1
     assert graph.parents == {'X01C': ['X00B', 'X02A']}
     assert graph.to_string() == '[X00B][X01C|X00B:X02A][X02A]'
-    assert graph.to_adjmat().equals(adjmat({'X00B': [0, 0, 0],
+    assert graph.to_adjmat().equals(dict_to_adjmat({'X00B': [0, 0, 0],
                                             'X01C': [1, 0, 1],
                                             'X02A': [0, 0, 0]}))
 
@@ -263,7 +264,7 @@ def test_graph_rename_dag_asia_1_ok():  # Asia DAG
     assert graph.to_string() == '[bronc|smoke][lung|smoke][smoke]' + \
         '[tub|x0asia][x0asia][x1dysp|bronc:x2eith][x2eith|lung:tub]' + \
         '[xray|x2eith]'
-    assert graph.to_adjmat().equals(adjmat({'bronc': [0, 0, 1, 0, 0, 0, 0, 0],
+    assert graph.to_adjmat().equals(dict_to_adjmat({'bronc': [0, 0, 1, 0, 0, 0, 0, 0],
                                             'lung': [0, 0, 1, 0, 0, 0, 0, 0],
                                             'smoke': [0, 0, 0, 0, 0, 0, 0, 0],
                                             'tub': [0, 0, 0, 0, 1, 0, 0, 0],

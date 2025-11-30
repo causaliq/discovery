@@ -10,7 +10,7 @@ import pytest
 
 from causaliq_core.utils import EnumWithAttrs
 from causaliq_core.utils import rndsf
-from causaliq_core.graph import adjmat
+from causaliq_core.graph.convert import dict_to_adjmat
 from causaliq_core.utils import environment
 from causaliq_core.utils.random import \
     generate_stable_random, stable_random, init_stable_random, \
@@ -45,50 +45,50 @@ def mock_stable_sequence(test_sequence, monkeypatch):
 
 def test_common_adjmat_type_error_1():  # arg is not a dict
     with raises(TypeError):
-        adjmat()
+        dict_to_adjmat()
     with raises(TypeError):
-        adjmat(3)
+        dict_to_adjmat(3)
     with raises(TypeError):
-        adjmat('invalid')
+        dict_to_adjmat('invalid')
     with raises(TypeError):
-        adjmat([2, 3, 4])
+        dict_to_adjmat([2, 3, 4])
     with raises(TypeError):
-        adjmat([[0, 0], [0, 0]])
+        dict_to_adjmat([[0, 0], [0, 0]])
 
 
 def test_common_adjmat_type_error_2():  # arg is not a dict of lists
     with raises(TypeError):
-        adjmat({'A': 'should be a list'})
+        dict_to_adjmat({'A': 'should be a list'})
     with raises(TypeError):
-        adjmat({'A': [1], 'B': 'should be a list'})
+        dict_to_adjmat({'A': [1], 'B': 'should be a list'})
 
 
 def test_common_adjmat_type_error_3():  # arg is not a dict of lists of ints
     with raises(TypeError):
-        adjmat({'A': ['should be int']})
+        dict_to_adjmat({'A': ['should be int']})
 
 
 def test_common_adjmat_value_error_1():  # list lengths must match num cols
     with raises(ValueError):
-        adjmat({'A': [0, 1]})
+        dict_to_adjmat({'A': [0, 1]})
     with raises(ValueError):
-        adjmat({'A': [0], 'B': [1]})
+        dict_to_adjmat({'A': [0], 'B': [1]})
 
 
 def test_common_adjmat_value_error_2():  # must be valid ints
     with raises(ValueError):
-        adjmat({'A': [7]})
+        dict_to_adjmat({'A': [7]})
     with raises(ValueError):
-        adjmat({'A': [-1]})
+        dict_to_adjmat({'A': [-1]})
     with raises(ValueError):
-        adjmat({'A': [0, 1], 'B': [-99, 0]})
+        dict_to_adjmat({'A': [0, 1], 'B': [-99, 0]})
 
 
 def test_common_adjmat_1x1_ok_1():  # arg is not a dict of lists of ints
     expected = (DataFrame({'': ['A'], 'A': [0]}).set_index('')
                 .astype(dtype='int8'))
     print(expected)
-    result = adjmat({'A': [0]})
+    result = dict_to_adjmat({'A': [0]})
     assert isinstance(result, DataFrame)
     assert result.equals(expected)
 
@@ -96,7 +96,7 @@ def test_common_adjmat_1x1_ok_1():  # arg is not a dict of lists of ints
 def test_common_adjmat_2x2_ok_1():  # arg is not a dict of lists of ints
     expected = (DataFrame({'': ['A', 'B'], 'A': [0, 1], 'B': [0, 0]})
                 .set_index('').astype(dtype='int8'))
-    result = adjmat({'A': [0, 1], 'B': [0, 0]})
+    result = dict_to_adjmat({'A': [0, 1], 'B': [0, 0]})
     assert isinstance(result, DataFrame)
     assert result.equals(expected)
 
