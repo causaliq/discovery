@@ -7,7 +7,7 @@ from data import TESTDATA_DIR
 from data.pandas import Pandas
 from causaliq_core.graph import DAG
 from core.bn import BN
-from core.metrics import values_same
+from causaliq_core.utils import values_same
 import testdata.example_bns as ex_bn
 
 

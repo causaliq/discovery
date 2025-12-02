@@ -3,7 +3,7 @@
 import pytest
 
 from analysis.statistics import correct_p_values
-from core.metrics import dicts_same
+from causaliq_core.utils import dicts_same
 
 
 def test_correct_p_values_type_error_1_():  # no argument

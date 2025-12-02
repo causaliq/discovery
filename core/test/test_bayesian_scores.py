@@ -2,7 +2,7 @@
 import pytest
 from numpy import array
 
-from core.metrics import values_same
+from causaliq_core.utils import values_same
 from data.score import bayesian_score
 
 

@@ -2,7 +2,8 @@
 # Test Bayesys metrics
 
 from causaliq_core.graph import PDAG, dag_to_pdag
-from core.metrics import dicts_same, values_same, pdag_compare
+from causaliq_core.utils import dicts_same, values_same
+from core.metrics import pdag_compare
 from causaliq_core.graph.io.bayesys import read
 from data import TESTDATA_DIR
 from experiments.common import reference_bn

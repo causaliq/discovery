@@ -7,7 +7,7 @@ from pandas import DataFrame
 
 from core.lingauss import LinGauss
 from data.pandas import Pandas
-from core.metrics import values_same
+from causaliq_core.utils import values_same
 
 
 @pytest.fixture(scope="function")  # simple lg specification

@@ -4,7 +4,7 @@
 import pytest
 from pandas import DataFrame, set_option
 
-from core.metrics import values_same, dicts_same, dists_same
+from causaliq_core.utils import values_same, dicts_same, dists_same
 
 
 def test_metrics_values_same_bad_values():

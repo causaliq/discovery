@@ -15,7 +15,7 @@ from data.pandas import Pandas
 from data.numpy import NumPy
 from causaliq_core.graph import DAG, SDG
 from data.score import check_score_params, SCORE_PARAMS
-from core.metrics import values_same
+from causaliq_core.utils import values_same
 from learn.tabulist import TabuList
 from learn.knowledge import Knowledge
 from learn.knowledge_rule import RuleSet, Rule

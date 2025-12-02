@@ -4,7 +4,7 @@ import pytest
 from core.bn import BN
 from core.cpt import CPT
 from core.lingauss import LinGauss
-from core.metrics import values_same
+from causaliq_core.utils import values_same
 import testdata.example_dags as dag
 import testdata.example_bns as bn
 from data import TESTDATA_DIR, EXPTS_DIR

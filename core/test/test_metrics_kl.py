@@ -4,7 +4,8 @@ from numpy import NaN
 import pytest
 
 from core.bn import BN
-from core.metrics import kl, values_same
+from core.metrics import kl
+from causaliq_core.utils import values_same
 from data import TESTDATA_DIR
 from data.pandas import Pandas
 

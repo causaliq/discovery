@@ -8,7 +8,7 @@ from data.pandas import Pandas
 from causaliq_core.graph import DAG
 from core.bn import BN
 from core.cpt import NodeValueCombinations
-from core.metrics import dists_same
+from causaliq_core.utils import dists_same
 
 
 def global_distribution(bn):

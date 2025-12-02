@@ -1,7 +1,7 @@
 
 import pytest
 
-from core.metrics import values_same
+from causaliq_core.utils import values_same
 from fileio.compare import compare_all
 from data import TESTDATA_DIR
 

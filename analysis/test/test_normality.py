@@ -6,7 +6,7 @@ from numpy.random import normal, seed, standard_t, lognormal, uniform
 from pandas import DataFrame
 
 from analysis.statistics import normality
-from core.metrics import dicts_same
+from causaliq_core.utils import dicts_same
 
 
 def test_normality_type_error_1_():  # no argument

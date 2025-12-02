@@ -2,7 +2,7 @@
 import pytest
 from pandas import DataFrame
 
-from core.metrics import dicts_same
+from causaliq_core.utils import dicts_same
 from data.score import free_params, bn_score, dag_score
 from core.bn import BN
 from data.pandas import Pandas

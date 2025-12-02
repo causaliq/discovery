@@ -88,7 +88,7 @@ def load_with_compatibility(file_handle, compression="gzip", **kwargs):
 from causaliq_core.utils.random import Randomise
 from causaliq_core.utils import environment
 from causaliq_core.utils import EnumWithAttrs
-from core.metrics import values_same
+from causaliq_core.utils import values_same
 from causaliq_core.graph import DAG, SDG, extend_pdag
 from data.score import dag_score
 from learn.common import TreeStats

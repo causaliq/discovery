@@ -4,7 +4,7 @@
 import pytest
 from numpy import array
 
-from core.metrics import dicts_same
+from causaliq_core.utils import dicts_same
 from data.score import entropy_scores
 
 

@@ -7,7 +7,7 @@ from numpy import sum as npsum
 
 from causaliq_core.utils.random import random_generator
 from causaliq_core.utils import rndsf
-from core.metrics import values_same, dicts_same
+from causaliq_core.utils import values_same, dicts_same
 from data.pandas import Pandas
 
 

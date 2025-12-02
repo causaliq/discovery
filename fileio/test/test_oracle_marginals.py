@@ -6,7 +6,7 @@ from numpy import ndarray
 
 from data import TESTDATA_DIR
 from data.oracle import Oracle
-from core.metrics import values_same
+from causaliq_core.utils import values_same
 from core.bn import BN
 
 

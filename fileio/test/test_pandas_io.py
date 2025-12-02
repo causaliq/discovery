@@ -9,7 +9,7 @@ from pandas import DataFrame
 from data.pandas import Pandas
 from data import TESTDATA_DIR, EXPTS_DIR
 from causaliq_core.utils import FileFormatError
-from core.metrics import dicts_same
+from causaliq_core.utils import dicts_same
 
 
 @pytest.fixture(scope="function")  # temp file, automatically removed

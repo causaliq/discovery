@@ -7,7 +7,7 @@ from pandas import DataFrame
 from analysis.trace import TraceAnalysis
 from learn.trace import Trace
 from data import TESTDATA_DIR, EXPTS_DIR
-from core.metrics import dicts_same
+from causaliq_core.utils import dicts_same
 from core.bn import BN
 from core.cpt import CPT
 from data.pandas import Pandas

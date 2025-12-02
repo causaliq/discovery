@@ -12,7 +12,7 @@ from data import TESTDATA_DIR
 from data.score import dag_score
 from data.numpy import NumPy
 from causaliq_core.graph import DAG
-from core.metrics import dicts_same, values_same
+from causaliq_core.utils import dicts_same, values_same
 from core.bn import BN
 
 TYPES = ['loglik', 'bic', 'aic', 'bde', 'k2', 'bdj', 'bds']  # scores to test

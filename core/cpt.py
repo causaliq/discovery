@@ -5,7 +5,7 @@
 from itertools import combinations
 
 from causaliq_core.utils.random import random_generator
-from core.metrics import values_same
+from causaliq_core.utils import values_same
 from core.cnd import CND
 
 

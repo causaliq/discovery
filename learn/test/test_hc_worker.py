@@ -5,7 +5,7 @@ import pytest
 
 from learn.hc_worker import HCWorker, Prefer
 from core.bn import BN
-from core.metrics import values_same
+from causaliq_core.utils import values_same
 from data import TESTDATA_DIR
 from data.pandas import Pandas
 from data.oracle import Oracle

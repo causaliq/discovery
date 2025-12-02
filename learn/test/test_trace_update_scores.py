@@ -3,7 +3,7 @@
 
 import pytest
 
-from core.metrics import values_same
+from causaliq_core.utils import values_same
 from data import TESTDATA_DIR
 from learn.trace import Trace
 
