@@ -9,7 +9,7 @@ from causaliq_core.utils import ln
 from causaliq_core.graph import DAG
 from core.cnd import CND
 from core.cpt import CPT, NodeValueCombinations
-from core.lingauss import LinGauss
+from causaliq_core.bn import LinGauss
 import fileio.dsc as dsc
 import fileio.xdsl as xdsl
 from data.pandas import Pandas

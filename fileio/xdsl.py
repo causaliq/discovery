@@ -7,7 +7,7 @@ from re import compile, sub, findall
 
 from causaliq_core.utils import is_valid_path, FileFormatError
 from core.cpt import CPT, NodeValueCombinations
-from core.lingauss import LinGauss
+from causaliq_core.bn import LinGauss
 
 XDSL_HDR = ('<?xml version="1.0" encoding="UTF-8"?>\n'
             + '<!-- This network was created in BNBENCH -->\n'

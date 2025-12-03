@@ -8,7 +8,7 @@
 
 from core.bn import BN
 from core.cpt import CPT
-from core.lingauss import LinGauss
+from causaliq_core.bn import LinGauss
 import testdata.example_dags as dag
 
 

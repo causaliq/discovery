@@ -5,7 +5,7 @@ import pytest
 import numpy as np
 from pandas import DataFrame
 
-from core.lingauss import LinGauss
+from causaliq_core.bn import LinGauss
 from data.pandas import Pandas
 from causaliq_core.utils import values_same
 
@@ -279,8 +279,10 @@ def test_fit_type_error_3(data):  # parents is not None or tuple of strings
 def test_fit_type_error_4(data):  # data is not Data type
     with pytest.raises(TypeError):
         LinGauss.fit('U', ('T', ), True)
-    with pytest.raises(TypeError):
-        LinGauss.fit('U', ('T', ), data.sample)
+
+#   version on causaliq_core accepts Pandas dataframe
+#   with pytest.raises(TypeError):
+#       LinGauss.fit('U', ('T', ), data.sample)
 
 
 def test_fit_value_error_1(data):  # node is one of parents
