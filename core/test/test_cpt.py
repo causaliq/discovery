@@ -1,7 +1,7 @@
 
 import pytest
 
-from core.cpt import CPT
+from causaliq_core.bn import CPT
 import testdata.example_cpts as cpt
 
 

@@ -4,7 +4,7 @@
 
 # import pytest
 
-from core.cpt import CPT
+from causaliq_core.bn import CPT
 from data import TESTDATA_DIR
 from data.pandas import Pandas
 from core.bn import BN

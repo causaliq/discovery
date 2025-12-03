@@ -6,7 +6,7 @@ import re
 
 from causaliq_core.utils import is_valid_path, FileFormatError
 from causaliq_core.utils import values_same
-from core.cpt import CPT
+from causaliq_core.bn import CPT
 
 # Patterns matching different types of line in DSC file
 

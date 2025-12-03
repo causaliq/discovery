@@ -6,7 +6,7 @@
 #   CPT, and ab(CPT) validates CPT as being for A-->B
 #
 
-from core.cpt import CPT
+from causaliq_core.bn import CPT
 
 
 def p0_v2_1(check=None):  # 0 parents, 2 node values

@@ -6,7 +6,7 @@ import pytest
 from pandas import DataFrame, set_option
 
 from core.bn import BN
-from core.cpt import CPT
+from causaliq_core.bn import CPT
 from learn.hc import hc
 from analysis.trace import TraceAnalysis
 import testdata.example_dags as ex_dag

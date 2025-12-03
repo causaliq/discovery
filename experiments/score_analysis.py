@@ -13,7 +13,7 @@ from analysis.trace import TraceAnalysis
 from data.score import node_score
 from causaliq_core.graph import DAG
 from core.bn import BN
-from core.cpt import CPT
+from causaliq_core.bn import CPT
 from core.metrics import kl
 from data.indep import indep
 
