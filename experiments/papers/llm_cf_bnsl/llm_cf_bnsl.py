@@ -20,7 +20,7 @@ from data.pandas import Pandas
 from core.metrics import pdag_compare
 from causaliq_core.graph.io.bayesys import write as write_bayesys, read as read_bayesys
 from knowledge.bayesys import read_constraints
-from fileio.xdsl import write as write_xdsl
+from causaliq_core.bn.io.xdsl import write as write_xdsl
 from causaliq_core.graph.io.tetrad import read as read_tetrad, write as write_tetrad
 from call.bnlearn import bnlearn_learn
 from call.tetrad import tetrad_learn

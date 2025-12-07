@@ -5,7 +5,7 @@ import pytest
 from os import remove
 from random import random
 
-from fileio.xdsl import read, write
+from causaliq_core.bn.io.xdsl import read, write
 from data import TESTDATA_DIR
 from causaliq_core.utils import FileFormatError
 from causaliq_core.graph.io.bayesys import write as write_bayesys
