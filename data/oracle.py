@@ -11,15 +11,15 @@ class Oracle(Data):
             raise TypeError('Oracle() bad arg type')
 
         self.bn = bn
-        self.nodes = tuple(bn.dag.nodes)
+        self._nodes = tuple(bn.dag.nodes)
         self.order = tuple(i for i in range(len(self.nodes)))
         self.ext_to_orig = {n: n for n in self.nodes}
         self.orig_to_ext = {n: n for n in self.nodes}
-        self.node_types = {n: VariableType.CATEGORY
+        self._node_types = {n: VariableType.CATEGORY
                            if self.bn.cnds[n].__class__.__name__ == 'CPT'
                            else VariableType.FLOAT32 for n in self.nodes}
         self._set_dstype()
-        self.N = 1
+        self._N = 1
 
     def set_N(self, N, seed=None):
         """
@@ -37,7 +37,7 @@ class Oracle(Data):
         if N < 1:
             raise ValueError('Data.set_N() bad arg value')
 
-        self.N = N
+        self._N = N
 
     def marginals(self, node, parents, values_reqd=False):
         """
@@ -113,3 +113,60 @@ class Oracle(Data):
             :returns DataFrame: data as Pandas
         """
         raise NotImplementedError('Data.df() n/a for Oracle')
+
+    # BNFit interface properties - expose instance variables as properties
+
+    @property
+    def nodes(self):
+        """Return the nodes in the network."""
+        return self._nodes
+
+    @nodes.setter
+    def nodes(self, value):
+        """Set the nodes in the network."""
+        self._nodes = value
+
+    @property
+    def sample(self):
+        """Return the current sample size for Oracle adapter."""
+        return self._N
+
+    @property
+    def N(self):
+        """Return the current sample size."""
+        return self._N
+
+    @N.setter
+    def N(self, value):
+        """Set the current sample size."""
+        self._N = value
+
+    @property
+    def node_values(self):
+        """Return node values - not applicable for Oracle adapter."""
+        return {}
+
+    @node_values.setter
+    def node_values(self, value):
+        """Set node values - not applicable for Oracle adapter."""
+        pass
+
+    @property
+    def node_types(self):
+        """Return the types of all nodes."""
+        return self._node_types
+
+    @node_types.setter
+    def node_types(self, value):
+        """Set the node types."""
+        self._node_types = value
+
+    def write(self, filename):
+        """
+            Write data to file - not applicable for Oracle adapter.
+
+            :param str filename: path to write to
+
+            :raises NotImplementedError: Oracle adapter cannot write data
+        """
+        raise NotImplementedError('Data.write() n/a for Oracle')

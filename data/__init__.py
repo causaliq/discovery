@@ -5,6 +5,7 @@ from os.path import isfile, isdir
 from strenum import StrEnum
 
 from causaliq_core.utils.random import RandomIntegers
+from causaliq_core.bn.bnfit import BNFit
 
 
 TESTDATA_DIR = 'testdata'  # Directory where noisy test data files reside
@@ -26,9 +27,9 @@ class VariableType(StrEnum):
     CATEGORY = 'category'
 
 
-class Data(ABC):
+class Data(BNFit):
     """
-        Top level data object.
+        Top level data object that implements BNFit interface.
 
         :param DataFrame/None df: data supplied as Pandas DataFrame
         :param BN/None bn: data specified as BN (Oracle data)
@@ -40,6 +41,8 @@ class Data(ABC):
         :ivar dict orig_to_ext: map from original to external names
         :ivar int N: current sample size being used by the algorithm
         :ivar dict node_types: node types {n1: t1, n2: ....}
+        :ivar DataFrame sample: access to underlying data sample
+        :ivar dict node_values: categorical node value counts
 
         :raises TypeError: if bad types supplied
     """
@@ -191,5 +194,49 @@ class Data(ABC):
             and column order.
 
             :returns DataFrame: data as Pandas
+        """
+        pass
+
+    # Additional abstract methods required by BNFit interface
+
+    @property
+    @abstractmethod
+    def nodes(self):
+        """
+            Return the nodes in the network.
+
+            :returns: nodes in the network
+            :rtype: tuple
+        """
+        pass
+
+    @property
+    @abstractmethod
+    def sample(self):
+        """
+            Return the current sample size.
+
+            :returns: current sample size
+            :rtype: int
+        """
+        pass
+
+    @property
+    @abstractmethod
+    def node_types(self):
+        """
+            Return the types of all nodes.
+
+            :returns: node types
+            :rtype: dict
+        """
+        pass
+
+    @abstractmethod
+    def write(self, path):
+        """
+            Write the network to a file.
+
+            :param str path: path to write to
         """
         pass

@@ -71,10 +71,10 @@ class NumPy(Data):
             raise ValueError('NumPy bad arg values')
 
         self.data = data
-        self.nodes = tuple(col_values)
+        self._nodes = tuple(col_values)
 
         node_type = 'category' if dstype == 'categorical' else 'float32'
-        self.node_types = {n: node_type for n in self.nodes}
+        self._node_types = {n: node_type for n in self.nodes}
 
         self.categories = (array([col_values[n] for n in self.nodes],
                                  dtype='object') if dstype == 'categorical'
@@ -85,7 +85,7 @@ class NumPy(Data):
         self.dstype = dstype if isinstance(dstype, str) else dstype.value
 
         # set N, sample and categorical node_values and counts for that N
-
+        self._node_values = {}  # Initialize empty, will be populated by set_N
         self.set_N(N=data.shape[0])
 
     @classmethod
@@ -220,7 +220,7 @@ class NumPy(Data):
                 (seed is not None and (seed < 0 or seed > 100))):
             raise ValueError('NumPy.set_N() bad arg value')
 
-        self.N = N
+        self._N = N
         rng = (default_rng(seed) if seed is not None and seed != 0
                else default_rng(0))
 
@@ -229,7 +229,7 @@ class NumPy(Data):
             # Choose a random selection of rows from data
 
             indices = rng.choice(self.data.shape[0], size=N, replace=False)
-            self.sample = (self.data[sorted(indices)]
+            self._sample = (self.data[sorted(indices)]
                            if seed is None or seed == 0
                            else self.data[indices])
 
@@ -243,31 +243,31 @@ class NumPy(Data):
 
             # Always use first N rows of data
 
-            self.sample = self.data[:N, :]
+            self._sample = self.data[:N, :]
 
             # Shuffle sample row order if seed is specified
 
             if seed is not None and seed != 0:
                 order = rng.permutation(N)
-                self.sample = self.sample[order]
+                self._sample = self.sample[order]
 
         # compute the node values and counts for categorical variables for
         # the sample
 
-        self.node_values = {}
+        self._node_values = {}
         if self.dstype == 'categorical':
             for j in range(self.sample.shape[1]):
                 counts = {self.categories[j][v]: c for v, c
                           in enumerate(bincount(self.sample[:, j]))}
                 counts = {v: counts[v] for v in sorted(counts)}
-                self.node_values[self.orig_to_ext[self.nodes[j]]] = counts
+                self._node_values[self.orig_to_ext[self.nodes[j]]] = counts
 
         # change continuous data to float64 for precision in score calcs. Doing
         # it here means it is only done once for each sample.
 
         if self.dstype == 'continuous':
             sorted_idx = lexsort(self.sample[:, ::-1].T)
-            self.sample = self.sample[sorted_idx].astype(float64)
+            self._sample = self.sample[sorted_idx].astype(float64)
 
     def randomise_names(self, seed=None):
         """
@@ -483,6 +483,58 @@ class NumPy(Data):
             df = df.rename(columns=self.orig_to_ext).reindex(columns=order)
 
         return df
+
+    # BNFit interface properties - expose instance variables as properties
+
+    @property
+    def nodes(self):
+        """Return the nodes in the network."""
+        return self._nodes
+
+    @nodes.setter
+    def nodes(self, value):
+        """Set the nodes in the network."""
+        self._nodes = value
+
+    @property
+    def sample(self):
+        """Access to underlying data sample."""
+        return self._sample
+
+    @sample.setter
+    def sample(self, value):
+        """Set the underlying data sample."""
+        self._sample = value
+
+    @property
+    def N(self):
+        """Return the current sample size."""
+        return self._N
+
+    @N.setter
+    def N(self, value):
+        """Set the current sample size."""
+        self._N = value
+
+    @property
+    def node_values(self):
+        """Return node values for categorical variables."""
+        return self._node_values
+
+    @node_values.setter
+    def node_values(self, value):
+        """Set node values for categorical variables."""
+        self._node_values = value
+
+    @property
+    def node_types(self):
+        """Return the types of all nodes."""
+        return self._node_types
+
+    @node_types.setter
+    def node_types(self, value):
+        """Set the node types."""
+        self._node_types = value
 
     def write(self, filename, compress=False, sf=10, zero=None, preserve=True):
         """

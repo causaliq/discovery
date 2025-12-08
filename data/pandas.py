@@ -37,19 +37,19 @@ class Pandas(Data):
         if df.isna().any().any():
             raise ValueError('Pandas() missing data unsupported')
 
-        self.sample = self.df = df  # all refer to same object initially
-        self.nodes = tuple(df.columns)
+        self._sample = self.df = df  # all refer to same object initially
+        self._nodes = tuple(df.columns)
         self.order = tuple(i for i in range(len(self.nodes)))
         self.ext_to_orig = {n: n for n in self.nodes}
         self.orig_to_ext = {n: n for n in self.nodes}
-        self.N = len(df)
-        self.node_values = {c: dict(self.sample[c].value_counts())
+        self._N = len(df)
+        self._node_values = {c: dict(self.sample[c].value_counts())
                             for c in self.sample.columns
                             if self.sample[c].dtype.__str__() == 'category'}
 
         # Determine node types and overall dataset type
 
-        self.node_types = {n: self.sample[n].dtype.__str__()
+        self._node_types = {n: self.sample[n].dtype.__str__()
                            for n in self.nodes}
         self._set_dstype()
 
@@ -131,6 +131,58 @@ class Pandas(Data):
         except (UnicodeDecodeError, PermissionError, EmptyDataError,
                 BadGzipFile) as e:
             raise FileFormatError('File format error: {}'.format(e))
+
+    # BNFit interface properties - expose instance variables as properties
+
+    @property
+    def nodes(self):
+        """Return the nodes in the network."""
+        return self._nodes
+
+    @nodes.setter
+    def nodes(self, value):
+        """Set the nodes in the network."""
+        self._nodes = value
+
+    @property
+    def sample(self):
+        """Access to underlying data sample."""
+        return self._sample
+
+    @sample.setter
+    def sample(self, value):
+        """Set the underlying data sample."""
+        self._sample = value
+
+    @property
+    def N(self):
+        """Return the current sample size."""
+        return self._N
+
+    @N.setter
+    def N(self, value):
+        """Set the current sample size."""
+        self._N = value
+
+    @property
+    def node_values(self):
+        """Return node values for categorical variables."""
+        return self._node_values
+
+    @node_values.setter
+    def node_values(self, value):
+        """Set node values for categorical variables."""
+        self._node_values = value
+
+    @property
+    def node_types(self):
+        """Return the types of all nodes."""
+        return self._node_types
+
+    @node_types.setter
+    def node_types(self, value):
+        """Set the node types."""
+        self._node_types = value
 
     def write(self, filename, compress=False, sf=10, zero=None, preserve=True):
         """
