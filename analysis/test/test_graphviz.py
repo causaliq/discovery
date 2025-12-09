@@ -9,7 +9,7 @@ from os import remove
 
 from data import TESTDATA_DIR
 from learn.trace import Trace
-from core.bn import BN
+from causaliq_core.bn import BN
 from analysis.graphviz import traceviz
 from analysis.trace import TraceAnalysis
 import testdata.example_dags as ex_dag

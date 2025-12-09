@@ -7,7 +7,7 @@ from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_learn
 from data import TESTDATA_DIR
 from data.numpy import NumPy
-from core.bn import BN
+from causaliq_core.bn import BN
 
 
 # Generate 10 categorical rows from A --> B

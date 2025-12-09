@@ -5,7 +5,7 @@ from pandas import DataFrame
 from itertools import combinations
 
 from data.pandas import Pandas
-from core.bn import BN
+from causaliq_core.bn import BN
 from data.indep import indep
 
 

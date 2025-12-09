@@ -4,7 +4,7 @@ import pytest
 from pandas import DataFrame
 
 from analysis.bn import SampleAnalysis
-from core.bn import BN
+from causaliq_core.bn import BN
 from causaliq_core.utils import values_same
 from data import TESTDATA_DIR, EXPTS_DIR
 from data.pandas import Pandas

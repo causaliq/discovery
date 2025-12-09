@@ -6,7 +6,7 @@ from pprofile import Profile
 from data import EXPTS_DIR, TESTDATA_DIR
 from data.numpy import NumPy
 # from fileio.pandas import Pandas
-from core.bn import BN
+from causaliq_core.bn import BN
 from causaliq_core.utils.timing import Timing
 from learn.hc import hc
 

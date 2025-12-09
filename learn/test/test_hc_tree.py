@@ -4,7 +4,7 @@
 import pytest
 
 from data import TESTDATA_DIR
-from core.bn import BN
+from causaliq_core.bn import BN
 from learn.hc import hc
 from learn.knowledge import Knowledge
 from learn.knowledge_rule import RuleSet

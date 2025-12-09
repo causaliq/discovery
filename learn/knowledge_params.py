@@ -5,7 +5,8 @@ from math import floor
 from itertools import permutations
 
 from causaliq_core.utils.random import RandomIntegers, stable_random, init_stable_random
-from core.bn import BN, DAG
+from causaliq_core.bn import BN
+from causaliq_core.graph import DAG
 from causaliq_core.graph.dag import NotDAGError
 from learn.knowledge_rule import Rule
 

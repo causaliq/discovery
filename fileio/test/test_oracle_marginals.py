@@ -7,7 +7,7 @@ from numpy import ndarray
 from data import TESTDATA_DIR
 from data.oracle import Oracle
 from causaliq_core.utils import values_same
-from core.bn import BN
+from causaliq_core.bn import BN
 
 
 @pytest.fixture(scope="module")  # AB, 2 rows

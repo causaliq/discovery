@@ -7,7 +7,7 @@ from causaliq_core.graph import DAG, EdgeType, PDAG
 from call.tetrad import tetrad_learn
 from data import TESTDATA_DIR
 from data.numpy import NumPy
-from core.bn import BN
+from causaliq_core.bn import BN
 
 
 @pytest.fixture(scope="module")  # simple ab DataFrame

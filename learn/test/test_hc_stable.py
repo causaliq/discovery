@@ -7,7 +7,7 @@ from pandas import DataFrame
 from data import TESTDATA_DIR
 from data.pandas import Pandas
 from data.numpy import NumPy
-from core.bn import BN
+from causaliq_core.bn import BN
 from learn.hc import hc, set_stable_order, Stability
 from learn.hc_worker import HCWorker, Prefer
 from learn.knowledge import Knowledge

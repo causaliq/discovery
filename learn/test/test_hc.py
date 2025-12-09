@@ -7,7 +7,8 @@ from pandas import DataFrame, set_option
 from data import TESTDATA_DIR
 from data.oracle import Oracle
 from data.pandas import Pandas
-from core.bn import BN
+from data.preprocess import remove_single_valued
+from causaliq_core.bn import BN
 from learn.hc import hc
 from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_learn
@@ -1581,7 +1582,7 @@ def test_hc_pathfinder_1k_ok(showall):
     N = 1000
     bn = BN.read(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
-    bn, data, removed = bn.remove_single_valued(data)
+    bn, data, removed = remove_single_valued(bn, data)
     print('\n\nNodes removed: {}'.format(removed))
     context = {'id': 'test/hc/pathfinder_1k', 'in': dsc}
     dag, trace = hc(data, context=context)
@@ -1606,7 +1607,7 @@ def test_hc_pathfinder_5k_ok(showall):
     N = 5000
     bn = BN.read(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
-    bn, data, removed = bn.remove_single_valued(data)
+    bn, data, removed = remove_single_valued(bn, data)
     print('\n\nNodes removed: {}'.format(removed))
     context = {'id': 'test/hc/pathfinder_5k', 'in': dsc}
     dag, trace = hc(data, context=context)

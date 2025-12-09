@@ -11,7 +11,7 @@ from data import TESTDATA_DIR
 from causaliq_core.utils import FileFormatError
 import testdata.example_dags as ex_dag
 import testdata.example_pdags as ex_pdag
-from core.bn import BN
+from causaliq_core.bn import BN
 from learn.knowledge import Knowledge
 from learn.knowledge_rule import Rule
 

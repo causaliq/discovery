@@ -5,7 +5,7 @@
 import pytest
 from pandas import DataFrame, set_option
 
-from core.bn import BN
+from causaliq_core.bn import BN
 from causaliq_core.bn import CPT
 from learn.hc import hc
 from analysis.trace import TraceAnalysis

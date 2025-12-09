@@ -6,7 +6,7 @@
 #   graph, and ab(graph) validates graph as being A-->B
 #
 
-from core.bn import BN
+from causaliq_core.bn import BN
 from causaliq_core.bn import CPT
 from causaliq_core.bn import LinGauss
 import testdata.example_dags as dag

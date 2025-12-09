@@ -3,7 +3,7 @@ from pandas import Series
 from numpy import NaN
 import pytest
 
-from core.bn import BN
+from causaliq_core.bn import BN
 from core.metrics import kl
 from causaliq_core.utils import values_same
 from data import TESTDATA_DIR

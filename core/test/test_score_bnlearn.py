@@ -13,7 +13,7 @@ import testdata.example_dags as dag
 from data import TESTDATA_DIR
 from causaliq_core.graph import DAG
 from causaliq_core.utils import dicts_same
-from core.bn import BN
+from causaliq_core.bn import BN
 from data.pandas import Pandas
 
 TYPES = ['loglik', 'bic', 'aic', 'bde', 'k2', 'bdj', 'bds']  # scores to test

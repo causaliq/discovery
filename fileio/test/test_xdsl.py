@@ -9,7 +9,7 @@ from causaliq_core.bn.io.xdsl import read, write
 from data import TESTDATA_DIR
 from causaliq_core.utils import FileFormatError
 from causaliq_core.graph.io.bayesys import write as write_bayesys
-from core.bn import BN
+from causaliq_core.bn import BN
 import testdata.example_bns as ex_bn
 
 

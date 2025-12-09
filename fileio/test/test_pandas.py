@@ -8,7 +8,7 @@ from numpy import ndarray, NaN
 from data import TESTDATA_DIR
 from data import Data
 from data.pandas import Pandas
-from core.bn import BN
+from causaliq_core.bn import BN
 
 
 @pytest.fixture(scope="module")

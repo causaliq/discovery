@@ -9,7 +9,7 @@ from pandas import set_option
 
 from data import TESTDATA_DIR
 from data.pandas import Pandas
-from core.bn import BN
+from causaliq_core.bn import BN
 from learn.hc import hc
 from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_learn

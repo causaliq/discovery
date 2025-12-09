@@ -4,7 +4,7 @@
 import pytest
 
 from causaliq_core.graph import DAG
-from core.bn import BN
+from causaliq_core.bn import BN
 import testdata.example_dags as ex_dag
 from data import TESTDATA_DIR
 

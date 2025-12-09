@@ -5,7 +5,7 @@ import pytest
 from pandas import DataFrame, set_option
 
 from data import TESTDATA_DIR
-from core.bn import BN
+from causaliq_core.bn import BN
 from learn.hc import hc
 from learn.knowledge import Knowledge, RuleSet
 

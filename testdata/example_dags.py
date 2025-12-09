@@ -8,7 +8,7 @@
 
 from causaliq_core.graph.convert import dict_to_adjmat
 from causaliq_core.graph import DAG, EdgeType
-from core.bn import BN
+from causaliq_core.bn import BN
 
 
 def empty(check=None):

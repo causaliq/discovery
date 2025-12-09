@@ -5,7 +5,7 @@ import pytest
 from copy import deepcopy
 
 from causaliq_core.graph import DAG, EdgeType
-from core.bn import BN
+from causaliq_core.bn import BN
 from data import TESTDATA_DIR
 
 

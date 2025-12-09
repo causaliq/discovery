@@ -4,7 +4,7 @@
 import pytest
 from pandas import set_option
 
-from core.bn import BN
+from causaliq_core.bn import BN
 from causaliq_core.utils import values_same
 from analysis.bn import DAGAnalysis, BNAnalysis
 from data import TESTDATA_DIR

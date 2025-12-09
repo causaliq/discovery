@@ -6,7 +6,7 @@ from pandas import DataFrame
 
 from causaliq_core.graph import EdgeType, BAYESYS_VERSIONS
 from causaliq_core.graph import DAG, dag_to_pdag, is_cpdag, pdag_to_cpdag
-from core.bn import BN
+from causaliq_core.bn import BN
 from core.metrics import pdag_compare
 from data.indep import indep
 from data import EXPTS_DIR

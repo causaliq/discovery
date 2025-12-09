@@ -8,7 +8,7 @@ from learn.knowledge import Knowledge, Rule, RuleSet, \
 from learn.trace import Activity
 from learn.dagchange import DAGChange, BestDAGChanges
 from data import TESTDATA_DIR
-from core.bn import BN
+from causaliq_core.bn import BN
 
 
 @pytest.fixture

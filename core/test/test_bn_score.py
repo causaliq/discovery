@@ -4,7 +4,7 @@ from pandas import DataFrame
 
 from causaliq_core.utils import dicts_same
 from data.score import free_params, bn_score, dag_score
-from core.bn import BN
+from causaliq_core.bn import BN
 from data.pandas import Pandas
 import testdata.example_dags as dag
 

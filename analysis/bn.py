@@ -8,7 +8,7 @@ from scipy.optimize import root_scalar
 from itertools import chain, combinations
 
 from causaliq_core.graph import DAG, PDAG, dag_to_pdag
-from core.bn import BN
+from causaliq_core.bn import BN
 from causaliq_core.bn import CPT
 from core.metrics import kl
 from data.score import node_score

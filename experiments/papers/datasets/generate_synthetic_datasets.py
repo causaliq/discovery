@@ -3,7 +3,7 @@
 
 from data import EXPTS_DIR
 from data.pandas import Pandas
-from core.bn import BN
+from causaliq_core.bn import BN
 
 
 def values_dataset_sachs_c():  # 10m rows
