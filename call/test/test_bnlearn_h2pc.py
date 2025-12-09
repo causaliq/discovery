@@ -6,13 +6,13 @@ from call.bnlearn import bnlearn_learn
 from call.r import requires_r_and_bnlearn
 from data import TESTDATA_DIR
 from data.numpy import NumPy
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 
 
 # Fixture creating 10 categorical rows for A --> B
 @pytest.fixture(scope="module")
 def ab10():
-    bn = BN.read(TESTDATA_DIR + '/dsc/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/dsc/ab.dsc')
     return NumPy.from_df(df=bn.generate_cases(10), dstype='categorical',
                          keep_df=False)
 
@@ -175,7 +175,7 @@ def test_bnlearn_h2pc_ab_10_ok_4(ab10):
 # AB, 100 rows
 @requires_r_and_bnlearn
 def test_bnlearn_h2pc_ab_100_ok():
-    bn = BN.read(TESTDATA_DIR + '/dsc/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/dsc/ab.dsc')
     data = NumPy.from_df(bn.generate_cases(100), dstype='categorical',
                          keep_df=False)
     dag, _ = bnlearn_learn('h2pc', data)
@@ -186,7 +186,7 @@ def test_bnlearn_h2pc_ab_100_ok():
 # A -> B <- C, 1k Rows
 @requires_r_and_bnlearn
 def test_bnlearn_h2pc_ab_cb_1k_ok():
-    bn = BN.read(TESTDATA_DIR + '/dsc/ab_cb.dsc')
+    bn = read_bn(TESTDATA_DIR + '/dsc/ab_cb.dsc')
     data = NumPy.from_df(bn.generate_cases(1000), dstype='categorical',
                          keep_df=False)
     dag, _ = bnlearn_learn('h2pc', data)
@@ -197,7 +197,7 @@ def test_bnlearn_h2pc_ab_cb_1k_ok():
 # 1->2->4, 3->2, 1K rows
 @requires_r_and_bnlearn
 def test_bnlearn_h2pc_and4_10_1k_ok():
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/and4_10.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/and4_10.dsc')
     print(bn.global_distribution())
     data = NumPy.from_df(bn.generate_cases(1000), dstype='categorical',
                          keep_df=False)
@@ -209,7 +209,7 @@ def test_bnlearn_h2pc_and4_10_1k_ok():
 # Cancer, 1K rows
 @requires_r_and_bnlearn
 def test_bnlearn_h2pc_cancer_1k_ok():
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     print(bn.global_distribution())
     data = NumPy.from_df(bn.generate_cases(1000), dstype='categorical',
                          keep_df=False)
@@ -222,7 +222,7 @@ def test_bnlearn_h2pc_cancer_1k_ok():
 # Cancer, 1K rows
 @requires_r_and_bnlearn
 def test_bnlearn_h2pc_asia_1k_ok_1():
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     print(bn.global_distribution())
     data = NumPy.from_df(bn.generate_cases(1000), dstype='categorical',
                          keep_df=False)

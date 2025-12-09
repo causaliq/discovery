@@ -6,7 +6,7 @@ from pandas import set_option
 
 from data import TESTDATA_DIR
 from data.pandas import Pandas
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 from causaliq_core.graph import DAG
 from learn.hc import hc
 from learn.knowledge import Knowledge, RuleSet
@@ -24,7 +24,7 @@ def showall():
 def ab():  # Return 1K rows for A->B graph
     dsc = '/discrete/tiny/ab.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = Pandas(df=bn.generate_cases(N))
     return (bn.dag, data, dsc)
 
@@ -33,7 +33,7 @@ def ab():  # Return 1K rows for A->B graph
 def ba():  # Return 100 rows for B->A graph
     dsc = '/discrete/tiny/ba.dsc'
     N = 100
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = Pandas(df=bn.generate_cases(N))
     return (bn.dag, data, dsc)
 
@@ -42,7 +42,7 @@ def ba():  # Return 100 rows for B->A graph
 def abc():  # Return 10K rows for A->B->C graph
     dsc = '/discrete/tiny/abc.dsc'
     N = 10000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = Pandas(df=bn.generate_cases(N))
     return (bn.dag, data, dsc)
 
@@ -51,7 +51,7 @@ def abc():  # Return 10K rows for A->B->C graph
 def ab_cb():  # Return 1K rows for A->B<-C graph
     dsc = '/discrete/tiny/ab_cb.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = Pandas(df=bn.generate_cases(N))
     return (bn.dag, data, dsc)
 
@@ -60,7 +60,7 @@ def ab_cb():  # Return 1K rows for A->B<-C graph
 def and4_10():  # Return 1K rows for and4_10 graph
     dsc = '/discrete/tiny/and4_10.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = Pandas(df=bn.generate_cases(N))
     return (bn.dag, data, dsc)
 
@@ -69,7 +69,7 @@ def and4_10():  # Return 1K rows for and4_10 graph
 def cancer():  # Return 1K rows for cancer graph
     dsc = '/discrete/small/cancer.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = Pandas(df=bn.generate_cases(N))
     return (bn.dag, data, dsc)
 
@@ -78,7 +78,7 @@ def cancer():  # Return 1K rows for cancer graph
 def asia():  # return 1K rows for asia graph
     dsc = '/discrete/small/asia.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = Pandas(df=bn.generate_cases(N))
     return (bn.dag, data, dsc)
 

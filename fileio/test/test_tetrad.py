@@ -12,7 +12,7 @@ from causaliq_core.graph.io.tetrad import read, write
 from data.pandas import Pandas
 import testdata.example_dags as ex_dag
 import testdata.example_pdags as ex_pdag
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn, write_bn
 
 
 @pytest.fixture(scope="function")  # temp file, automatically removed
@@ -102,7 +102,7 @@ def test_tetrad_read_d7_gold_ok():  # read d7-gold OK
     bn = BN.fit(dag, Pandas.read(TESTDATA_DIR +
                                  '/diarrhoea/IA74-0715-1156-d7a.zip',
                                  dstype='categorical'))
-    bn.write(TESTDATA_DIR + '/diarrhoea/diarrhoea.dsc')
+    write_bn(bn, TESTDATA_DIR + '/diarrhoea/diarrhoea.dsc')
 
 
 def test_tetrad_read_dag_ac_bc_ok():  # A -> C <- B
@@ -225,13 +225,13 @@ def test_tetrad_write_ac_bc_ok_1(tmpfile):  # A -> C <- B
 
 
 def test_tetrad_write_alarm_ok_1(tmpfile):  # Alarm [37 nodes]
-    dag = BN.read(TESTDATA_DIR + '/discrete/medium/alarm.dsc').dag
+    dag = read_bn(TESTDATA_DIR + '/discrete/medium/alarm.dsc').dag
     write(dag, tmpfile)
     assert dag == read(tmpfile)
 
 
 def test_tetrad_write_diarrhoea_ok_1(tmpfile):  # Diarrhoea [28 nodes]
-    dag = BN.read(TESTDATA_DIR + '/discrete/medium/diarrhoea.dsc').dag
+    dag = read_bn(TESTDATA_DIR + '/discrete/medium/diarrhoea.dsc').dag
     write(dag, tmpfile)
     assert dag == read(tmpfile)
 

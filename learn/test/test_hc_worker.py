@@ -4,7 +4,7 @@
 import pytest
 
 from learn.hc_worker import HCWorker, Prefer
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 from causaliq_core.utils import values_same
 from data import TESTDATA_DIR
 from data.pandas import Pandas
@@ -16,7 +16,7 @@ from learn.knowledge_rule import RuleSet
 @pytest.fixture(scope='module')
 def ab1():  # A-->B, plain HC parameters
     dsc = TESTDATA_DIR + '/discrete/tiny/ab.dsc'
-    bn = BN.read(dsc)
+    bn = read_bn(dsc)
     df = Pandas(df=bn.generate_cases(100))
     bn = Oracle(bn=bn)
     bn.set_N(100)
@@ -28,7 +28,7 @@ def ab1():  # A-->B, plain HC parameters
 @pytest.fixture(scope='module')
 def abc1():  # A-->B-->C, Tabu parameters
     dsc = TESTDATA_DIR + '/discrete/tiny/abc.dsc'
-    bn = BN.read(dsc)
+    bn = read_bn(dsc)
     df = Pandas(df=bn.generate_cases(1000))
     bn = Oracle(bn=bn)
     bn.set_N(1000)
@@ -40,7 +40,7 @@ def abc1():  # A-->B-->C, Tabu parameters
 @pytest.fixture(scope='module')
 def asia1():  # A-->B-->C, Tabu parameters
     dsc = TESTDATA_DIR + '/discrete/small/asia.dsc'
-    bn = BN.read(dsc)
+    bn = read_bn(dsc)
     df = Pandas(df=bn.generate_cases(1000))
     bn = Oracle(bn=bn)
     bn.set_N(1000)

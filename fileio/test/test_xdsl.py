@@ -9,7 +9,7 @@ from causaliq_core.bn.io.xdsl import read, write
 from data import TESTDATA_DIR
 from causaliq_core.utils import FileFormatError
 from causaliq_core.graph.io.bayesys import write as write_bayesys
-from causaliq_core.bn import BN
+from causaliq_core.bn import read_bn, write_bn
 import testdata.example_bns as ex_bn
 
 
@@ -269,26 +269,26 @@ def test_xdsl_read_ax_format_error38():  # mixed network
 
 
 def test_xdsl_read_ab_ok():  # successfully reads ab file
-    bn_xdsl = BN.read(TESTDATA_DIR + '/xdsl/ab.xdsl')
-    bn_dsc = BN.read(TESTDATA_DIR + '/dsc/ab.dsc')
+    bn_xdsl = read_bn(TESTDATA_DIR + '/xdsl/ab.xdsl')
+    bn_dsc = read_bn(TESTDATA_DIR + '/dsc/ab.dsc')
     assert bn_xdsl == bn_dsc
 
 
 def test_xdsl_read_x_ok():  # successfully reads x file
-    x = BN.read(TESTDATA_DIR + '/xdsl/x.xdsl')
+    x = read_bn(TESTDATA_DIR + '/xdsl/x.xdsl')
     assert x.dag.to_string() == '[X]'
     assert x.cnds['X'].__str__() == 'Normal(0.0,1.0)'
 
 
 def test_xdsl_read_xy_ok():  # successfully reads xy file
-    xy = BN.read(TESTDATA_DIR + '/xdsl/xy.xdsl')
+    xy = read_bn(TESTDATA_DIR + '/xdsl/xy.xdsl')
     assert xy.dag.to_string() == '[X][Y|X]'
     assert xy.cnds['X'].__str__() == 'Normal(2.0,1.0)'
     assert xy.cnds['Y'].__str__() == '1.5*X+Normal(0.5,0.5)'
 
 
 def test_xdsl_read_xyz_ok():  # successfully reads xyz file
-    xyz = BN.read(TESTDATA_DIR + '/xdsl/xyz.xdsl')
+    xyz = read_bn(TESTDATA_DIR + '/xdsl/xyz.xdsl')
     assert xyz.dag.to_string() == '[X][Y|X][Z|Y]'
     assert xyz.cnds['X'].__str__() == 'Normal(0.0,1.0)'
     assert xyz.cnds['Y'].__str__() == '1.5*X+Normal(0.5,0.5)'
@@ -296,7 +296,7 @@ def test_xdsl_read_xyz_ok():  # successfully reads xyz file
 
 
 def test_xdsl_read_xy_zy_ok():  # successfully reads xy_zy file
-    xy_zy = BN.read(TESTDATA_DIR + '/xdsl/xy_zy.xdsl')
+    xy_zy = read_bn(TESTDATA_DIR + '/xdsl/xy_zy.xdsl')
     assert xy_zy.dag.to_string() == '[X][Y|X:Z][Z]'
     assert xy_zy.cnds['X'].__str__() == 'Normal(0.0,1.0)'
     assert xy_zy.cnds['Y'].__str__() == '1.5*X-2.2*Z+Normal(0.5,0.5)'
@@ -304,7 +304,7 @@ def test_xdsl_read_xy_zy_ok():  # successfully reads xy_zy file
 
 
 def test_xdsl_read_gauss_ok():  # successfully reads gauss file
-    gauss = BN.read(TESTDATA_DIR + '/xdsl/gauss.xdsl')
+    gauss = read_bn(TESTDATA_DIR + '/xdsl/gauss.xdsl')
     assert gauss.dag.to_string() == '[A][B][C|A:B][D|B][E][F|A:D:E:G][G]'
     assert gauss.cnds['A'].__str__() == 'Normal(1.0,1.0)'
     assert gauss.cnds['B'].__str__() == 'Normal(2.0,3.0)'
@@ -317,43 +317,43 @@ def test_xdsl_read_gauss_ok():  # successfully reads gauss file
 
 
 def test_xdsl_read_a_b_c_ok():  # successfully reads a_b_c file
-    bn_xdsl = BN.read(TESTDATA_DIR + '/xdsl/a_b_c.xdsl')
-    bn_dsc = BN.read(TESTDATA_DIR + '/discrete/tiny/a_b_c.dsc')
+    bn_xdsl = read_bn(TESTDATA_DIR + '/xdsl/a_b_c.xdsl')
+    bn_dsc = read_bn(TESTDATA_DIR + '/discrete/tiny/a_b_c.dsc')
     assert bn_xdsl == bn_dsc
 
 
 def test_xdsl_read_abc_ok():  # successfully reads abc file
-    bn_xdsl = BN.read(TESTDATA_DIR + '/xdsl/abc.xdsl')
-    bn_dsc = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    bn_xdsl = read_bn(TESTDATA_DIR + '/xdsl/abc.xdsl')
+    bn_dsc = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     assert bn_xdsl == bn_dsc
 
 
 def test_xdsl_read_ab_cb_ok():  # successfully reads ab_cb file
-    bn_xdsl = BN.read(TESTDATA_DIR + '/xdsl/ab_cb.xdsl')
-    bn_dsc = BN.read(TESTDATA_DIR + '/discrete/tiny/ab_cb.dsc')
+    bn_xdsl = read_bn(TESTDATA_DIR + '/xdsl/ab_cb.xdsl')
+    bn_dsc = read_bn(TESTDATA_DIR + '/discrete/tiny/ab_cb.dsc')
     assert bn_xdsl == bn_dsc
 
 
 def test_xdsl_read_and4_10_ok():  # successfully reads and4_10 file
-    bn_xdsl = BN.read(TESTDATA_DIR + '/xdsl/and4_10.xdsl')
-    bn_dsc = BN.read(TESTDATA_DIR + '/discrete/tiny/and4_10.dsc')
+    bn_xdsl = read_bn(TESTDATA_DIR + '/xdsl/and4_10.xdsl')
+    bn_dsc = read_bn(TESTDATA_DIR + '/discrete/tiny/and4_10.dsc')
     assert bn_xdsl == bn_dsc
 
 
 def test_xdsl_read_cancer_ok():  # successfully reads cancer file
-    bn_xdsl = BN.read(TESTDATA_DIR + '/xdsl/cancer.xdsl')
-    bn_dsc = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn_xdsl = read_bn(TESTDATA_DIR + '/xdsl/cancer.xdsl')
+    bn_dsc = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     assert bn_xdsl == bn_dsc
 
 
 def test_xdsl_read_asia_ok():  # successfully reads asia file
-    bn_xdsl = BN.read(TESTDATA_DIR + '/xdsl/asia.xdsl')
-    bn_dsc = BN.read(TESTDATA_DIR + '/asia/asia.dsc')
+    bn_xdsl = read_bn(TESTDATA_DIR + '/xdsl/asia.xdsl')
+    bn_dsc = read_bn(TESTDATA_DIR + '/asia/asia.dsc')
     assert bn_xdsl == bn_dsc
 
 
 def test_xdsl_read_sports_ok():  # successfully reads sports file
-    bn = BN.read(TESTDATA_DIR + '/xdsl/sports.xdsl')
+    bn = read_bn(TESTDATA_DIR + '/xdsl/sports.xdsl')
     print('\n{}'.format(bn.dag))
     assert bn.free_params == 1049
     assert ['ATgoals', 'ATshots', 'ATshotsOnTarget', 'HDA', 'HTgoals',
@@ -377,11 +377,11 @@ def test_xdsl_read_sports_ok():  # successfully reads sports file
     assert bn.cnds['HDA'].cdist({'HTgoals': 'x_', 'ATgoals': 'x_'}) == \
         {'H': 0.3234421364985163, 'D': 0.5014836795252225,
          'A': 0.1750741839762611}
-    bn.write(TESTDATA_DIR + '/discrete/small/sports.dsc')
+    write_bn(bn, TESTDATA_DIR + '/discrete/small/sports.dsc')
 
 
 def test_xdsl_read_heartdisease_ok():  # successfully reads heart file
-    bn = BN.read(TESTDATA_DIR + '/xdsl/heartdisease.xdsl')
+    bn = read_bn(TESTDATA_DIR + '/xdsl/heartdisease.xdsl')
     assert bn.dag.nodes == \
         ['Angina', 'Atherosclerosis', 'Diet', 'ECG', 'Exercise',
          'Family_History', 'Heart_Attack', 'Heart_Disease',
@@ -416,7 +416,7 @@ def test_xdsl_read_heartdisease_ok():  # successfully reads heart file
 
 
 def test_xdsl_read_property_ok():  # successfully reads property file
-    bn = BN.read(TESTDATA_DIR + '/xdsl/property.xdsl')
+    bn = read_bn(TESTDATA_DIR + '/xdsl/property.xdsl')
     print('\n{}'.format(bn.dag))
     assert bn.free_params == 3056
     assert sorted(["propertyManagement", "otherPropertyExpenses",
@@ -470,20 +470,20 @@ def test_xdsl_read_property_ok():  # successfully reads property file
         {'biggerThan25k': 0.947238730250761, 'x0_15k': 0.0,
          'x0_25k': 0.05276126974923902, 'x5_20k': 0.0,
          'lessThan5k': 0.0, 'x_10k': 0.0}
-    bn.write(TESTDATA_DIR + '/discrete/medium/property.dsc')
+    write_bn(bn, TESTDATA_DIR + '/discrete/medium/property.dsc')
 
 
 def test_xdsl_read_formed_ok():  # successfully reads formed file
-    bn = BN.read(TESTDATA_DIR + '/xdsl/formed.xdsl', correct=True)
+    bn = read_bn(TESTDATA_DIR + '/xdsl/formed.xdsl', correct=True)
     assert len(bn.dag.nodes) == 88
     assert len(bn.dag.edges) == 138
     assert bn.free_params == 910  # Bayesys repo reports 912
-    bn.write(TESTDATA_DIR + '/discrete/large/formed.dsc')
+    write_bn(bn, TESTDATA_DIR + '/discrete/large/formed.dsc')
     print(bn.dag)
 
 
 def test_xdsl_read_covid_ok():  # successfully reads covid file
-    bn = BN.read(TESTDATA_DIR + '/xdsl/covid_knowledge_k-means.xdsl',
+    bn = read_bn(TESTDATA_DIR + '/xdsl/covid_knowledge_k-means.xdsl',
                  correct=True)
     assert len(bn.dag.nodes) == 17
     assert len(bn.dag.edges) == 37
@@ -497,7 +497,7 @@ def test_xdsl_write_type_error_1():  # no arguments
 
 
 def test_xdsl_write_type_error_2():  # one argument
-    bn = BN.read(TESTDATA_DIR + '/dsc/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/dsc/ab.dsc')
     with pytest.raises(TypeError):
         write(bn)
     with pytest.raises(TypeError):
@@ -505,7 +505,7 @@ def test_xdsl_write_type_error_2():  # one argument
 
 
 def test_xdsl_write_type_error_3():  # bn not BN object
-    bn = BN.read(TESTDATA_DIR + '/dsc/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/dsc/ab.dsc')
     with pytest.raises(TypeError):
         write('invalid', TESTDATA_DIR + '/tmp/ab.xdsl')
     with pytest.raises(TypeError):
@@ -513,7 +513,7 @@ def test_xdsl_write_type_error_3():  # bn not BN object
 
 
 def test_xdsl_write_type_error_4():  # filename not a string
-    bn = BN.read(TESTDATA_DIR + '/dsc/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/dsc/ab.dsc')
     with pytest.raises(TypeError):
         write(bn, True)
     with pytest.raises(TypeError):
@@ -521,7 +521,7 @@ def test_xdsl_write_type_error_4():  # filename not a string
 
 
 def test_xdsl_write_filenotfound_error_1():  # write path non-existent
-    bn = BN.read(TESTDATA_DIR + '/dsc/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/dsc/ab.dsc')
     with pytest.raises(FileNotFoundError):
         write(bn, 'nonexistent/ab.xdsl')
 
@@ -530,16 +530,16 @@ def test_xdsl_write_filenotfound_error_1():  # write path non-existent
 
 def test_xdsl_write_ab_ok_1(tmpfile):  # A -> B BN
     # tmpfile = TESTDATA_DIR + '/tmp/ab.xdsl'
-    bn = BN.read(TESTDATA_DIR + '/dsc/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/dsc/ab.dsc')
     write(bn, tmpfile)
-    bn_xdsl = BN.read(tmpfile)
+    bn_xdsl = read_bn(tmpfile)
     assert bn == bn_xdsl
 
 
 def test_xdsl_write_ab_ok_2(tmpfile):  # A -> B BN, set genie true
-    bn = BN.read(TESTDATA_DIR + '/dsc/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/dsc/ab.dsc')
     write(bn, tmpfile, genie=True)
-    bn_xdsl = BN.read(tmpfile)
+    bn_xdsl = read_bn(tmpfile)
 
     # Variable values must start with letters for Genie, so write modified
     # the values - need to check the CPTs explicitly therefore
@@ -551,30 +551,30 @@ def test_xdsl_write_ab_ok_2(tmpfile):  # A -> B BN, set genie true
 
 
 def test_xdsl_write_abc_ok_1(tmpfile):  # A -> B -> C BN
-    bn = BN.read(TESTDATA_DIR + '/dsc/abc.dsc')
+    bn = read_bn(TESTDATA_DIR + '/dsc/abc.dsc')
     write(bn, tmpfile)
-    bn_xdsl = BN.read(tmpfile)
+    bn_xdsl = read_bn(tmpfile)
     assert bn == bn_xdsl
 
 
 def test_xdsl_write_ab_cb_ok_1(tmpfile):  # A -> B <- C BN
-    bn = BN.read(TESTDATA_DIR + '/dsc/ab_cb.dsc')
+    bn = read_bn(TESTDATA_DIR + '/dsc/ab_cb.dsc')
     write(bn, tmpfile)
-    bn_xdsl = BN.read(tmpfile)
+    bn_xdsl = read_bn(tmpfile)
     assert bn == bn_xdsl
 
 
 def test_xdsl_write_and4_10_ok_1(tmpfile):  # and4_10 BN
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/and4_10.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/and4_10.dsc')
     write(bn, tmpfile)
-    bn_xdsl = BN.read(tmpfile)
+    bn_xdsl = read_bn(tmpfile)
     assert bn == bn_xdsl
 
 
 def test_xdsl_write_cancer_ok_1(tmpfile):  # cancer BN
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     write(bn, tmpfile)
-    bn_xdsl = BN.read(tmpfile)
+    bn_xdsl = read_bn(tmpfile)
     assert bn == bn_xdsl
 
     # manually check the CPT entries
@@ -606,9 +606,9 @@ def test_xdsl_write_cancer_ok_1(tmpfile):  # cancer BN
 
 def test_xdsl_write_cancer_ok_2(tmpfile):  # cancer BN, but set genie flag true
     # tmpfile = TESTDATA_DIR + '/tmp/cancer.xdsl'
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     write(bn, tmpfile, genie=True)
-    bn_xdsl = BN.read(tmpfile)
+    bn_xdsl = read_bn(tmpfile)
     assert bn == bn_xdsl
 
     # manually check the CPT entries
@@ -639,47 +639,47 @@ def test_xdsl_write_cancer_ok_2(tmpfile):  # cancer BN, but set genie flag true
 
 
 def test_xdsl_write_asia_ok_1(tmpfile):  # asia BN
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     write(bn, tmpfile)
-    bn_xdsl = BN.read(tmpfile)
+    bn_xdsl = read_bn(tmpfile)
     assert bn == bn_xdsl
 
 
 def test_xdsl_write_sports_ok_1(tmpfile):  # sports BN
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/sports.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/sports.dsc')
     write(bn, tmpfile)
-    bn_xdsl = BN.read(tmpfile)
+    bn_xdsl = read_bn(tmpfile)
     assert bn == bn_xdsl
 
 
 def test_xdsl_write_diarrhoea_ok_1(tmpfile):  # diarrhoea BN, genie
     # tmpfile = TESTDATA_DIR + '/tmp/diarrhoea.xdsl'
-    bn = BN.read(TESTDATA_DIR + '/discrete/medium/diarrhoea.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/medium/diarrhoea.dsc')
     print('\nDiarrhoea dag is:\n{}'.format(bn.dag))
     write(bn, tmpfile, genie=True)
-    bn_xdsl = BN.read(tmpfile)
+    bn_xdsl = read_bn(tmpfile)
     assert bn.dag == bn_xdsl.dag
 
 
 def test_xdsl_write_property_ok_1(tmpfile):  # property BN
-    bn = BN.read(TESTDATA_DIR + '/discrete/medium/property.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/medium/property.dsc')
     write(bn, tmpfile)
-    bn_xdsl = BN.read(tmpfile)
+    bn_xdsl = read_bn(tmpfile)
     assert bn == bn_xdsl
 
 
 def test_xdsl_write_formed_ok_1(tmpfile):  # formed BN
-    bn = BN.read(TESTDATA_DIR + '/discrete/large/formed.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/large/formed.dsc')
     write(bn, tmpfile)
-    bn_xdsl = BN.read(tmpfile)
+    bn_xdsl = read_bn(tmpfile)
     assert bn == bn_xdsl
 
 
 def test_xdsl_write_sepsis_ok_1(tmpfile):  # sepsis BN, not genie
-    bn = BN.read(TESTDATA_DIR + '/discrete/medium/sepsis.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/medium/sepsis.dsc')
     print('\nSepsis dag is:\n{}'.format(bn.dag))
     write(bn, tmpfile)
-    bn_xdsl = BN.read(tmpfile)
+    bn_xdsl = read_bn(tmpfile)
     assert bn == bn_xdsl
 
     # manually test some CPTs derived from generated Sepsis XDSL file
@@ -707,10 +707,10 @@ def test_xdsl_write_sepsis_ok_1(tmpfile):  # sepsis BN, not genie
 
 def test_xdsl_write_sepsis_ok_2(tmpfile):  # sepsis BN, genie
     # tmpfile = TESTDATA_DIR + '/tmp/sepsis.xdsl'
-    bn = BN.read(TESTDATA_DIR + '/discrete/medium/sepsis.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/medium/sepsis.dsc')
     print('\nSepsis dag is:\n{}'.format(bn.dag))
     write(bn, tmpfile, genie=True)
-    bn_xdsl = BN.read(tmpfile)
+    bn_xdsl = read_bn(tmpfile)
 
     # manually test some CPTs derived from generated Sepsis XDSL file
     # which has altered node and values to conform to Genie requirements.
@@ -746,7 +746,7 @@ def test_xdsl_write_x_ok_1(tmpfile):  # X BN
     # tmpfile = TESTDATA_DIR + '/tmp/x.xdsl'
     bn = ex_bn.x()
     write(bn, tmpfile, True)
-    bn_read = BN.read(tmpfile)
+    bn_read = read_bn(tmpfile)
     assert bn == bn_read
 
 
@@ -754,7 +754,7 @@ def test_xdsl_write_xy_ok_1(tmpfile):  # XY BN
     # tmpfile = TESTDATA_DIR + '/tmp/xy.xdsl'
     bn = ex_bn.xy()
     write(bn, tmpfile, True)
-    bn_read = BN.read(tmpfile)
+    bn_read = read_bn(tmpfile)
     assert bn == bn_read
 
 
@@ -762,7 +762,7 @@ def test_xdsl_write_x_y_ok_1(tmpfile):  # X Y BN
     # tmpfile = TESTDATA_DIR + '/tmp/x_y.xdsl'
     bn = ex_bn.x_y()
     write(bn, tmpfile, True)
-    bn_read = BN.read(tmpfile)
+    bn_read = read_bn(tmpfile)
     assert bn == bn_read
 
 
@@ -770,7 +770,7 @@ def test_xdsl_write_xyz_ok_1(tmpfile):  # X --> Y --> Z BN
     # tmpfile = TESTDATA_DIR + '/tmp/xyx.xdsl'
     bn = ex_bn.xyz()
     write(bn, tmpfile, True)
-    bn_read = BN.read(tmpfile)
+    bn_read = read_bn(tmpfile)
     assert bn == bn_read
 
 
@@ -778,5 +778,5 @@ def test_xdsl_write_xy_zy_ok_1(tmpfile):  # X --> Y <-- Z BN
     # tmpfile = TESTDATA_DIR + '/tmp/xy_zy.xdsl'
     bn = ex_bn.xy_zy()
     write(bn, tmpfile, True)
-    bn_read = BN.read(tmpfile)
+    bn_read = read_bn(tmpfile)
     assert bn == bn_read

@@ -8,7 +8,7 @@ from numpy import ndarray, NaN
 from data import TESTDATA_DIR
 from data import Data
 from data.pandas import Pandas
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 
 
 @pytest.fixture(scope="module")
@@ -43,7 +43,7 @@ def test_constructor_type_error_2():  # bad df type
 
 
 def test_constructor_type_error_3():  # both df and bn specified
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     df = DataFrame({'A': ['0', '1'], 'B': ['0', '1']})
     with pytest.raises(TypeError):
         Pandas(df=df, bn=bn)
@@ -740,7 +740,7 @@ def test_set_order_value_error_1_ok():  # Asia, N=100 - names mismatch
 
 
 def test_set_order_asia_1_ok():  # Asia, N=100 - optimal/worst/original order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     df = read_csv(TESTDATA_DIR + '/experiments/datasets/asia.data.gz',
                   dtype='category', nrows=100)
 
@@ -811,7 +811,7 @@ def test_set_order_asia_1_ok():  # Asia, N=100 - optimal/worst/original order
 # Test randomise names
 
 def test_rand_name_asia_1_ok():  # Asia, N=20 - randomise names
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     df = read_csv(TESTDATA_DIR + '/experiments/datasets/asia.data.gz',
                   dtype='category', nrows=100)
     std_order = tuple(bn.dag.nodes)
@@ -1086,7 +1086,7 @@ def test_values_value_error_2(data):  # nodes not in dataset
 
 
 def test_values_value_error_3(data):  # Can't get values for categorical data
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     data = Pandas(df=bn.generate_cases(10))
     with pytest.raises(ValueError):
         data.values(('tub', 'lung'))

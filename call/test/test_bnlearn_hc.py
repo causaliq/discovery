@@ -8,13 +8,13 @@ from call.r import requires_r_and_bnlearn
 from data import TESTDATA_DIR
 from data.pandas import Pandas
 from data.numpy import NumPy
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 
 
 # AB, 10 categorical rows
 @pytest.fixture(scope="module")
 def ab10():
-    bn = BN.read(TESTDATA_DIR + '/dsc/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/dsc/ab.dsc')
     return Pandas(df=bn.generate_cases(10))
 
 
@@ -230,7 +230,7 @@ def test_bnlearn_hc_ab_10_ok_4(ab10):
 # AB, 100 rows
 @requires_r_and_bnlearn
 def test_bnlearn_hc_ab_100_ok():
-    bn = BN.read(TESTDATA_DIR + '/dsc/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/dsc/ab.dsc')
     data = Pandas(df=bn.generate_cases(100))
     dag, _ = bnlearn_learn('hc', data)
     print('\nDAG learnt from 100 rows of A->B: {}'.format(dag))
@@ -240,7 +240,7 @@ def test_bnlearn_hc_ab_100_ok():
 # ABC, 100 rows
 @requires_r_and_bnlearn
 def test_bnlearn_hc_abc_100_ok():
-    bn = BN.read(TESTDATA_DIR + '/dsc/abc.dsc')
+    bn = read_bn(TESTDATA_DIR + '/dsc/abc.dsc')
     data = Pandas(df=bn.generate_cases(100))
     dag, _ = bnlearn_learn('hc', data)
     print('\nDAG learnt from 100 rows of A->B->C: {}'.format(dag))
@@ -250,7 +250,7 @@ def test_bnlearn_hc_abc_100_ok():
 # A -> B <- C, 1k Rows
 @requires_r_and_bnlearn
 def test_bnlearn_hc_ab_cb_1k_ok():
-    bn = BN.read(TESTDATA_DIR + '/dsc/ab_cb.dsc')
+    bn = read_bn(TESTDATA_DIR + '/dsc/ab_cb.dsc')
     data = NumPy.from_df(bn.generate_cases(1000), dstype='categorical',
                          keep_df=False)
     dag, _ = bnlearn_learn('hc', data)
@@ -261,7 +261,7 @@ def test_bnlearn_hc_ab_cb_1k_ok():
 # 1->2->4, 3->2, 1K rows
 @requires_r_and_bnlearn
 def test_bnlearn_hc_and4_10_1k_ok():
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/and4_10.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/and4_10.dsc')
     data = NumPy.from_df(bn.generate_cases(1000), dstype='categorical',
                          keep_df=False)
     dag, _ = bnlearn_learn('hc', data)
@@ -272,7 +272,7 @@ def test_bnlearn_hc_and4_10_1k_ok():
 # Cancer, 1K rows
 @requires_r_and_bnlearn
 def test_bnlearn_hc_cancer_1k_ok():
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = Pandas(bn.generate_cases(1000))
     dag, _ = bnlearn_learn('hc', data)
     print('\nDAG learnt from 1K rows of Cancer: {}'.format(dag))
@@ -283,7 +283,7 @@ def test_bnlearn_hc_cancer_1k_ok():
 # Asia, 1K rows
 @requires_r_and_bnlearn
 def test_bnlearn_hc_asia_1k_ok_1():
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     print(bn.global_distribution())
     data = Pandas(bn.generate_cases(1000))
     dag, _ = bnlearn_learn('hc', data)
@@ -297,7 +297,7 @@ def test_bnlearn_hc_asia_1k_ok_1():
 def test_bnlearn_hc_asia_1k_ok_2():
     _in = TESTDATA_DIR + '/discrete/small/asia.dsc'
     id = 'test/asia_1k'
-    bn = BN.read(_in)
+    bn = read_bn(_in)
     data = NumPy.from_df(bn.generate_cases(1000), dstype='categorical',
                          keep_df=False)
     dag, trace = bnlearn_learn('hc', data, context={'in': _in, 'id': id},

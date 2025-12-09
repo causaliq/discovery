@@ -7,7 +7,7 @@ from pandas import DataFrame
 from data.indep import indep, check_test_params
 from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_indep
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 from causaliq_core.utils import dicts_same, values_same
 from data import TESTDATA_DIR
 from causaliq_core.utils import FileFormatError
@@ -21,7 +21,7 @@ TYPES = ['x2', 'mi']
 
 # bad primary arg types
 def test_indep_type_error_1():
-    bn_cancer = BN.read(TESTDATA_DIR + '/cancer/cancer.dsc')
+    bn_cancer = read_bn(TESTDATA_DIR + '/cancer/cancer.dsc')
     with pytest.raises(TypeError):
         indep()
     with pytest.raises(TypeError):
@@ -113,7 +113,7 @@ def test_indep_value_error_2():
 
 # variable names not in BN
 def test_indep_value_error_3():
-    bn_cancer = BN.read(TESTDATA_DIR + '/cancer/cancer.dsc')
+    bn_cancer = read_bn(TESTDATA_DIR + '/cancer/cancer.dsc')
     with pytest.raises(ValueError):
         indep('Smoker', 'Pollution', ['Unknown'], data=None, bn=bn_cancer)
     with pytest.raises(ValueError):
@@ -126,7 +126,7 @@ def test_indep_value_error_3():
 
 # Sample size is negative
 def test_indep_value_error_4():
-    bn_cancer = BN.read(TESTDATA_DIR + '/cancer/cancer.dsc')
+    bn_cancer = read_bn(TESTDATA_DIR + '/cancer/cancer.dsc')
     with pytest.raises(ValueError):
         indep('Smoker', 'Pollution', ['Cancer'], data=None, N=-1, bn=bn_cancer)
     with pytest.raises(ValueError):
@@ -189,7 +189,7 @@ def test_indep_a_b_ok2():
 @requires_r_and_bnlearn
 def test_indep_ab_ok1():
 
-    ab = BN.read(TESTDATA_DIR + '/dsc/ab.dsc')  # get A-->B BN
+    ab = read_bn(TESTDATA_DIR + '/dsc/ab.dsc')  # get A-->B BN
     N = 1000
     data = Pandas(df=ab.generate_cases(N))
 
@@ -214,7 +214,7 @@ def test_indep_ab_ok1():
 @requires_r_and_bnlearn
 def test_indep_abc_1_ok():
 
-    abc = BN.read(TESTDATA_DIR + '/dsc/abc.dsc')  # get A-->B BN
+    abc = read_bn(TESTDATA_DIR + '/dsc/abc.dsc')  # get A-->B BN
     N = 1000
     data = Pandas(df=abc.generate_cases(N))
     print(abc.global_distribution())
@@ -240,7 +240,7 @@ def test_indep_abc_1_ok():
 @requires_r_and_bnlearn
 def test_indep_abc_2_ok():
 
-    abc = BN.read(TESTDATA_DIR + '/dsc/abc.dsc')  # get A-->B-->C BN
+    abc = read_bn(TESTDATA_DIR + '/dsc/abc.dsc')  # get A-->B-->C BN
     N = 1000
     data = Pandas(df=abc.generate_cases(N))
     print(abc.global_distribution())
@@ -269,7 +269,7 @@ def test_indep_abc_2_ok():
 @requires_r_and_bnlearn
 def test_indep_abc_ok3():
 
-    abc = BN.read(TESTDATA_DIR + '/dsc/abc.dsc')  # get A-->B-->C BN
+    abc = read_bn(TESTDATA_DIR + '/dsc/abc.dsc')  # get A-->B-->C BN
     N = 10000
     data = Pandas(df=abc.generate_cases(N))
 
@@ -300,7 +300,7 @@ def test_indep_abc_ok3():
 @requires_r_and_bnlearn
 def test_indep_abc_ok4():
 
-    abc = BN.read(TESTDATA_DIR + '/dsc/abc.dsc')  # get A-->B-->C BN
+    abc = read_bn(TESTDATA_DIR + '/dsc/abc.dsc')  # get A-->B-->C BN
     N = 10000
     data = abc.generate_cases(N)  # generate data for 1000 cases
 
@@ -400,7 +400,7 @@ def test_bnlearn_indep_lizards_ok3():
 # indep in cancer BN
 @requires_r_and_bnlearn
 def test_bnlearn_indep_cancer_ok1():
-    cancer = BN.read(TESTDATA_DIR + '/cancer/cancer.dsc')
+    cancer = read_bn(TESTDATA_DIR + '/cancer/cancer.dsc')
     data = Pandas(df=cancer.generate_cases(1000))
     test = indep('Pollution', 'Smoker', None, data.sample, types=TYPES)
     print('\nCancer - Pollution, Smoker:\n{}'.format(test))
@@ -413,7 +413,7 @@ def test_bnlearn_indep_cancer_ok1():
 # dependence in cancer BN
 @requires_r_and_bnlearn
 def test_bnlearn_indep_cancer_ok2():
-    cancer = BN.read(TESTDATA_DIR + '/cancer/cancer.dsc')
+    cancer = read_bn(TESTDATA_DIR + '/cancer/cancer.dsc')
     data = Pandas(df=cancer.generate_cases(1000))
     test = indep('Smoker', 'Cancer', None, data.sample, types=TYPES)
     print('\nCancer - Smoker, Cancer:\n{}'.format(test))
@@ -425,7 +425,7 @@ def test_bnlearn_indep_cancer_ok2():
 # dependence in cancer BN
 @requires_r_and_bnlearn
 def test_bnlearn_indep_cancer_ok3():
-    cancer = BN.read(TESTDATA_DIR + '/cancer/cancer.dsc')
+    cancer = read_bn(TESTDATA_DIR + '/cancer/cancer.dsc')
     data = Pandas(df=cancer.generate_cases(1000))
     test = indep('Pollution', 'Cancer', None, data.sample, types=TYPES)
     print('\nCancer - Pollution, Cancer:\n{}'.format(test))
@@ -438,7 +438,7 @@ def test_bnlearn_indep_cancer_ok3():
 # cond. indep in cancer BN, cond set = 1
 @requires_r_and_bnlearn
 def test_bnlearn_indep_cancer_ok4():
-    cancer = BN.read(TESTDATA_DIR + '/cancer/cancer.dsc')
+    cancer = read_bn(TESTDATA_DIR + '/cancer/cancer.dsc')
     data = Pandas(df=cancer.generate_cases(1000))
     test = indep('Xray', 'Smoker', 'Cancer', data.sample, types=TYPES)
     print('\nCancer - Xray, Smoker | Cancer:\n{}'.format(test))
@@ -451,7 +451,7 @@ def test_bnlearn_indep_cancer_ok4():
 # cond. indep in cancer BN, cond set = 2
 @requires_r_and_bnlearn
 def test_bnlearn_indep_cancer_ok5():
-    cancer = BN.read(TESTDATA_DIR + '/cancer/cancer.dsc')
+    cancer = read_bn(TESTDATA_DIR + '/cancer/cancer.dsc')
     data = Pandas(df=cancer.generate_cases(5000))
     cancer = BN.fit(cancer.dag, data)
     test = indep('Xray', 'Smoker', ['Cancer', 'Pollution'], data.sample,
@@ -468,7 +468,7 @@ def test_bnlearn_indep_cancer_ok5():
 # cond. dependence in cancer BN
 @requires_r_and_bnlearn
 def test_bnlearn_indep_cancer_ok6():
-    cancer = BN.read(TESTDATA_DIR + '/cancer/cancer.dsc')
+    cancer = read_bn(TESTDATA_DIR + '/cancer/cancer.dsc')
     data = cancer.generate_cases(1000)
     test = indep('Smoker', 'Pollution', 'Cancer', data, types=TYPES)
     print('\nCancer - Smoker, Pollution | Cancer:\n{}'.format(test))

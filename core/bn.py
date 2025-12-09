@@ -88,7 +88,7 @@ class BN():
         return self(dag, cnd_specs, estimated_pmfs)
 
     @classmethod
-    def read(self, path, correct=False):
+    def read_bn(self, path, correct=False):
         """
             Instantiate BN from a DSC or XDSL format file specification
 
@@ -104,7 +104,7 @@ class BN():
             :returns BN: Bayesian Network specified in file
         """
         if not isinstance(path, str) or not isinstance(correct, bool):
-            raise TypeError('BN.read() bad arg type')
+            raise TypeError('read_bn() bad arg type')
 
         suffix = path.split('.')[-1]
         if suffix.lower() == 'dsc':
@@ -112,7 +112,7 @@ class BN():
         elif suffix.lower() == 'xdsl':
             nodes, edges, cnd_specs = xdsl.read(path, correct)
         else:
-            raise ValueError('BN.read() invalid file suffix')
+            raise ValueError('read_bn() invalid file suffix')
 
         return self(DAG(nodes, edges), cnd_specs)
 
@@ -150,7 +150,7 @@ class BN():
 
         self = self.__init__(self.dag, cnd_specs)
 
-    def write(self, path):
+    def write_bn(self, path):
         """
             Write BN to a DSC or XDSL format file
 
@@ -481,7 +481,7 @@ class BN():
         cases = DataFrame(cases).astype(dtype=dtype)
 
         if outfile is not None:
-            Pandas(df=cases).write(outfile)
+            Pandas(df=cases).write_bn(outfile)
 
         return cases
 

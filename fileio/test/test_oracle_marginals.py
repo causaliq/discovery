@@ -7,33 +7,33 @@ from numpy import ndarray
 from data import TESTDATA_DIR
 from data.oracle import Oracle
 from causaliq_core.utils import values_same
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 
 
 @pytest.fixture(scope="module")  # AB, 2 rows
 def ab2():
-    data = Oracle(BN.read(TESTDATA_DIR + '/xdsl/ab.xdsl'))
+    data = Oracle(read_bn(TESTDATA_DIR + '/xdsl/ab.xdsl'))
     data.set_N(2)
     return data
 
 
 @pytest.fixture(scope="module")  # AB, 4 rows
 def ab4():
-    data = Oracle(BN.read(TESTDATA_DIR + '/xdsl/ab.xdsl'))
+    data = Oracle(read_bn(TESTDATA_DIR + '/xdsl/ab.xdsl'))
     data.set_N(4)
     return data
 
 
 @pytest.fixture(scope="module")  # ABC, 10 rows
 def abc10():
-    data = Oracle(BN.read(TESTDATA_DIR + '/xdsl/abc.xdsl'))
+    data = Oracle(read_bn(TESTDATA_DIR + '/xdsl/abc.xdsl'))
     data.set_N(10)
     return data
 
 
 @pytest.fixture(scope='module')  # Asia, 100 rows
 def asia():
-    data = Oracle(BN.read(TESTDATA_DIR + '/xdsl/asia.xdsl'))
+    data = Oracle(read_bn(TESTDATA_DIR + '/xdsl/asia.xdsl'))
     data.set_N(100)
     return data
 

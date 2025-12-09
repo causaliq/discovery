@@ -7,26 +7,26 @@
 from causaliq_core.bn import CPT
 from data import TESTDATA_DIR
 from data.pandas import Pandas
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 # import testdata.example_cpts as cpt
 
 
 def test_cpt_param_ratios_ab_1_ok():
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     print('\nCPT for node A in A-->B is:\n{}'.format(bn.cnds['A']))
     print('\nCPT for node B in A-->B is:\n{}'.format(bn.cnds['B']))
     print('\nValue pairs for B are: {}'.format(bn.cnds['B'].param_ratios()))
 
 
 def test_cpt_param_ratios_ab2_1_ok():
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab2.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab2.dsc')
     print('\nCPT for node B in A-->B is:\n{}'.format(bn.cnds['B']))
     bn.cnds['A'].param_ratios()
     bn.cnds['B'].param_ratios()
 
 
 def test_cpt_param_ratios_ab_cb_1_ok():
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab_cb.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab_cb.dsc')
     print('\nCPT for node A in A-->B<--C is:\n{}'.format(bn.cnds['A']))
     print('\nCPT for node B in A-->B<--C is:\n{}'.format(bn.cnds['B']))
     print('\nCPT for node C in A-->B<--C is:\n{}'.format(bn.cnds['C']))

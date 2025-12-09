@@ -14,7 +14,7 @@ from experiments.config import Ordering, SERIES_GROUPS_P, SERIES_P, \
     FIGURE_PARAMS_P, Package, Algorithm
 from causaliq_core.utils.random import Randomise
 from causaliq_core.utils import ln
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 from data import EXPTS_DIR
 from learn.knowledge import RuleSet
 
@@ -1750,7 +1750,7 @@ def reference_bn(network, root_dir=EXPTS_DIR):
     bn_file = ('{}/bn/xdsl/{}.xdsl'.format(EXPTS_DIR, network)
                if network.endswith('_c') else
                '{}/bn/{}.dsc'.format(EXPTS_DIR, network))
-    return (BN.read(bn_file), bn_file)
+    return (read_bn(bn_file), bn_file)
 
 
 def sample_sizes(N_arg='10-1m'):

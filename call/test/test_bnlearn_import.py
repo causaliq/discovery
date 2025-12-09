@@ -8,7 +8,7 @@ from os import remove
 from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_import
 from data import TESTDATA_DIR, EXPTS_DIR
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn, write_bn
 
 
 # temp file, automatically removed
@@ -77,7 +77,7 @@ def test_bnlearn_import_gauss_1_ok():
     for node, cnd in bn.cnds.items():
         print(' {}: {}'.format(node, cnd))
 
-    ref = BN.read(TESTDATA_DIR + '/xdsl/gauss.xdsl')
+    ref = read_bn(TESTDATA_DIR + '/xdsl/gauss.xdsl')
     assert ref == bn
 
 
@@ -161,9 +161,9 @@ def test_bnlearn_import_building_1_ok():
     for node, cnd in bn.cnds.items():
         print(' {}: {}'.format(node, cnd))
 
-    # bn.write(EXPTS_DIR + '/bn/xdsl/building_c.xdsl')
+    # write_bn(bn, EXPTS_DIR + '/bn/xdsl/building_c.xdsl')
 
-    ref = BN.read(EXPTS_DIR + '/bn/xdsl/building_c.xdsl')
+    ref = read_bn(EXPTS_DIR + '/bn/xdsl/building_c.xdsl')
     assert ref == bn
 
 
@@ -304,9 +304,9 @@ def test_bnlearn_import_ecoli70_1_ok():
     for node, cnd in bn.cnds.items():
         print(' {}: {}'.format(node, cnd))
 
-    # bn.write(EXPTS_DIR + '/bn/xdsl/ecoli70_c.xdsl')
+    # write_bn(bn, EXPTS_DIR + '/bn/xdsl/ecoli70_c.xdsl')
 
-    ref = BN.read(EXPTS_DIR + '/bn/xdsl/ecoli70_c.xdsl')
+    ref = read_bn(EXPTS_DIR + '/bn/xdsl/ecoli70_c.xdsl')
     assert ref == bn
 
 
@@ -317,11 +317,11 @@ def test_bnlearn_import_magic_niab_1_ok(tmpfile):
 
     # xdsl will be Genie compliant: '.' ==> '_' in node names
 
-    # bn.write(EXPTS_DIR + '/bn/xdsl/magic-niab_c.xdsl')
+    # write_bn(bn, EXPTS_DIR + '/bn/xdsl/magic-niab_c.xdsl')
     # return
 
-    bn.write(tmpfile)
-    bn = BN.read(tmpfile)
+    write_bn(bn, tmpfile)
+    bn = read_bn(tmpfile)
 
     assert bn.dag.to_string() == \
         ('[FT|G1263:G1276:G1294:G1800:G2318:G266:G775]' +
@@ -441,7 +441,7 @@ def test_bnlearn_import_magic_niab_1_ok(tmpfile):
     for node, cnd in bn.cnds.items():
         print(' {}: {}'.format(node, cnd))
 
-    ref = BN.read(EXPTS_DIR + '/bn/xdsl/magic-niab_c.xdsl')
+    ref = read_bn(EXPTS_DIR + '/bn/xdsl/magic-niab_c.xdsl')
     assert ref == bn
 
 
@@ -450,9 +450,9 @@ def test_bnlearn_import_magic_niab_1_ok(tmpfile):
 def test_bnlearn_import_magic_irri_1_ok():
     bn = bnlearn_import('magic-irri')
 
-    # bn.write(EXPTS_DIR + '/bn/xdsl/magic-irri_c.xdsl')
+    # write_bn(bn, EXPTS_DIR + '/bn/xdsl/magic-irri_c.xdsl')
 
-    ref = BN.read(EXPTS_DIR + '/bn/xdsl/magic-irri_c.xdsl')
+    ref = read_bn(EXPTS_DIR + '/bn/xdsl/magic-irri_c.xdsl')
     assert ref == bn
 
     print('\n\nmagic-irri BN:\n{}\nNode distributions:'.format(bn.dag))
@@ -465,14 +465,14 @@ def test_bnlearn_import_magic_irri_1_ok():
 def test_bnlearn_import_arth150_1_ok(tmpfile):
     bn = bnlearn_import('arth150')
 
-    # bn.write(EXPTS_DIR + '/bn/xdsl/arth150_c.xdsl')
+    # write_bn(bn, EXPTS_DIR + '/bn/xdsl/arth150_c.xdsl')
 
     # xdsl will be Genie compliant: node names start with letters
 
-    bn.write(tmpfile)
-    bn = BN.read(tmpfile)
+    write_bn(bn, tmpfile)
+    bn = read_bn(tmpfile)
 
-    ref = BN.read(EXPTS_DIR + '/bn/xdsl/arth150_c.xdsl')
+    ref = read_bn(EXPTS_DIR + '/bn/xdsl/arth150_c.xdsl')
     assert ref.dag.nodes == bn.dag.nodes
 
     print('\n\narth150 BN:\n{}\nNode distributions:'.format(bn.dag))

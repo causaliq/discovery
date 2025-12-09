@@ -4,7 +4,7 @@ import pytest
 from pandas import DataFrame
 
 from analysis.bn import SampleAnalysis
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 from causaliq_core.utils import values_same
 from data import TESTDATA_DIR, EXPTS_DIR
 from data.pandas import Pandas
@@ -111,14 +111,14 @@ def test_sample_analysis_type_error_2():  # bad bn type
         SampleAnalysis(bn=67)
     with pytest.raises(TypeError):
         SampleAnalysis(bn='should be BN object')
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/a.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/a.dsc')
     data = bn.generate_cases(10)
     with pytest.raises(TypeError):
         SampleAnalysis(bn=data, data=data)
 
 
 def test_sample_analysis_type_error_3():  # bad data type
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/a.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/a.dsc')
     with pytest.raises(TypeError):
         SampleAnalysis(bn=bn, data=2)
     with pytest.raises(TypeError):
@@ -128,7 +128,7 @@ def test_sample_analysis_type_error_3():  # bad data type
 
 
 def test_sample_analysis_type_error_4():  # bad data type
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/a.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/a.dsc')
     with pytest.raises(TypeError):
         SampleAnalysis(data=2)
     with pytest.raises(TypeError):
@@ -139,27 +139,27 @@ def test_sample_analysis_type_error_4():  # bad data type
 
 def test_sample_analysis_value_error_1():  # bad arg val (<2 bn nodes)
     with pytest.raises(ValueError):
-        bn = BN.read(TESTDATA_DIR + '/discrete/tiny/a.dsc')
+        bn = read_bn(TESTDATA_DIR + '/discrete/tiny/a.dsc')
         SampleAnalysis(bn)
 
 
 def test_sample_analysis_value_error_2():  # bad arg val (<2 data columns)
     with pytest.raises(ValueError):
-        bn = BN.read(TESTDATA_DIR + '/discrete/tiny/a.dsc')
+        bn = read_bn(TESTDATA_DIR + '/discrete/tiny/a.dsc')
         data = bn.generate_cases(10)
         SampleAnalysis(data=data)
 
 
 def test_sample_analysis_value_error_3():  # data and bn have different nodes
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/a.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/a.dsc')
     data = bn.generate_cases(10)
     with pytest.raises(ValueError):
-        bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+        bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
         SampleAnalysis(bn=bn, data=data)
 
 
 def test_sample_analysis_ab_1_ok():  # just bn supplied
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     analysis = SampleAnalysis(bn=bn)
     assert isinstance(analysis, SampleAnalysis)
     assert isinstance(analysis.bn, Oracle)
@@ -178,7 +178,7 @@ def test_sample_analysis_ab_2_ok():  # just data supplied
 
 
 def test_sample_analysis_ab_3_ok():  # bn and data supplied
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     data = bn.generate_cases(100)
     analysis = SampleAnalysis(bn=bn, data=data)
     assert isinstance(analysis, SampleAnalysis)
@@ -189,7 +189,7 @@ def test_sample_analysis_ab_3_ok():  # bn and data supplied
 
 
 def test_node_entropy_ab_1_ok():  # A-->B with no data rows
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     analysis = SampleAnalysis(bn)
 
     # Marginal prob for A is .75, .25 --> oracle entropy = 0.5623351446
@@ -223,7 +223,7 @@ def test_node_entropy_ab_1_ok():  # A-->B with no data rows
 
 
 def test_node_entropy_ab_2_ok():  # A-->B with 10 data rows
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     data = DataFrame({'A': ['0', '1', '0', '0', '1', '0', '1', '0', '1', '0'],
                       'B': ['1', '1', '0', '0', '1', '1', '1', '1', '0', '1']},
                      dtype='category')
@@ -330,7 +330,7 @@ def test_node_entropy_ab_4_ok():  # A-->B with 10 data rows, 2 samples
 
 
 def test_node_entropy_ab_5_ok():  # A-->B with 1K data rows
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     data = bn.generate_cases(1000)
     analysis = SampleAnalysis(bn, data)
 
@@ -357,7 +357,7 @@ def test_node_entropy_ab_5_ok():  # A-->B with 1K data rows
 
 
 def test_node_entropy_ab_6_ok():  # A-->B with 1K data rows, sampling
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     data = bn.generate_cases(1000)
     analysis = SampleAnalysis(data=data)
 
@@ -439,7 +439,7 @@ def test_node_entropy_ab_6_ok():  # A-->B with 1K data rows, sampling
 
 
 def test_node_entropy_cancer_1_ok():  # Cancer with 20 data rows
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = Pandas.read(TESTDATA_DIR + '/experiments/datasets/cancer.data.gz',
                        dstype='categorical', N=20).sample
     analysis = SampleAnalysis(bn, data)
@@ -486,7 +486,7 @@ def test_node_entropy_cancer_1_ok():  # Cancer with 20 data rows
 
 
 def test_node_entropy_cancer_2_ok():  # Cancer with 1K data rows
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = Pandas.read(TESTDATA_DIR + '/experiments/datasets/cancer.data.gz',
                        dstype='categorical', N=1000).sample
     analysis = SampleAnalysis(bn, data)
@@ -535,7 +535,7 @@ def test_node_entropy_cancer_2_ok():  # Cancer with 1K data rows
 # Test edge stability method
 
 def test_edge_stability_ab_1_ok():
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     ent0 = SampleAnalysis(bn=bn).node_entropy('B', [])
     ent1 = SampleAnalysis(bn=bn).node_entropy('B', ['A'])
     ratio = 2 * (ent0[2] - ent1[2]) / (ent1[3] - ent0[3])
@@ -549,7 +549,7 @@ def test_edge_stability_ab_1_ok():
 
 
 def test_edge_stability_cancer_1_ok():
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     ent0 = SampleAnalysis(bn=bn).node_entropy('Pollution', [])
     ent1 = SampleAnalysis(bn=bn).node_entropy('Pollution', ['Dyspnoea'])
     ratio = 2 * (ent0[2] - ent1[2]) / (ent1[3] - ent0[3])
@@ -563,7 +563,7 @@ def test_edge_stability_cancer_1_ok():
 
 
 def test_edge_stability_cancer_2_ok():
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     ent0 = SampleAnalysis(bn=bn).node_entropy('Xray', [])
     ent1 = SampleAnalysis(bn=bn).node_entropy('Xray', ['Cancer'])
     ratio = 2 * (ent0[2] - ent1[2]) / (ent1[3] - ent0[3])
@@ -579,7 +579,7 @@ def test_edge_stability_cancer_2_ok():
 # Required sample analysis
 
 def test_cps_reqd_sample_ab_1_ok():  # A-->B, no data
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     analysis = SampleAnalysis(bn)
     assert isinstance(analysis, SampleAnalysis)
     assert isinstance(analysis.bn, Oracle)
@@ -589,7 +589,7 @@ def test_cps_reqd_sample_ab_1_ok():  # A-->B, no data
 
 
 def test_cps_reqd_sample_ab_2_ok():  # A-->B, 10 rows data
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     data = DataFrame({'A': ['0', '1', '0', '0', '1', '0', '1', '0', '1', '0'],
                       'B': ['1', '1', '0', '0', '1', '1', '1', '1', '0', '1']},
                      dtype='category')
@@ -603,7 +603,7 @@ def test_cps_reqd_sample_ab_2_ok():  # A-->B, 10 rows data
 
 
 def test_cps_reqd_sample_ab_3_ok():  # A-->B, 1K rows data
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     data = bn.generate_cases(1000)
     analysis = SampleAnalysis(bn, data)
     assert isinstance(analysis, SampleAnalysis)
@@ -615,7 +615,7 @@ def test_cps_reqd_sample_ab_3_ok():  # A-->B, 1K rows data
 
 
 def test_cps_reqd_sample_ab2_1_ok():  # A-->B (B has 3 values)
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab2.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab2.dsc')
     data = bn.generate_cases(1000)
     analysis = SampleAnalysis(bn, data)
     assert isinstance(analysis, SampleAnalysis)
@@ -627,7 +627,7 @@ def test_cps_reqd_sample_ab2_1_ok():  # A-->B (B has 3 values)
 
 
 def test_cps_reqd_sample_abc_1_ok():  # A-->B-->C
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     data = bn.generate_cases(1000)
     analysis = SampleAnalysis(bn, data)
     assert isinstance(analysis, SampleAnalysis)
@@ -640,7 +640,7 @@ def test_cps_reqd_sample_abc_1_ok():  # A-->B-->C
 
 def test_cps_reqd_sample_cancer_1_ok():  # Cancer 1K rows
     N = 1000
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = Pandas.read(TESTDATA_DIR + '/experiments/datasets/cancer.data.gz',
                        dstype='categorical', N=N).sample
     analysis = SampleAnalysis(bn, data)
@@ -654,7 +654,7 @@ def test_cps_reqd_sample_cancer_1_ok():  # Cancer 1K rows
 
 def test_cps_reqd_sample_sports_1_ok():  # Sports 200 rows
     N = 200
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/sports.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/sports.dsc')
     data = Pandas.read(TESTDATA_DIR + '/experiments/datasets/sports.data.gz',
                        dstype='categorical', N=N).sample
     analysis = SampleAnalysis(bn, data)
@@ -668,7 +668,7 @@ def test_cps_reqd_sample_sports_1_ok():  # Sports 200 rows
 
 def test_cps_reqd_sample_sports_2_ok():  # Sports 1M rows
     N = 10000000
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/sports.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/sports.dsc')
     data = Pandas.read(EXPTS_DIR + '/datasets/sports.data.gz',
                        dstype='categorical', N=N).sample
     for N in [10, 100, 1000, 10**4, 10**5, 10**6, 10**7]:

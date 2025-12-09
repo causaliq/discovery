@@ -9,7 +9,7 @@ from pandas import set_option
 
 from data import TESTDATA_DIR
 from data.pandas import Pandas
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 from learn.hc import hc
 from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_learn
@@ -37,7 +37,7 @@ def check_hc(id, N, expect=None, reverse=False):
         data = Pandas.read(TESTDATA_DIR + '/simple/gauss.data.gz',
                            dstype='continuous', N=N)
     else:
-        bn = BN.read(TESTDATA_DIR + id + '.xdsl')
+        bn = read_bn(TESTDATA_DIR + id + '.xdsl')
         data = Pandas(bn.generate_cases(N))
     if reverse is True:
         data.set_order(tuple(list(data.get_order())[::-1]))

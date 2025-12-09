@@ -13,7 +13,7 @@ import testdata.example_dags as dag
 from data import TESTDATA_DIR
 from causaliq_core.graph import DAG
 from causaliq_core.utils import dicts_same
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 from data.pandas import Pandas
 
 TYPES = ['loglik', 'bic', 'aic', 'bde', 'k2', 'bdj', 'bds']  # scores to test
@@ -169,7 +169,7 @@ def test_score_bnlearn_heckerman_2_ok():
 # bnlearn score for ASIA, 1K
 @requires_r_and_bnlearn
 def test_score_bnlearn_asia_1k():
-    asia = BN.read(TESTDATA_DIR + '/asia/asia.dsc')
+    asia = read_bn(TESTDATA_DIR + '/asia/asia.dsc')
     data = Pandas(asia.generate_cases(1000))
     bnlearn = bnlearn_score(asia.dag, data, TYPES, DEFAULT_PARAMS)
     scores = dag_score(asia.dag, data, TYPES, DEFAULT_PARAMS)
@@ -180,7 +180,7 @@ def test_score_bnlearn_asia_1k():
 # bnlearn score ASIA, 1000K
 @requires_r_and_bnlearn
 def test_score_bnlearn_asia_10k():
-    asia = BN.read(TESTDATA_DIR + '/asia/asia.dsc')
+    asia = read_bn(TESTDATA_DIR + '/asia/asia.dsc')
     data = Pandas(asia.generate_cases(10000))
     bnlearn = bnlearn_score(asia.dag, data, TYPES, DEFAULT_PARAMS)
     scores = dag_score(asia.dag, data, TYPES, DEFAULT_PARAMS)
@@ -210,7 +210,7 @@ def test_score_bnlearn_alarm_press():
 @pytest.mark.slow
 @requires_r_and_bnlearn
 def test_score_bnlearn_alarm_10k():
-    alarm = BN.read(TESTDATA_DIR + '/alarm/alarm.dsc')
+    alarm = read_bn(TESTDATA_DIR + '/alarm/alarm.dsc')
     data = Pandas(alarm.generate_cases(10000))
     bnlearn = bnlearn_score(alarm.dag, data, TYPES, DEFAULT_PARAMS)
     scores = dag_score(alarm.dag, data, TYPES, DEFAULT_PARAMS)
@@ -222,7 +222,7 @@ def test_score_bnlearn_alarm_10k():
 @pytest.mark.slow
 @requires_r_and_bnlearn
 def test_score_bnlearn_pathfinder_25k():
-    pathfinder = BN.read(TESTDATA_DIR + '/pathfinder/pathfinder.dsc')
+    pathfinder = read_bn(TESTDATA_DIR + '/pathfinder/pathfinder.dsc')
     data = Pandas(pathfinder.generate_cases(25000))
     bnlearn = bnlearn_score(pathfinder.dag, data, TYPES, DEFAULT_PARAMS)
     scores = dag_score(pathfinder.dag, data, TYPES, DEFAULT_PARAMS)
@@ -234,7 +234,7 @@ def test_score_bnlearn_pathfinder_25k():
 # score X --> Y Gaussian Network
 @requires_r_and_bnlearn
 def test_score_bnlearn_x_y_score():
-    x_y = BN.read(TESTDATA_DIR + '/xdsl/x_y.xdsl')
+    x_y = read_bn(TESTDATA_DIR + '/xdsl/x_y.xdsl')
     print('\n\n{}'.format(x_y.dag))
     data = Pandas(x_y.generate_cases(3))
     bnlearn = bnlearn_score(x_y.dag, data, ['bic-g'], {'k': 1})

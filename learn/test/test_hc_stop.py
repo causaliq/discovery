@@ -5,7 +5,7 @@ import pytest
 from pandas import DataFrame, set_option
 
 from data import TESTDATA_DIR
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 from learn.hc import hc
 from learn.knowledge import Knowledge, RuleSet
 
@@ -21,7 +21,7 @@ def showall():
 def test_hc_stop_ab_ok_1(showall):  # A->B 1K rows, stop A->B
     dsc = '/discrete/tiny/ab.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/stop/ab_1', 'in': dsc}
     know = Knowledge(RuleSet.STOP_ARC, {'stop': {('A', 'B'): True}})
@@ -42,7 +42,7 @@ def test_hc_stop_ab_ok_1(showall):  # A->B 1K rows, stop A->B
 def test_hc_stop_ab_ok_2(showall):  # A->B 1K rows, stop B->A
     dsc = '/discrete/tiny/ab.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/stop/ab_2', 'in': dsc}
     know = Knowledge(RuleSet.STOP_ARC, {'stop': {('B', 'A'): True}})
@@ -61,7 +61,7 @@ def test_hc_stop_ab_ok_2(showall):  # A->B 1K rows, stop B->A
 def test_hc_stop_ab_ok_3(showall):  # A->B 1K rows, stop A->B & B->A
     dsc = '/discrete/tiny/ab.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/stop/test_hc_stop_ab_ok_3', 'in': dsc}
     know = Knowledge(RuleSet.STOP_ARC, {'stop': {('A', 'B'): True,
@@ -82,7 +82,7 @@ def test_hc_stop_ab_ok_3(showall):  # A->B 1K rows, stop A->B & B->A
 def test_hc_stop_ba_ok_1(showall):  # B->A 1K rows, stop A->B
     dsc = '/discrete/tiny/ba.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/stop/ba_1', 'in': dsc}
     know = Knowledge(RuleSet.STOP_ARC, {'stop': {('A', 'B'): False}})
@@ -103,7 +103,7 @@ def test_hc_stop_ba_ok_1(showall):  # B->A 1K rows, stop A->B
 def test_hc_stop_ba_ok_2(showall):  # B->A 1K rows, stop B->A
     dsc = '/discrete/tiny/ba.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/stop/ba_2', 'in': dsc}
     know = Knowledge(RuleSet.STOP_ARC, {'stop': {('B', 'A'): False}})
@@ -122,7 +122,7 @@ def test_hc_stop_ba_ok_2(showall):  # B->A 1K rows, stop B->A
 def test_hc_stop_ba_ok_3(showall):  # B->A 1K rows, stop A->B & B->A
     dsc = '/discrete/tiny/ba.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/stop/ba_3', 'in': dsc}
     know = Knowledge(RuleSet.STOP_ARC, {'stop': {('A', 'B'): False,
@@ -143,7 +143,7 @@ def test_hc_stop_ba_ok_3(showall):  # B->A 1K rows, stop A->B & B->A
 def test_hc_stop_abc_ok_1(showall):  # A->B->C 1K rows, stop A-->B
     dsc = '/discrete/tiny/abc.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/stop/abc_1', 'in': dsc}
     know = Knowledge(RuleSet.STOP_ARC, {'stop': {('A', 'B'): True}})
@@ -166,7 +166,7 @@ def test_hc_stop_abc_ok_1(showall):  # A->B->C 1K rows, stop A-->B
 def test_hc_stop_abc_ok_2(showall):  # A->B->C 1K rows, stop A->B & B->A
     dsc = '/discrete/tiny/abc.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/stop/abc_2', 'in': dsc}
     know = Knowledge(RuleSet.STOP_ARC, {'stop': {('A', 'B'): True,
@@ -190,7 +190,7 @@ def test_hc_stop_abc_ok_2(showall):  # A->B->C 1K rows, stop A->B & B->A
 def test_hc_stop_abc_ok_3(showall):  # A->B->C 1K rows, stop A->B & B->C
     dsc = '/discrete/tiny/abc.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/stop/abc_3', 'in': dsc}
     know = Knowledge(RuleSet.STOP_ARC, {'stop': {('A', 'B'): True,
@@ -216,7 +216,7 @@ def test_hc_stop_abc_ok_3(showall):  # A->B->C 1K rows, stop A->B & B->C
 def test_hc_stop_ab_cb_ok_1(showall):  # stop A->B
     dsc = '/discrete/tiny/ab_cb.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/stop/ab_cb_1', 'in': dsc}
     know = Knowledge(RuleSet.STOP_ARC, {'stop': {('A', 'B'): True}})
@@ -235,7 +235,7 @@ def test_hc_stop_ab_cb_ok_1(showall):  # stop A->B
 def test_hc_stop_ab_cb_ok_2(showall):  # stop A->B, B->C
     dsc = '/discrete/tiny/ab_cb.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/stop/ab_cb_2', 'in': dsc}
     know = Knowledge(RuleSet.STOP_ARC, {'stop': {('A', 'B'): False,
@@ -255,7 +255,7 @@ def test_hc_stop_ab_cb_ok_2(showall):  # stop A->B, B->C
 def test_hc_stop_ab_cb_ok_3(showall):  # stop A->B, B->C, C->B
     dsc = '/discrete/tiny/ab_cb.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/stop/ab_cb_3', 'in': dsc}
     know = Knowledge(RuleSet.STOP_ARC, {'stop': {('A', 'B'): False,
@@ -277,7 +277,7 @@ def test_hc_stop_ab_cb_ok_3(showall):  # stop A->B, B->C, C->B
 def test_hc_stop_and4_10_ok_1(showall):  # stop X1->X2
     dsc = '/discrete/tiny/and4_10.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/stop/and4_10_1', 'in': dsc}
     know = Knowledge(RuleSet.STOP_ARC, {'stop': {('X1', 'X2'): True}})
@@ -296,7 +296,7 @@ def test_hc_stop_and4_10_ok_1(showall):  # stop X1->X2
 def test_hc_stop_and4_10_ok_2(showall):  # stop X1->X2, X2->X3, X3->X2
     dsc = '/discrete/tiny/and4_10.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/stop/and4_10_2', 'in': dsc}
     know = Knowledge(RuleSet.STOP_ARC, {'stop': {('X1', 'X2'): True,
@@ -318,7 +318,7 @@ def test_hc_stop_and4_10_ok_2(showall):  # stop X1->X2, X2->X3, X3->X2
 def test_hc_stop_cancer_ok_1(showall):  # stop Cancer->Smoker
     dsc = '/discrete/small/cancer.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/stop/cancer_1', 'in': dsc}
     know = Knowledge(RuleSet.STOP_ARC, {'stop': {('Cancer', 'Smoker'): True}})
@@ -338,7 +338,7 @@ def test_hc_stop_cancer_ok_1(showall):  # stop Cancer->Smoker
 def test_hc_stop_cancer_ok_2(showall):  # stop Cancer->Smoker, Cancer->Dyspnoea
     dsc = '/discrete/small/cancer.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/stop/cancer_2', 'in': dsc}
     know = Knowledge(RuleSet.STOP_ARC, {'stop': {('Cancer', 'Smoker'): True,
@@ -362,7 +362,7 @@ def test_hc_stop_cancer_ok_2(showall):  # stop Cancer->Smoker, Cancer->Dyspnoea
 def test_hc_stop_asia_ok_1(showall):  # stop either->lung
     dsc = '/discrete/small/asia.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/stop/asia_1', 'in': dsc}
     know = Knowledge(RuleSet.STOP_ARC, {'stop': {('either', 'lung'): True}})
@@ -380,7 +380,7 @@ def test_hc_stop_asia_ok_1(showall):  # stop either->lung
 def test_hc_stop_asia_ok_2(showall):  # stop either->lung, either->tub, b->s
     dsc = '/discrete/small/asia.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/stop/asia_2', 'in': dsc}
     know = Knowledge(RuleSet.STOP_ARC, {'stop': {('either', 'lung'): True,

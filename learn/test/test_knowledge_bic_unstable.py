@@ -9,34 +9,34 @@ from learn.trace import Activity
 from learn.dagchange import DAGChange, BestDAGChanges
 from data import TESTDATA_DIR
 from data.numpy import NumPy
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 from causaliq_core.utils.random import init_stable_random
 
 
 @pytest.fixture
 def know_abc_1():  # rule with limit of one
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     return Knowledge(rules=RuleSet.BIC_UNSTABLE,
                      params={'ref': ref, 'limit': 1})
 
 
 @pytest.fixture
 def know_abc_2():  # rule with limit of two, ignore first
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     return Knowledge(rules=RuleSet.BIC_UNSTABLE,
                      params={'ref': ref, 'limit': 2, 'ignore': 1})
 
 
 @pytest.fixture
 def know_abc_3():  # rule with limit of 3, expertise 0.5
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     return Knowledge(rules=RuleSet.BIC_UNSTABLE,
                      params={'ref': ref, 'limit': 3, 'expertise': 0.5})
 
 
 @pytest.fixture
 def know_abc_4():  # rule with limit of 1, ignore 1, expertise 0.8
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     return Knowledge(rules=RuleSet.BIC_UNSTABLE,
                      params={'ref': ref, 'limit': 1, 'ignore': 1,
                              'expertise': 0.8})
@@ -44,7 +44,7 @@ def know_abc_4():  # rule with limit of 1, ignore 1, expertise 0.8
 
 @pytest.fixture
 def know_abc_5():  # rule with limit of 3, expertise 0.5
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     return Knowledge(rules=RuleSet.BIC_UNSTABLE,
                      params={'ref': ref, 'limit': 3, 'expertise': 0.5,
                              'partial': True})
@@ -52,7 +52,7 @@ def know_abc_5():  # rule with limit of 3, expertise 0.5
 
 @pytest.fixture
 def abc1():  # data and parents for A->B->C graph
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     parents = {'A': set(), 'B': {'A'}, 'C': {'B'}}
     data = NumPy.from_df(df=ref.generate_cases(10), dstype='categorical',
                          keep_df=True)
@@ -61,13 +61,13 @@ def abc1():  # data and parents for A->B->C graph
 
 @pytest.fixture
 def ab():  # return ab DAG
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     return ref.dag
 
 
 @pytest.fixture
 def asia1():  # Asia network with perfect partial expert
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     data = NumPy.from_df(df=ref.generate_cases(10), dstype='categorical',
                          keep_df=True)
     parents = {n: set() for n in ref.dag.nodes}
@@ -79,7 +79,7 @@ def asia1():  # Asia network with perfect partial expert
 # Test the Knowledge constructor
 
 def test_bic_unstable_type_error_1():  # bad threshold type
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     with pytest.raises(TypeError):
         Knowledge(rules=RuleSet.BIC_UNSTABLE,
                   params={'ref': ref, 'limit': 0.5, 'expertise': 1.0,
@@ -95,7 +95,7 @@ def test_bic_unstable_type_error_1():  # bad threshold type
 
 
 def test_bic_unstable_value_error_1():  # threshold bad value
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     with pytest.raises(ValueError):
         Knowledge(rules=RuleSet.BIC_UNSTABLE,
                   params={'ref': ref, 'limit': 0.5, 'expertise': 1.0,
@@ -124,7 +124,7 @@ def test_bic_unstable_value_error_4():  # limit is float, ref not specified
 
 
 def test_bic_unstable_value_error_5():  # float limit not between 0 and 1
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     with pytest.raises(ValueError):
         Knowledge(rules=RuleSet.BIC_UNSTABLE,
                   params={'limit': 0.0, 'ref': ref})
@@ -156,13 +156,13 @@ def test_bic_unstable_value_error_8():  # BIC_UNSTABLE needs ref parameter
 
 
 def test_bic_unstable_value_error_9():  # sample not allowed
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     with pytest.raises(ValueError):
         Knowledge(rules=RuleSet.BIC_UNSTABLE, params={'ref': ref, 'sample': 2})
 
 
 def test_bic_unstable_1_ok():  # BIC_UNSTABLE ruleset, ref param
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     knowledge = Knowledge(rules=RuleSet.BIC_UNSTABLE, params={'ref': ref})
     assert knowledge.rules.rules == [Rule.BIC_UNSTABLE]
     assert knowledge.ref == ref
@@ -182,7 +182,7 @@ def test_bic_unstable_1_ok():  # BIC_UNSTABLE ruleset, ref param
 
 
 def test_bic_unstable_2_ok():  # EQUIV_ADD ruleset, ref & limit params
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     knowledge = Knowledge(rules=RuleSet.BIC_UNSTABLE,
                           params={'ref': ref, 'limit': 10})
     assert knowledge.rules.rules == [Rule.BIC_UNSTABLE]
@@ -285,7 +285,7 @@ def test_bic_unstable_6_ok(know_abc_4):
 # Knowledge constructor with Cancer
 
 def test_bic_unstable_7_ok():  # BIC_UNSTABLE, limit 0.2 --> 1
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.BIC_UNSTABLE,
                      params={'limit': 0.2, 'ref': ref})
     assert know.rules.rules == [Rule.BIC_UNSTABLE]
@@ -309,7 +309,7 @@ def test_bic_unstable_7_ok():  # BIC_UNSTABLE, limit 0.2 --> 1
 
 
 def test_bic_unstable_8_ok():  # BIC_UNSTABLE, limit 0.5 --> 2
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.BIC_UNSTABLE,
                      params={'limit': 0.5, 'ref': ref})
     assert know.rules.rules == [Rule.BIC_UNSTABLE]
@@ -333,7 +333,7 @@ def test_bic_unstable_8_ok():  # BIC_UNSTABLE, limit 0.5 --> 2
 
 
 def test_bic_unstable_9_ok():  # BIC_UNSTABLE, limit 0.05 --> 1
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.BIC_UNSTABLE,
                      params={'limit': 0.05, 'ref': ref})
     assert know.rules.rules == [Rule.BIC_UNSTABLE]
@@ -357,7 +357,7 @@ def test_bic_unstable_9_ok():  # BIC_UNSTABLE, limit 0.05 --> 1
 
 
 def test_bic_unstable_10_ok():  # BIC_UNSTABLE, limit 0.05 --> 1, threshold 0.1
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.BIC_UNSTABLE,
                      params={'limit': 0.05, 'ref': ref, 'threshold': 0.1})
     assert know.rules.rules == [Rule.BIC_UNSTABLE]
@@ -383,7 +383,7 @@ def test_bic_unstable_10_ok():  # BIC_UNSTABLE, limit 0.05 --> 1, threshold 0.1
 # Knowledge constructor with asia
 
 def test_bic_unstable_asia_1_ok():  # BIC_UNSTABLE Knowledge, 0.2 expertise
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     know = Knowledge(rules=RuleSet.BIC_UNSTABLE,
                      params={'limit': 0.2, 'ref': ref, 'expertise': 1.0})
     assert know.rules.rules == [Rule.BIC_UNSTABLE]

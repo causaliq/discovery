@@ -5,13 +5,13 @@ import pytest
 
 from causaliq_core.utils.random import init_stable_random
 from data import TESTDATA_DIR
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 from learn.knowledge import Knowledge, Rule, RuleSet
 
 
 @pytest.fixture
 def abc():  # A --> B --> C BN
-    return BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    return read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
 
 
 def test_tiers_type_error_1():  # nodes parameter has incorrect type
@@ -60,7 +60,7 @@ def xtest_tiers_value_error_3():  # STOP_ARC stop frac missing ref
 
 
 def xtest_tiers_value_error_4():  # STOP_ARC stop frac missing ref
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     with pytest.raises(ValueError):
         Knowledge(rules=RuleSet.STOP_ARC, params={'stop': 0.1, 'ref': ref},
                   sample=-1)
@@ -125,7 +125,7 @@ def test_tiers_abc_3_ok(abc):  # Tiers knowledge - nodes=0.5, A->B->C
 
 
 def test_tiers_cancer_1_ok():  # Cancer, nodes = 3
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.TIERS, sample=0,
                      params={'nodes': 3, 'ref': ref, 'expertise': 1.0})
     assert know.rules.rules == [Rule.TIERS]
@@ -152,7 +152,7 @@ def test_tiers_cancer_1_ok():  # Cancer, nodes = 3
 
 
 def test_tiers_cancer_2_ok():  # Cancer, nodes = 0.60
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.TIERS, sample=0,
                      params={'nodes': 0.6, 'ref': ref, 'expertise': 1.0})
     assert know.rules.rules == [Rule.TIERS]
@@ -179,7 +179,7 @@ def test_tiers_cancer_2_ok():  # Cancer, nodes = 0.60
 
 
 def test_tiers_cancer_3_ok():  # Cancer, nodes = 0.60, sample=1
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.TIERS, sample=1,
                      params={'nodes': 3, 'ref': ref, 'expertise': 1.0})
     assert know.rules.rules == [Rule.TIERS]
@@ -207,7 +207,7 @@ def test_tiers_cancer_3_ok():  # Cancer, nodes = 0.60, sample=1
 
 
 def test_tiers_cancer_4_ok():  # Cancer, nodes = 0.25
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.TIERS, sample=1,
                      params={'nodes': 0.25, 'ref': ref, 'expertise': 1.0})
     assert know.rules.rules == [Rule.TIERS]
@@ -233,7 +233,7 @@ def test_tiers_cancer_4_ok():  # Cancer, nodes = 0.25
 
 
 def test_tiers_cancer_5_ok():  # Cancer, nodes = 1.0
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.TIERS, sample=1,
                      params={'nodes': 1.0, 'ref': ref, 'expertise': 1.0})
     assert know.rules.rules == [Rule.TIERS]
@@ -277,7 +277,7 @@ def test_tiers_cancer_5_ok():  # Cancer, nodes = 1.0
 def test_tiers_cancer_6_ok():  # Cancer, nodes = 0.60, sample=1, exp=0.5
 
     init_stable_random()
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.TIERS, sample=1,
                      params={'nodes': 3, 'ref': ref, 'expertise': 0.5})
     assert know.rules.rules == [Rule.TIERS]
@@ -307,7 +307,7 @@ def test_tiers_cancer_6_ok():  # Cancer, nodes = 0.60, sample=1, exp=0.5
 def test_tiers_cancer_7_ok():  # Cancer, nodes = 0.60, sample=0, exp=0.5
 
     init_stable_random()
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.TIERS, sample=0,
                      params={'nodes': 3, 'ref': ref, 'expertise': 0.5})
     assert know.rules.rules == [Rule.TIERS]
@@ -339,7 +339,7 @@ def test_tiers_cancer_7_ok():  # Cancer, nodes = 0.60, sample=0, exp=0.5
 def test_tiers_cancer_8_ok():  # Cancer, nodes = 0.60, sample=0, exp=0.8
 
     init_stable_random()
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.TIERS, sample=0,
                      params={'nodes': 3, 'ref': ref, 'expertise': 0.8})
     assert know.rules.rules == [Rule.TIERS]
@@ -369,7 +369,7 @@ def test_tiers_cancer_8_ok():  # Cancer, nodes = 0.60, sample=0, exp=0.8
 def test_tiers_cancer_9_ok():  # Cancer, nodes = 0.60, sample=1, exp=0.8
 
     init_stable_random()
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.TIERS, sample=1,
                      params={'nodes': 3, 'ref': ref, 'expertise': 0.8})
     assert know.rules.rules == [Rule.TIERS]
@@ -397,7 +397,7 @@ def test_tiers_cancer_9_ok():  # Cancer, nodes = 0.60, sample=1, exp=0.8
 
 
 def test_tiers_cancer_10_ok():  # Cancer, nodes = 1.0, exp = 0.5
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.TIERS, sample=0,
                      params={'nodes': 1.0, 'ref': ref, 'expertise': 0.5})
     assert know.rules.rules == [Rule.TIERS]
@@ -440,7 +440,7 @@ def test_tiers_cancer_10_ok():  # Cancer, nodes = 1.0, exp = 0.5
 # Asia Tiers knowledge, perfect expert
 
 def test_tiers_asia_1_ok():  # Asia, nodes = 0.50, sample = 1
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     know = Knowledge(rules=RuleSet.TIERS, sample=1,
                      params={'nodes': 0.5, 'ref': ref, 'expertise': 1.0})
     assert know.rules.rules == [Rule.TIERS]
@@ -472,7 +472,7 @@ def test_tiers_asia_1_ok():  # Asia, nodes = 0.50, sample = 1
 
 
 def test_tiers_asia_2_ok():  # Asia, nodes = 0.50, sample = 5
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     know = Knowledge(rules=RuleSet.TIERS, sample=5,
                      params={'nodes': 0.5, 'ref': ref, 'expertise': 1.0})
     assert know.rules.rules == [Rule.TIERS]
@@ -505,7 +505,7 @@ def test_tiers_asia_2_ok():  # Asia, nodes = 0.50, sample = 5
 # Asia, imperfect tiers knowledge
 
 def test_tiers_asia_3_ok():  # Asia, nodes = 0.50, sample = 1, exp = 0.5
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     know = Knowledge(rules=RuleSet.TIERS, sample=1,
                      params={'nodes': 0.5, 'ref': ref, 'expertise': 0.5})
     assert know.rules.rules == [Rule.TIERS]
@@ -537,7 +537,7 @@ def test_tiers_asia_3_ok():  # Asia, nodes = 0.50, sample = 1, exp = 0.5
 
 
 def test_tiers_asia_4_ok():  # Asia, nodes = 0.50, sample = 2, exp = 0.5
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     know = Knowledge(rules=RuleSet.TIERS, sample=2,
                      params={'nodes': 0.5, 'ref': ref, 'expertise': 0.5})
     assert know.rules.rules == [Rule.TIERS]

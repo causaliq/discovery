@@ -6,7 +6,7 @@ from pandas import DataFrame
 from data import TESTDATA_DIR
 from data.pandas import Pandas
 from causaliq_core.graph import DAG
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 from causaliq_core.bn import NodeValueCombinations
 from causaliq_core.utils import dists_same
 
@@ -167,40 +167,40 @@ def test_expt(bn):
 
 
 def test_bn_marginals_a_b_c_ok():  # A  B  C
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/a_b_c.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/a_b_c.dsc')
     check_all_marginals(bn, 'A  B  C')
 
 
 def test_bn_marginals_ab_c_ok():  # A -> B  C
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab_c.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab_c.dsc')
     check_all_marginals(bn, 'A -> B  C')
 
 
 def test_bn_marginals_abc_ok():  # A -> B -> C
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     check_all_marginals(bn, 'A -> B -> C')
 
 
 def test_bn_marginals_ab_ac_ok():  # B <- A -> C
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab_ac.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab_ac.dsc')
     check_all_marginals(bn, 'B <- A -> C')
 
 
 def test_bn_marginals_ab_cb_ok():  # A -> B <- C
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab_cb.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab_cb.dsc')
     check_all_marginals(bn, 'A -> B <- C')
 
 
 def test_bn_marginals_abc_dual_ok():  # C <- A -> B -> C
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/abc_dual.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/abc_dual.dsc')
     check_all_marginals(bn, 'C <- A -> B -> C')
 
 
 def test_bn_marginals_and4_10_ok():  # X1 -> X2 <- X3, X2 -> X4
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/and4_10.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/and4_10.dsc')
     check_all_marginals(bn, 'X1 -> X2 <- X3, X2 -> X4')
 
 
 def test_bn_marginals_cancer_ok():  # Cancer
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     check_all_marginals(bn, 'Cancer')

@@ -6,7 +6,7 @@ from os import remove
 from data import TESTDATA_DIR
 from data.pandas import Pandas
 from causaliq_core.graph import DAG
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 from causaliq_core.utils import values_same
 import testdata.example_bns as ex_bn
 
@@ -95,7 +95,7 @@ def test_bn_generate_cases_heckerman_demo_2():  # OK with unconnected graph?
 
 
 def test_bn_generate_cases_cancer_demo():  # OK Cancer BN
-    bn = BN.read(TESTDATA_DIR + '/cancer/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/cancer/cancer.dsc')
     data = bn.generate_cases(10000)
     summary = data.groupby(bn.dag.nodes) \
         .size().reset_index().rename(columns={0: 'count'}) \
@@ -120,7 +120,7 @@ def test_bn_generate_cases_cancer_demo():  # OK Cancer BN
 
 
 def test_bn_generate_cases_cancer_write_ok(tmpfile):  # OK writing Cancer BN
-    bn = BN.read(TESTDATA_DIR + '/cancer/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/cancer/cancer.dsc')
     cases = bn.generate_cases(10000, tmpfile)
     check = Pandas.read(tmpfile, dstype='categorical').df
     assert check.equals(cases)

@@ -5,7 +5,7 @@ from pandas import DataFrame
 
 from data import EXPTS_DIR
 from experiments.config import NETWORKS
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 from analysis.bn import BNAnalysis
 from experiments.plot import plot_degree_distribution
 
@@ -21,7 +21,7 @@ def analyse_networks():
         #   Read in network description and anlyse the network
 
         print('Analysing {} network ...'.format(network))
-        bn = BN.read(EXPTS_DIR + '/bn/' + network + '.dsc')
+        bn = read_bn(EXPTS_DIR + '/bn/' + network + '.dsc')
         row = {'network': network}
         analysis = BNAnalysis(bn)
 

@@ -1,7 +1,7 @@
 
 import pytest
 
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn, write_bn
 from causaliq_core.bn import CPT
 from causaliq_core.bn import LinGauss
 from causaliq_core.utils import values_same
@@ -331,7 +331,7 @@ def test_bn_fit_xy_1_ok():  # X --> Y, 10K
     # X = Normal(2.0,1.0)
     # Y = 1.5*X+Normal(0.5,0.5)
 
-    bn = BN.read(TESTDATA_DIR + '/xdsl/xy.xdsl')
+    bn = read_bn(TESTDATA_DIR + '/xdsl/xy.xdsl')
     data = Pandas(df=bn.generate_cases(10000))
 
     bn = BN.fit(bn.dag, data)
@@ -352,7 +352,7 @@ def test_bn_fit_xyz_1_ok():  # X --> Y --> Z, 10K
     # Y = 1.5*X+Normal(0.5,0.5)
     # Z = -2.0*Y+Normal(-2.0,0.2)
 
-    bn = BN.read(TESTDATA_DIR + '/xdsl/xyz.xdsl')
+    bn = read_bn(TESTDATA_DIR + '/xdsl/xyz.xdsl')
     data = Pandas(df=bn.generate_cases(10000))
 
     bn = BN.fit(bn.dag, data)
@@ -381,7 +381,7 @@ def test_bn_fit_xy_zy_1_ok():  # X --> Y --> Z, 100K
     # Y = 1.5*X - 2.2*Z + Normal(0.5, 0.5)
     # Z = Normal(-2.0, 0.2)
 
-    bn = BN.read(TESTDATA_DIR + '/xdsl/xy_zy.xdsl')
+    bn = read_bn(TESTDATA_DIR + '/xdsl/xy_zy.xdsl')
     data = Pandas(df=bn.generate_cases(100000))
 
     bn = BN.fit(bn.dag, data)
@@ -406,7 +406,7 @@ def test_bn_fit_xy_zy_1_ok():  # X --> Y --> Z, 100K
 
 def test_bn_fit_sachs_c_ok():  # Fitting sachs to real cont data
 
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/sachs.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/sachs.dsc')
     print(bn.dag)
     data = Pandas.read(EXPTS_DIR + '/realdata/sachs_2005_cont.data.gz',
                        dstype='continuous')
@@ -421,13 +421,13 @@ def test_bn_fit_sachs_c_ok():  # Fitting sachs to real cont data
 
     # fitted.write(EXPTS_DIR + '/bn/xdsl/sachs_c.xdsl')
 
-    ref = BN.read(EXPTS_DIR + '/bn/xdsl/sachs_c.xdsl')
+    ref = read_bn(EXPTS_DIR + '/bn/xdsl/sachs_c.xdsl')
     assert ref == fitted
 
 
 def test_bn_fit_covid_c_ok():  # Fitting covid to real cont data
 
-    bn = BN.read(TESTDATA_DIR + '/discrete/medium/covid.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/medium/covid.dsc')
     print(bn.dag)
     data = Pandas.read(EXPTS_DIR + '/realdata/covid_cont.data.gz',
                        dstype='continuous')
@@ -440,7 +440,7 @@ def test_bn_fit_covid_c_ok():  # Fitting covid to real cont data
     for node, cnd in fitted.cnds.items():
         print('{}: {}'.format(node, cnd))
 
-    fitted.write(EXPTS_DIR + '/bn/xdsl/covid_c.xdsl')
+    write_bn(fitted, EXPTS_DIR + '/bn/xdsl/covid_c.xdsl')
 
-    # ref = BN.read(EXPTS_DIR + '/bn/xdsl/covid_c.xdsl')
+    # ref = read_bn(EXPTS_DIR + '/bn/xdsl/covid_c.xdsl')
     # assert ref == fitted

@@ -6,7 +6,7 @@ from learn.exhaustive import exhaustive
 from data import TESTDATA_DIR
 from data.numpy import NumPy
 from causaliq_core.utils import dicts_same
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 
 
 def test_exhaustive_type_error_1():
@@ -130,7 +130,7 @@ def test_exhaustive_ab_100_ok():
     #   Generate 100 rows of data for a BN with structure A-->B and
     #   exhaustively score and rank all possible DAGs
 
-    bn = BN.read(TESTDATA_DIR + '/dsc/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/dsc/ab.dsc')
     global_dist = bn.global_distribution()
     print('\n\n{}'.format(global_dist))
     data = NumPy.from_df(df=bn.generate_cases(100), dstype='categorical',
@@ -156,7 +156,7 @@ def test_exhaustive_abc_100_ok():
     #   Generate 100 rows of data for a BN with structure A-->B-->C and
     #   exhaustively score and rank all possible DAGs
 
-    bn = BN.read(TESTDATA_DIR + '/dsc/abc.dsc')
+    bn = read_bn(TESTDATA_DIR + '/dsc/abc.dsc')
     assert isinstance(bn, BN)
     assert bn.free_params == 5
     global_dist = bn.global_distribution()
@@ -182,7 +182,7 @@ def test_exhaustive_abc_1K_ok():
     #   Generate 1000 rows of data for a BN with structure A-->B-->C and
     #   exhaustively score and rank all possible DAGs
 
-    bn = BN.read(TESTDATA_DIR + '/dsc/abc.dsc')
+    bn = read_bn(TESTDATA_DIR + '/dsc/abc.dsc')
     assert isinstance(bn, BN)
     assert bn.free_params == 5
     global_dist = bn.global_distribution()
@@ -208,7 +208,7 @@ def test_exhaustive_ab_cb_100_ok():
     #   Generate 100 rows of data for a BN with structure A-->B<--C and
     #   exhaustively score and rank all possible DAGs
 
-    bn = BN.read(TESTDATA_DIR + '/dsc/ab_cb.dsc')
+    bn = read_bn(TESTDATA_DIR + '/dsc/ab_cb.dsc')
     assert isinstance(bn, BN)
     assert bn.free_params == 6
     global_dist = bn.global_distribution()
@@ -234,7 +234,7 @@ def test_exhaustive_ab_cb_1K_ok():
     #   Generate 1000 rows of data for a BN with structure A-->B<--C and
     #   exhaustively score and rank all possible DAGs
 
-    bn = BN.read(TESTDATA_DIR + '/dsc/ab_cb.dsc')
+    bn = read_bn(TESTDATA_DIR + '/dsc/ab_cb.dsc')
     assert isinstance(bn, BN)
     assert bn.free_params == 6
     global_dist = bn.global_distribution()

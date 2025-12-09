@@ -8,7 +8,7 @@ from learn.knowledge import Knowledge, Rule, RuleSet, \
 from learn.trace import Activity
 from learn.dagchange import DAGChange, BestDAGChanges
 from data import TESTDATA_DIR
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 
 
 @pytest.fixture
@@ -71,7 +71,7 @@ def test_knowledge_value_error_3():  # STOP_ARC stop frac missing ref
 
 
 def test_knowledge_value_error_4():  # STOP_ARC stop frac missing ref
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     with pytest.raises(ValueError):
         Knowledge(rules=RuleSet.STOP_ARC, params={'stop': 0.1, 'ref': ref},
                   sample=-1)
@@ -97,7 +97,7 @@ def test_knowledge_ok_1(stop1):  # STOP_ARC Knowledge
 
 
 def test_knowledge_cancer_1_ok():  # STOP_ARC, stop 3
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.STOP_ARC,
                      params={'stop': 3, 'ref': ref, 'expertise': 1.0})
     assert know.rules.rules == [Rule.STOP_ARC]
@@ -124,7 +124,7 @@ def test_knowledge_cancer_1_ok():  # STOP_ARC, stop 3
 
 
 def test_knowledge_cancer_2_ok():  # STOP_ARC, stop 0.19 (3/16 of non-arcs)
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.STOP_ARC,
                      params={'stop': 0.60, 'ref': ref, 'expertise': 1.0})
     assert know.rules.rules == [Rule.STOP_ARC]
@@ -151,7 +151,7 @@ def test_knowledge_cancer_2_ok():  # STOP_ARC, stop 0.19 (3/16 of non-arcs)
 
 
 def test_knowledge_cancer_3_ok():  # STOP_ARC, stop 3, sample 2
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.STOP_ARC, sample=2,
                      params={'stop': 3, 'ref': ref, 'expertise': 1.0})
     assert know.rules.rules == [Rule.STOP_ARC]
@@ -178,7 +178,7 @@ def test_knowledge_cancer_3_ok():  # STOP_ARC, stop 3, sample 2
 
 
 def test_knowledge_cancer_4_ok():  # STOP_ARC, stop 0.19, sample 2
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.STOP_ARC, sample=2,
                      params={'stop': 0.60, 'ref': ref, 'expertise': 1.0})
     assert know.rules.rules == [Rule.STOP_ARC]
@@ -230,7 +230,7 @@ def test_knowledge_asia_1_ok():  # STOP_ARC, explicit stop list
 
 
 def test_knowledge_asia_2_ok():  # STOP_ARC, stop 4 correct
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     know = Knowledge(rules=RuleSet.STOP_ARC,
                      params={'stop': 4, 'ref': ref, 'expertise': 1.0})
     assert know.rules.rules == [Rule.STOP_ARC]
@@ -253,7 +253,7 @@ def test_knowledge_asia_2_ok():  # STOP_ARC, stop 4 correct
 
 
 def test_knowledge_asia_3_ok():  # STOP_ARC, stop 0.0833 (1/12) correct
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     know = Knowledge(rules=RuleSet.STOP_ARC,
                      params={'stop': 0.5, 'ref': ref, 'expertise': 1.0})
     assert know.rules.rules == [Rule.STOP_ARC]
@@ -294,7 +294,7 @@ def test_stop_ok_1(stop1):  # stop add of specified arc
 
     # check hc_best returns correct event
 
-    data = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc').generate_cases(10)
+    data = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc').generate_cases(10)
     parents = {'A': set(), 'B': {'A'}, 'C': {'B'}}
     best = BestDAGChanges()
     _best, event = stop1.hc_best(best, 6, data, parents)

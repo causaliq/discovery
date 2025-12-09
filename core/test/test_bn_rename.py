@@ -5,18 +5,18 @@ import pytest
 from copy import deepcopy
 
 from causaliq_core.graph import DAG, EdgeType
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 from data import TESTDATA_DIR
 
 
 def test_bn_rename_type_error_1():  # bad argument types
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     with pytest.raises(TypeError):
         bn.rename()
 
 
 def test_bn_rename_type_error_2():  # name_map not a dictionary
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     with pytest.raises(TypeError):
         bn.rename(name_map=None)
     with pytest.raises(TypeError):
@@ -28,7 +28,7 @@ def test_bn_rename_type_error_2():  # name_map not a dictionary
 
 
 def test_bn_rename_type_error_3():  # name_map has non-string keys
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     with pytest.raises(TypeError):
         bn.rename(name_map={1: 'B'})
     with pytest.raises(TypeError):
@@ -36,7 +36,7 @@ def test_bn_rename_type_error_3():  # name_map has non-string keys
 
 
 def test_bn_rename_type_error_4():  # name_map has non-string values
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     with pytest.raises(TypeError):
         bn.rename(name_map={'A': 1})
     with pytest.raises(TypeError):
@@ -44,7 +44,7 @@ def test_bn_rename_type_error_4():  # name_map has non-string values
 
 
 def test_bn_rename_value_error_1():  # keys that are not current node name
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     with pytest.raises(ValueError):
         bn.rename(name_map={'C': 'Q'})
 
@@ -52,7 +52,7 @@ def test_bn_rename_value_error_1():  # keys that are not current node name
 # Renames on A-->B
 
 def test_bn_rename_bn_ab_1_ok():  # change first node name, keeping order
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     orig_bn = deepcopy(bn)
     bn.rename(name_map={'A': 'AA', 'B': 'B'})
 
@@ -73,7 +73,7 @@ def test_bn_rename_bn_ab_1_ok():  # change first node name, keeping order
 
 
 def test_bn_rename_bn_ab_2_ok():  # change first node name, changing order
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     orig_bn = deepcopy(bn)
     bn.rename(name_map={'A': 'Z', 'B': 'B'})
 
@@ -94,7 +94,7 @@ def test_bn_rename_bn_ab_2_ok():  # change first node name, changing order
 
 
 def test_bn_rename_bn_ab_3_ok():  # change both names and order
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     orig_bn = deepcopy(bn)
     bn.rename(name_map={'A': 'X1A', 'B': 'X0B'})
 
@@ -117,7 +117,7 @@ def test_bn_rename_bn_ab_3_ok():  # change both names and order
 # renames on A-->B<--C
 
 def test_bn_rename_bn_ab_cb_1_ok():  # change all names and order
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab_cb.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab_cb.dsc')
     orig_bn = deepcopy(bn)
     bn.rename(name_map={'A': 'X2A', 'B': 'X0B', 'C': 'X1C'})
 
@@ -144,7 +144,7 @@ def test_bn_rename_bn_ab_cb_1_ok():  # change all names and order
 # Test renames of Gaussian networks
 
 def test_bn_rename_bn_xy_1_ok():  # change first node name, keeping order
-    bn = BN.read(TESTDATA_DIR + '/xdsl/xy.xdsl')
+    bn = read_bn(TESTDATA_DIR + '/xdsl/xy.xdsl')
     orig_bn = deepcopy(bn)
 
     name_map = {'X': 'XX', 'Y': 'Y'}
@@ -177,7 +177,7 @@ def test_bn_rename_bn_xy_1_ok():  # change first node name, keeping order
 
 
 def test_bn_rename_bn_xy_2_ok():  # change first node name, changing order
-    bn = BN.read(TESTDATA_DIR + '/xdsl/xy.xdsl')
+    bn = read_bn(TESTDATA_DIR + '/xdsl/xy.xdsl')
     orig_bn = deepcopy(bn)
 
     name_map = {'X': 'Z', 'Y': 'Y'}
@@ -210,7 +210,7 @@ def test_bn_rename_bn_xy_2_ok():  # change first node name, changing order
 
 
 def test_bn_rename_bn_xy_zy_1_ok():  # change names, keeping order
-    bn = BN.read(TESTDATA_DIR + '/xdsl/xy_zy.xdsl')
+    bn = read_bn(TESTDATA_DIR + '/xdsl/xy_zy.xdsl')
     orig_bn = deepcopy(bn)
 
     name_map = {'X': 'XX', 'Y': 'YY', 'Z': 'Z'}
@@ -248,7 +248,7 @@ def test_bn_rename_bn_xy_zy_1_ok():  # change names, keeping order
 
 
 def test_bn_rename_bn_xy_zy_2_ok():  # change names, changing order
-    bn = BN.read(TESTDATA_DIR + '/xdsl/xy_zy.xdsl')
+    bn = read_bn(TESTDATA_DIR + '/xdsl/xy_zy.xdsl')
     orig_bn = deepcopy(bn)
 
     name_map = {'X': 'B', 'Y': 'Y', 'Z': 'A'}

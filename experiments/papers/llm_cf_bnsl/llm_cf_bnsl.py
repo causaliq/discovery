@@ -25,7 +25,7 @@ from causaliq_core.graph.io.tetrad import read as read_tetrad, write as write_te
 from call.bnlearn import bnlearn_learn
 from call.tetrad import tetrad_learn
 from causaliq_core.graph import PDAG, NotPDAGError, dag_to_pdag
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn, write_bn
 from experiments.common import reference_bn
 
 OUTPUT = EXPTS_DIR + '/papers/llm_cf_bnsl/{}_{}.{}'
@@ -108,7 +108,7 @@ def constrained_graph(netw, algo, type, level='0'):
     # Obtain reference file ... note some name/content differences between
     # bnbench synthetic networks and networks used in LLM study
 
-    ref = (BN.read(EXPTS_DIR + '/bn/' +
+    ref = (read_bn(EXPTS_DIR + '/bn/' +
                    netw.replace('-19', '').replace('hoea', 'hoea_c')
                    + '.dsc').dag if netw != 'formed' else
            read_bayesys(EXPTS_DIR +
@@ -199,7 +199,7 @@ def graph_reference_formed():
 
     bn = BN.fit(ref, data)  # VERY slow - fitting Violence with many parents
 
-    bn.write(EXPTS_DIR + '/papers/llm_cf_bnsl/formed_real.dsc')
+    write_bn(bn, EXPTS_DIR + '/papers/llm_cf_bnsl/formed_real.dsc')
 
 
 # Generate the Tetrad Reference graphs
@@ -208,13 +208,13 @@ def graph_llm_tetrad_refs():
 
     # Sports is one used in KK work
 
-    bn = BN.read(EXPTS_DIR + '/bn/sports.dsc')
+    bn = read_bn(EXPTS_DIR + '/bn/sports.dsc')
     write_tetrad(bn.dag, EXPTS_DIR +
                  '/papers/llm_cf_bnsl/tetrad-7.1.2-2/sports_ref.txt')
 
     # Covid is one used in KK work
 
-    bn = BN.read(EXPTS_DIR + '/bn/covid.dsc')
+    bn = read_bn(EXPTS_DIR + '/bn/covid.dsc')
     write_tetrad(bn.dag, EXPTS_DIR +
                  '/papers/llm_cf_bnsl/tetrad-7.1.2-2/covid_ref.txt')
 
@@ -228,7 +228,7 @@ def graph_llm_tetrad_refs():
 
     # Diarrhoea using version with corrected DIA_HadDiarrhoea name
 
-    bn = BN.read(EXPTS_DIR + '/bn/diarrhoea_c.dsc')
+    bn = read_bn(EXPTS_DIR + '/bn/diarrhoea_c.dsc')
     write_tetrad(bn.dag, EXPTS_DIR +
                  '/papers/llm_cf_bnsl/tetrad-7.1.2-2/diarrhoea_ref.txt')
 

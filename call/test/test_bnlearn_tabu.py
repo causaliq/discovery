@@ -7,13 +7,13 @@ from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_learn
 from data import TESTDATA_DIR
 from data.numpy import NumPy
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 
 
 # AB, 10 categorical rows
 @pytest.fixture(scope="module")
 def ab10():
-    bn = BN.read(TESTDATA_DIR + '/dsc/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/dsc/ab.dsc')
     return NumPy.from_df(df=bn.generate_cases(10), dstype='categorical',
                          keep_df=False)
 
@@ -248,7 +248,7 @@ def test_bnlearn_tabu_ab_10_ok_4(ab10, empty_entry):
 # A --> B, 100 rows
 @requires_r_and_bnlearn
 def test_bnlearn_tabu_ab_100_ok():
-    data = BN.read(TESTDATA_DIR + '/dsc/ab.dsc').generate_cases(100)
+    data = read_bn(TESTDATA_DIR + '/dsc/ab.dsc').generate_cases(100)
     data = NumPy.from_df(df=data, dstype='categorical', keep_df=False)
     dag, trace = bnlearn_learn('tabu', data, context={'in': 'in', 'id': 'id'})
     print('\nDAG learnt from 100 rows of A->B: {}\n{}'.format(dag, trace))
@@ -260,7 +260,7 @@ def test_bnlearn_tabu_ab_100_ok():
 # A --> B --> C, 100 rows
 @requires_r_and_bnlearn
 def test_bnlearn_tabu_abc_100_ok():
-    data = BN.read(TESTDATA_DIR + '/dsc/abc.dsc').generate_cases(1000)
+    data = read_bn(TESTDATA_DIR + '/dsc/abc.dsc').generate_cases(1000)
     data = NumPy.from_df(df=data, dstype='categorical', keep_df=True)
     dag, trace = bnlearn_learn('tabu', data, context={'in': 'in', 'id': 'id'})
     print('\nDAG learnt from 100 rows of A->B->C: {}\n{}'.format(dag, trace))
@@ -270,7 +270,7 @@ def test_bnlearn_tabu_abc_100_ok():
 # A -> B <- C, 1k Rows
 @requires_r_and_bnlearn
 def test_bnlearn_tabu_ab_cb_1k_ok():
-    data = BN.read(TESTDATA_DIR + '/dsc/ab_cb.dsc').generate_cases(1000)
+    data = read_bn(TESTDATA_DIR + '/dsc/ab_cb.dsc').generate_cases(1000)
     data = NumPy.from_df(df=data, dstype='categorical', keep_df=True)
     dag, trace = bnlearn_learn('tabu', data, context={'in': 'in', 'id': 'id'})
     print('\nDAG learnt from 1K rows of A->B<-C: {}\n{}'.format(dag, trace))
@@ -280,7 +280,7 @@ def test_bnlearn_tabu_ab_cb_1k_ok():
 # 1->2->4, 3->2, 1K rows
 @requires_r_and_bnlearn
 def test_bnlearn_tabu_and4_10_1k_ok():
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/and4_10.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/and4_10.dsc')
     print(bn.global_distribution())
     data = bn.generate_cases(1000)
     data = NumPy.from_df(df=data, dstype='categorical', keep_df=True)

@@ -8,7 +8,7 @@ from data import TESTDATA_DIR
 from data.oracle import Oracle
 from data.pandas import Pandas
 from data.preprocess import remove_single_valued
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 from learn.hc import hc
 from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_learn
@@ -44,14 +44,14 @@ def test_hc_type_error1():
 def test_hc_type_error2():
     dsc = '/discrete/small/cancer.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     with pytest.raises(TypeError):
         hc({'N': N, 'bn': bn, 'order': bn.dag.nodes})
 
 
 # params has bad type
 def test_hc_type_error3():
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     data = bn.generate_cases(10)
     with pytest.raises(TypeError):
         hc(data, params='bic')
@@ -61,7 +61,7 @@ def test_hc_type_error3():
 
 # Tabu param has bad type
 def test_hc_type_error4():
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     data = bn.generate_cases(10)
     with pytest.raises(TypeError):
         dag, _ = hc(data, params={'tabu': False})
@@ -75,7 +75,7 @@ def test_hc_type_error4():
 
 # bnlearn has bad type
 def test_hc_type_error5():
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     data = bn.generate_cases(10)
     with pytest.raises(TypeError):
         dag, _ = hc(data, params={'bnlearn': 'invalid'})
@@ -87,7 +87,7 @@ def test_hc_type_error5():
 
 # knowledge has bad type
 def test_hc_type_error6():
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     data = bn.generate_cases(10)
     with pytest.raises(TypeError):
         dag, _ = hc(data, knowledge={'arcs': []})
@@ -108,7 +108,7 @@ def test_hc_value_error2():
 # only score parameter supported
 def test_hc_value_error3():
     dsc = '/discrete/small/cancer.dsc'
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(10)
     with pytest.raises(ValueError):
         hc(data, params={'unknown': 3})
@@ -117,7 +117,7 @@ def test_hc_value_error3():
 # invalid score specified
 def test_hc_value_error4():
     dsc = '/discrete/small/cancer.dsc'
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(10)
     with pytest.raises(ValueError):
         hc(data, params={'score': 3})
@@ -128,7 +128,7 @@ def test_hc_value_error4():
 # invalid maxiter specified
 def test_hc_value_error5():
     dsc = '/discrete/small/cancer.dsc'
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(10)
     with pytest.raises(ValueError):
         hc(data, params={'maxiter': 'invalid'})
@@ -139,7 +139,7 @@ def test_hc_value_error5():
 # invalid tabu specified
 def test_hc_value_error6():
     dsc = '/discrete/small/cancer.dsc'
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(10)
     with pytest.raises(ValueError):
         hc(data, params={'tabu': 101, 'bnlearn': False})
@@ -150,7 +150,7 @@ def test_hc_value_error6():
 # invalid prefer parameter specified
 def test_hc_value_error7():
     dsc = '/discrete/small/cancer.dsc'
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(10)
     with pytest.raises(ValueError):
         hc(data, params={'tabu': 10, 'bnlearn': False, 'prefer': 'invalid'})
@@ -165,7 +165,7 @@ def test_hc_value_error7():
 # A->B 10 rows, no trace
 @requires_r_and_bnlearn
 def test_hc_ab_10_ok_1(showall):
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     data = bn.generate_cases(10)
     dag, _ = hc(data)
     print('\nLearning DAG from 10 rows of A->B produces:\n{}'.format(dag))
@@ -180,7 +180,7 @@ def test_hc_ab_10_ok_1(showall):
 def test_hc_ab_10_ok_2(showall):
     dsc = '/discrete/tiny/ab.dsc'
     N = 10
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/ab_10', 'in': dsc}
     dag, trace = hc(data, context=context)
@@ -201,7 +201,7 @@ def test_hc_ab_10_ok_2(showall):
 def test_hc_ab_10_ok_2a(showall):
     dsc = '/discrete/tiny/ab.dsc'
     N = 10
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/ab_10', 'in': dsc}
     params = {'score': 'bic', 'k': 2}
@@ -224,7 +224,7 @@ def test_hc_ab_10_ok_3(showall):
     dsc = '/discrete/tiny/ab.dsc'
     N = 10
     params = {'score': 'bde'}
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/ab_10', 'in': dsc}
     dag, trace = hc(data, params=params, context=context)
@@ -246,7 +246,7 @@ def test_hc_ab_10_ok_3a(showall):
     dsc = '/discrete/tiny/ab.dsc'
     N = 10
     params = {'score': 'bde', 'iss': 5}
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/ab_10', 'in': dsc}
     dag, trace = hc(data, params=params, context=context)
@@ -268,7 +268,7 @@ def test_hc_ab_10_ok_4(showall):
     dsc = '/discrete/tiny/ab.dsc'
     N = 10
     params = {'score': 'bds'}
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/ab_10', 'in': dsc}
     dag, trace = hc(data, params=params, context=context)
@@ -290,7 +290,7 @@ def test_hc_ab_10_ok_4a(showall):
     dsc = '/discrete/tiny/ab.dsc'
     N = 10
     params = {'score': 'bds', 'iss': 0.1}
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/ab_10', 'in': dsc}
     dag, trace = hc(data, params=params, context=context)
@@ -312,7 +312,7 @@ def test_hc_ab_10_ok_5(showall):
     dsc = '/discrete/tiny/ab.dsc'
     N = 10
     params = {'score': 'loglik'}
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/ab_10', 'in': dsc}
     dag, trace = hc(data, params=params, context=context)
@@ -334,7 +334,7 @@ def test_hc_ab_10_ok_5(showall):
 def test_hc_ab_100_ok_1(showall):
     dsc = '/discrete/tiny/ab.dsc'
     N = 100
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/ab_100', 'in': dsc}
     dag, trace = hc(data, context=context)
@@ -357,7 +357,7 @@ def test_hc_ab_100_ok_2(showall):
     dsc = '/discrete/tiny/ab.dsc'
     N = 100
     params = {'score': 'bde'}
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/ab_100', 'in': dsc}
     dag, trace = hc(data, params=params, context=context)
@@ -380,7 +380,7 @@ def test_hc_ab_100_ok_3(showall):
     dsc = '/discrete/tiny/ab.dsc'
     N = 100
     params = {'score': 'bds'}
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/ab_100', 'in': dsc}
     dag, trace = hc(data, params=params, context=context)
@@ -403,7 +403,7 @@ def test_hc_ab_100_ok_4(showall):
     dsc = '/discrete/tiny/ab.dsc'
     N = 100
     params = {'score': 'loglik'}
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/ab_100', 'in': dsc}
     dag, trace = hc(data, params=params, context=context)
@@ -425,7 +425,7 @@ def test_hc_ab_100_ok_4(showall):
 def test_hc_ab_1k_ok_1(showall):
     dsc = '/discrete/tiny/ab.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/ab_1k', 'in': dsc}
     dag, trace = hc(data, context=context)
@@ -447,7 +447,7 @@ def test_hc_ab_1k_ok_1(showall):
 def test_hc_ab_1k_ok_1a(showall):
     dsc = '/discrete/tiny/ab.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/ab_1k', 'in': dsc}
     params = {'score': 'bic', 'k': 0.5}
@@ -471,7 +471,7 @@ def test_hc_ab_1k_ok_2(showall):
     dsc = '/discrete/tiny/ab.dsc'
     N = 1000
     params = {'score': 'bde'}
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/ab_1k', 'in': dsc}
     dag, trace = hc(data, params=params, context=context)
@@ -494,7 +494,7 @@ def test_hc_ab_1k_ok_3(showall):
     dsc = '/discrete/tiny/ab.dsc'
     N = 1000
     params = {'score': 'bds'}
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/ab_1k', 'in': dsc}
     dag, trace = hc(data, params=params, context=context)
@@ -517,7 +517,7 @@ def test_hc_ab_1k_ok_4(showall):
     dsc = '/discrete/tiny/ab.dsc'
     N = 1000
     params = {'score': 'loglik'}
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/ab_1k', 'in': dsc}
     dag, trace = hc(data, params=params, context=context)
@@ -541,7 +541,7 @@ def test_hc_ab_1k_ok_4(showall):
 def test_hc_ba_10_ok(showall):
     dsc = '/discrete/tiny/ba.dsc'
     N = 10
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/ba_10', 'in': dsc}
     dag, trace = hc(data, context=context)
@@ -564,7 +564,7 @@ def test_hc_ba_10_ok(showall):
 def test_hc_ba_100_ok(showall):
     dsc = '/discrete/tiny/ba.dsc'
     N = 100
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/ba_100', 'in': dsc}
     dag, trace = hc(data, context=context)
@@ -587,7 +587,7 @@ def test_hc_ba_100_ok(showall):
 def test_hc_ba_1k_ok(showall):
     dsc = '/discrete/tiny/ba.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/ba_1k', 'in': dsc}
     dag, trace = hc(data, context=context)
@@ -612,7 +612,7 @@ def test_hc_ba_1k_ok(showall):
 def test_hc_abc_10_ok(showall):
     dsc = '/discrete/tiny/abc.dsc'
     N = 10
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/abc_10', 'in': dsc}
     dag, trace = hc(data, context=context)
@@ -635,7 +635,7 @@ def test_hc_abc_10_ok(showall):
 def test_hc_abc_100_ok(showall):
     dsc = '/discrete/tiny/abc.dsc'
     N = 100
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/abc_100', 'in': dsc}
     dag, trace = hc(data, context=context)
@@ -658,7 +658,7 @@ def test_hc_abc_100_ok(showall):
 def test_hc_abc_1k_ok_1(showall):
     dsc = '/discrete/tiny/abc.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/abc_1k', 'in': dsc}
     dag, trace = hc(data, context=context)
@@ -682,7 +682,7 @@ def test_hc_abc_1k_ok_2(showall):
     dsc = '/discrete/tiny/abc.dsc'
     N = 1000
     params = {'score': 'bde'}
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/abc_1k', 'in': dsc}
     dag, trace = hc(data, params=params, context=context)
@@ -706,7 +706,7 @@ def test_hc_abc_1k_ok_3(showall):
     dsc = '/discrete/tiny/abc.dsc'
     N = 1000
     params = {'score': 'bds'}
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/abc_1k', 'in': dsc}
     dag, trace = hc(data, params=params, context=context)
@@ -730,7 +730,7 @@ def test_hc_abc_1k_ok_4(showall):
     dsc = '/discrete/tiny/abc.dsc'
     N = 1000
     params = {'score': 'loglik'}
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/abc_1k', 'in': dsc}
     dag, trace = hc(data, params=params, context=context)
@@ -753,7 +753,7 @@ def test_hc_abc_1k_ok_4(showall):
 def test_hc_abc_3_1k_ok(showall):
     dsc = '/discrete/tiny/abc_3.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/abc_3_1k', 'in': dsc}
     dag, trace = hc(data, context=context)
@@ -776,7 +776,7 @@ def test_hc_abc_3_1k_ok(showall):
 def test_hc_ab_cb_10_ok(showall):
     dsc = '/discrete/tiny/ab_cb.dsc'
     N = 10
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/ab_cb_10', 'in': dsc}
     dag, trace = hc(data, context=context)
@@ -799,7 +799,7 @@ def test_hc_ab_cb_10_ok(showall):
 def test_hc_ab_cb_100_ok(showall):
     dsc = '/discrete/tiny/ab_cb.dsc'
     N = 100
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/ab_cb_100', 'in': dsc}
     dag, trace = hc(data, context=context)
@@ -822,7 +822,7 @@ def test_hc_ab_cb_100_ok(showall):
 def test_hc_ab_cb_1k_ok_1(showall):
     dsc = '/discrete/tiny/ab_cb.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/ab_cb_1k', 'in': dsc}
     dag, trace = hc(data, context=context)
@@ -846,7 +846,7 @@ def test_hc_ab_cb_1k_ok_2(showall):
     dsc = '/discrete/tiny/ab_cb.dsc'
     N = 1000
     params = {'score': 'bde'}
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/ab_cb_1k', 'in': dsc}
     dag, trace = hc(data, params=params, context=context)
@@ -870,7 +870,7 @@ def test_hc_ab_cb_1k_ok_3(showall):
     dsc = '/discrete/tiny/ab_cb.dsc'
     N = 1000
     params = {'score': 'bds'}
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/ab_cb_1k', 'in': dsc}
     dag, trace = hc(data, params=params, context=context)
@@ -894,7 +894,7 @@ def test_hc_ab_cb_1k_ok_4(showall):
     dsc = '/discrete/tiny/ab_cb.dsc'
     N = 1000
     params = {'score': 'loglik'}
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/ab_cb_1k', 'in': dsc}
     dag, trace = hc(data, params=params, context=context)
@@ -917,7 +917,7 @@ def test_hc_ab_cb_1k_ok_4(showall):
 def test_hc_ab_cb_10k_ok(showall):
     dsc = '/discrete/tiny/ab_cb.dsc'
     N = 10000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/ab_cb_10k', 'in': dsc}
     dag, trace = hc(data, context=context)
@@ -942,7 +942,7 @@ def test_hc_ab_cb_10k_ok(showall):
 def test_hc_and4_10_10_ok(showall):
     dsc = '/discrete/tiny/and4_10.dsc'
     N = 10
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/and4_10_10', 'in': dsc}
     dag, trace = hc(data, context=context)
@@ -965,7 +965,7 @@ def test_hc_and4_10_10_ok(showall):
 def test_hc_and4_10_100_ok(showall):
     dsc = '/discrete/tiny/and4_10.dsc'
     N = 100
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/and4_10_100', 'in': dsc}
     dag, trace = hc(data, context=context)
@@ -988,7 +988,7 @@ def test_hc_and4_10_100_ok(showall):
 def test_hc_and4_10_200_ok(showall):
     dsc = '/discrete/tiny/and4_10.dsc'
     N = 200
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/and4_10_200', 'in': dsc}
     dag, trace = hc(data, context=context)
@@ -1011,7 +1011,7 @@ def test_hc_and4_10_200_ok(showall):
 def test_hc_and4_10_1k_ok_1(showall):
     dsc = '/discrete/tiny/and4_10.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/and4_10_1K', 'in': dsc}
     dag, trace = hc(data, context=context)
@@ -1035,7 +1035,7 @@ def test_hc_and4_10_1k_ok_2(showall):
     dsc = '/discrete/tiny/and4_10.dsc'
     N = 1000
     params = {'score': 'bde'}
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/and4_10_1K', 'in': dsc}
     dag, trace = hc(data, params=params, context=context)
@@ -1059,7 +1059,7 @@ def test_hc_and4_10_1k_ok_3(showall):
     dsc = '/discrete/tiny/and4_10.dsc'
     N = 1000
     params = {'score': 'bds'}
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/and4_10_1K', 'in': dsc}
     dag, trace = hc(data, params=params, context=context)
@@ -1083,7 +1083,7 @@ def test_hc_and4_10_1k_ok_4(showall):
     dsc = '/discrete/tiny/and4_10.dsc'
     N = 1000
     params = {'score': 'loglik'}
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/and4_10_1K', 'in': dsc}
     dag, trace = hc(data, params=params, context=context)
@@ -1108,7 +1108,7 @@ def test_hc_and4_10_1k_ok_4(showall):
 def test_hc_cancer_1k_ok_1(showall):
     dsc = '/discrete/small/cancer.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/cancer_1k', 'in': dsc}
     dag, trace = hc(data, context=context)
@@ -1133,7 +1133,7 @@ def test_hc_cancer_1k_ok_2(showall):
     dsc = '/discrete/small/cancer.dsc'
     N = 1000
     params = {'score': 'bde'}
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/cancer_1k', 'in': dsc}
     dag, trace = hc(data, params=params, context=context)
@@ -1158,7 +1158,7 @@ def test_hc_cancer_1k_ok_3(showall):
     dsc = '/discrete/small/cancer.dsc'
     N = 1000
     params = {'score': 'bds'}
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/cancer_1k', 'in': dsc}
     dag, trace = hc(data, params=params, context=context)
@@ -1183,7 +1183,7 @@ def test_hc_cancer_1k_ok_4(showall):
     dsc = '/discrete/small/cancer.dsc'
     N = 1000
     params = {'score': 'loglik'}
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/cancer_1k', 'in': dsc}
     dag, trace = hc(data, params=params, context=context)
@@ -1210,7 +1210,7 @@ def test_hc_cancer_1k_ok_4(showall):
 def test_hc_asia_500_ok(showall):
     dsc = '/discrete/small/asia.dsc'
     N = 500
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/asia_500', 'in': dsc}
     dag, trace = hc(data, context=context)
@@ -1234,7 +1234,7 @@ def test_hc_asia_500_ok(showall):
 def test_hc_asia_1k_ok_1(showall):
     dsc = '/discrete/small/asia.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/asia_1k', 'in': dsc}
     dag, trace = hc(data, context=context)
@@ -1259,7 +1259,7 @@ def test_hc_asia_1k_ok_2(showall):
     dsc = '/discrete/small/asia.dsc'
     N = 1000
     params = {'score': 'bde'}
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/asia_1k', 'in': dsc}
     dag, trace = hc(data, params=params, context=context)
@@ -1284,7 +1284,7 @@ def test_hc_asia_1k_ok_3(showall):
     dsc = '/discrete/small/asia.dsc'
     N = 1000
     params = {'score': 'bds'}
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/asia_1k', 'in': dsc}
     dag, trace = hc(data, params=params, context=context)
@@ -1309,7 +1309,7 @@ def test_hc_asia_1k_ok_4(showall):
     dsc = '/discrete/small/asia.dsc'
     N = 1000
     params = {'score': 'loglik'}
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/asia_1k', 'in': dsc}
     dag, trace = hc(data, params=params, context=context)
@@ -1339,7 +1339,7 @@ def test_hc_child_1k_ok(showall):
     ('display.max_rows', None)
     dsc = '/discrete/medium/child.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/child_1k', 'in': dsc}
     dag, trace = hc(data, context=context)
@@ -1362,7 +1362,7 @@ def test_hc_child_1k_ok(showall):
 def test_hc_child_10k_ok_1(showall):
     dsc = '/discrete/medium/child.dsc'
     N = 10000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/child_10k', 'in': dsc}
     dag, trace = hc(data, context=context)
@@ -1386,7 +1386,7 @@ def test_hc_child_10k_ok_2(showall):
     dsc = '/discrete/medium/child.dsc'
     N = 10000
     params = {'score': 'bic'}
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/child_10k', 'in': dsc}
     dag, trace = hc(data, params=params, context=context)
@@ -1411,7 +1411,7 @@ def test_hc_child_10k_ok_2(showall):
 def test_hc_insurance_1k_ok(showall):
     dsc = '/discrete/medium/insurance.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/insurance_1k', 'in': dsc}
     dag, trace = hc(data, context=context)
@@ -1434,7 +1434,7 @@ def test_hc_insurance_1k_ok(showall):
 def test_hc_insurance_10k_ok(showall):
     dsc = '/discrete/medium/insurance.dsc'
     N = 10000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/insurance_10k', 'in': dsc}
     dag, trace = hc(data, context=context)
@@ -1459,7 +1459,7 @@ def test_hc_insurance_10k_ok(showall):
 def test_hc_alarm_1k_ok(showall):
     dsc = '/discrete/medium/alarm.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/alarm_1k', 'in': dsc}
     dag, trace = hc(data, context=context)
@@ -1482,7 +1482,7 @@ def test_hc_alarm_1k_ok(showall):
 def test_hc_alarm_10k_ok(showall):
     dsc = '/discrete/medium/alarm.dsc'
     N = 10000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/alarm_10k', 'in': dsc}
     dag, trace = hc(data, context=context)
@@ -1507,7 +1507,7 @@ def test_hc_alarm_10k_ok(showall):
 def test_hc_hailfinder_10k_ok(showall):
     dsc = '/discrete/large/hailfinder.dsc'
     N = 10000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/hailfinder_10k', 'in': dsc}
     dag, trace = hc(data, context=context)
@@ -1530,7 +1530,7 @@ def test_hc_hailfinder_10k_ok(showall):
 def test_hc_hailfinder_25k_ok(showall):
     dsc = '/discrete/large/hailfinder.dsc'
     N = 25000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/hailfinder_25k', 'in': dsc}
     dag, trace = hc(data, context=context)
@@ -1555,7 +1555,7 @@ def test_hc_hailfinder_25k_ok(showall):
 def test_hc_hepar2_10k_ok(showall):
     dsc = '/discrete/large/hepar2.dsc'
     N = 10000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     context = {'id': 'test/hc/hepar2_10k', 'in': dsc}
     dag, trace = hc(data, context=context)
@@ -1580,7 +1580,7 @@ def test_hc_hepar2_10k_ok(showall):
 def test_hc_pathfinder_1k_ok(showall):
     dsc = '/discrete/verylarge/pathfinder.dsc'
     N = 1000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     bn, data, removed = remove_single_valued(bn, data)
     print('\n\nNodes removed: {}'.format(removed))
@@ -1605,7 +1605,7 @@ def test_hc_pathfinder_1k_ok(showall):
 def test_hc_pathfinder_5k_ok(showall):
     dsc = '/discrete/verylarge/pathfinder.dsc'
     N = 5000
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = bn.generate_cases(N)
     bn, data, removed = remove_single_valued(bn, data)
     print('\n\nNodes removed: {}'.format(removed))
@@ -1629,7 +1629,7 @@ def test_hc_pathfinder_5k_ok(showall):
 # Cancer 1K rows
 def test_hc_oracle_cancer_1k_ok(showall):
     dsc = '/discrete/small/cancer.dsc'
-    bn = BN.read(TESTDATA_DIR + dsc)
+    bn = read_bn(TESTDATA_DIR + dsc)
     data = Oracle(bn=bn)
     data.set_N(1000)
     data.set_order(tuple(['Cancer', 'Dyspnoea', 'Pollution', 'Smoker',

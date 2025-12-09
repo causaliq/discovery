@@ -8,12 +8,12 @@ from learn.knowledge import Knowledge, Rule, RuleSet, \
 from learn.trace import Activity
 from learn.dagchange import DAGChange, BestDAGChanges
 from data import TESTDATA_DIR
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 
 
 @pytest.fixture
 def abc():  # BN, data and parents for A->B->C graph
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     parents = {'A': set(), 'B': {'A'}, 'C': {'B'}}
     return {'bn': bn, 'pa': parents, 'da': bn.generate_cases(10)}
 

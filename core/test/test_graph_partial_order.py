@@ -4,7 +4,7 @@
 import pytest
 
 from causaliq_core.graph import DAG
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 import testdata.example_dags as ex_dag
 from data import TESTDATA_DIR
 
@@ -236,7 +236,7 @@ def test_graph_partial_order_asia_ok_2():
 
 
 def test_graph_partial_order_child_ok_1():
-    bn = BN.read(TESTDATA_DIR + '/discrete/medium/child.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/medium/child.dsc')
     order = DAG.partial_order(bn.dag.parents, bn.dag.nodes)
     assert order == \
         [{'BirthAsphyxia'}, {'Disease'},
@@ -248,7 +248,7 @@ def test_graph_partial_order_child_ok_1():
 
 
 def test_graph_partial_order_child_ok_2():
-    bn = BN.read(TESTDATA_DIR + '/discrete/medium/child.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/medium/child.dsc')
     order = DAG.partial_order(bn.dag.parents, bn.dag.nodes,
                               new_arc=('GruntingReport', 'BirthAsphyxia'))
     assert order is None

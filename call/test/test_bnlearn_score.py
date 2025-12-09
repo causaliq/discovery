@@ -13,7 +13,7 @@ from data.score import dag_score
 from data.numpy import NumPy
 from causaliq_core.graph import DAG
 from causaliq_core.utils import dicts_same, values_same
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 
 TYPES = ['loglik', 'bic', 'aic', 'bde', 'k2', 'bdj', 'bds']  # scores to test
 
@@ -32,7 +32,7 @@ def tmpfile():
 # Generate 10 categorical rows from A --> B
 @pytest.fixture(scope="module")
 def ab10():
-    bn = BN.read(TESTDATA_DIR + '/dsc/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/dsc/ab.dsc')
     return NumPy.from_df(df=bn.generate_cases(10), dstype='categorical',
                          keep_df=False)
 
@@ -473,7 +473,7 @@ def test_bnlearn_score_bge_xy_zy_2_ok():
 def test_bnlearn_score_bge_gauss_10_ok():
     data = NumPy.read(TESTDATA_DIR + '/simple/gauss.data.gz',
                       dstype='continuous', N=10)
-    dag = BN.read(TESTDATA_DIR + '/xdsl/gauss.xdsl').dag
+    dag = read_bn(TESTDATA_DIR + '/xdsl/gauss.xdsl').dag
     print('\n\n{}'.format(data.as_df()))
     bnscores = bnlearn_score(dag, data, ['bge'], {'k': 1.0})
 
@@ -488,7 +488,7 @@ def test_bnlearn_score_bge_gauss_10_ok():
 def test_bnlearn_score_bge_gauss_1k_ok():
     data = NumPy.read(TESTDATA_DIR + '/simple/gauss.data.gz',
                       dstype='continuous', N=1000)
-    dag = BN.read(TESTDATA_DIR + '/xdsl/gauss.xdsl').dag
+    dag = read_bn(TESTDATA_DIR + '/xdsl/gauss.xdsl').dag
     print('\n\n{}'.format(data.as_df().tail()))
     bnscores = bnlearn_score(dag, data, ['bge'], {'k': 1.0})
 

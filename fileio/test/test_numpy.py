@@ -7,7 +7,7 @@ from numpy import array, ndarray
 from data import TESTDATA_DIR
 from data.numpy import NumPy
 from data.pandas import Pandas
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 
 
 @pytest.fixture(scope="module")  # categorical AB, 3 rows
@@ -1192,7 +1192,7 @@ def test_set_order_xy3_1_ok(xy3):  # XY 3 rows
 
 
 def test_set_order_asia_1_ok():  # Asia, N=100 - optimal/worst/original order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     pandas = Pandas.read(TESTDATA_DIR + '/experiments/datasets/asia.data.gz',
                          dstype='categorical', N=100)
     data = NumPy.from_df(df=pandas.as_df(), dstype='categorical', keep_df=True)
@@ -1379,7 +1379,7 @@ def test_rand_name_xyz10_1_ok():  # XYZ, N10 - randomise names
 
 
 def test_rand_name_asia_1_ok():  # Asia, N=20 - randomise names
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     pandas = Pandas.read(TESTDATA_DIR + '/experiments/datasets/asia.data.gz',
                          dstype='categorical', N=100)
     data = NumPy.from_df(df=pandas.as_df(), dstype='categorical', keep_df=True)

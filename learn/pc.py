@@ -5,7 +5,7 @@ from pandas import DataFrame
 from itertools import combinations
 
 from data.pandas import Pandas
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 from data.indep import indep
 
 
@@ -32,7 +32,7 @@ def _check_ci_args(data, bn, N):
     if isinstance(data, str):
         data = Pandas.read(data, dstype='categorical').df
     if isinstance(bn, str):
-        bn = BN.read(bn)
+        bn = read_bn(bn)
 
     if (bn is None and not isinstance(data, DataFrame)) \
             or (data is None and not isinstance(bn, BN)) \

@@ -5,7 +5,7 @@
 import pytest
 from pandas import DataFrame
 
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 from causaliq_core.graph import DAG
 from data.preprocess import remove_single_valued
 from data import TESTDATA_DIR
@@ -14,7 +14,7 @@ import testdata.example_dags as ex_dag
 
 
 def test_bn_remove_single_valued_type_error_1():
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     with pytest.raises(TypeError):
         remove_single_valued(bn, )
     with pytest.raises(TypeError):
@@ -24,14 +24,14 @@ def test_bn_remove_single_valued_type_error_1():
 
 
 def test_bn_remove_single_valued_value_error_1():  # one row only
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     data = DataFrame({'A': ['0'], 'B': ['1'], 'C': ['1']}, dtype='category')
     with pytest.raises(ValueError):
         remove_single_valued(bn, data)
 
 
 def test_bn_remove_single_valued_value_error_2():  # all vars single-valued
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     data = DataFrame({'A': ['0', '0'], 'B': ['1', '1'], 'C': ['1', '1']},
                      dtype='category')
     with pytest.raises(ValueError):
@@ -39,7 +39,7 @@ def test_bn_remove_single_valued_value_error_2():  # all vars single-valued
 
 
 def test_bn_remove_single_valued_value_error_3():  # one var multi-valued
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     data = DataFrame({'A': ['0', '0'], 'B': ['0', '1'], 'C': ['1', '1']},
                      dtype='category')
     with pytest.raises(ValueError):
@@ -47,7 +47,7 @@ def test_bn_remove_single_valued_value_error_3():  # one var multi-valued
 
 
 def test_bn_remove_single_valued_abc_ok_1():  # no variables need removing
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     data = DataFrame({'A': ['0', '1'], 'B': ['1', '0'], 'C': ['1', '0']},
                      dtype='category')
     new_bn, new_data, removed = remove_single_valued(bn, data)
@@ -57,7 +57,7 @@ def test_bn_remove_single_valued_abc_ok_1():  # no variables need removing
 
 
 def test_bn_remove_single_valued_abc_ok_2():  # one value needs removing
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     data = DataFrame({'A': ['0', '1'], 'B': ['1', '0'], 'C': ['1', '1']},
                      dtype='category')
     new_bn, new_data, removed = remove_single_valued(bn, data)
@@ -73,7 +73,7 @@ def test_bn_remove_single_valued_abc_ok_2():  # one value needs removing
 
 
 def test_bn_remove_single_valued_abc_ok_3():  # one value needs removing
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     data = DataFrame({'A': ['0', '0'], 'B': ['1', '0'], 'C': ['1', '0']},
                      dtype='category')
     new_bn, new_data, removed = remove_single_valued(bn, data)
@@ -87,7 +87,7 @@ def test_bn_remove_single_valued_abc_ok_3():  # one value needs removing
 
 
 def test_bn_remove_single_valued_cancer_ok_1():  # no variables need removing
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = bn.generate_cases(100)
     new_bn, new_data, removed = remove_single_valued(bn, data)
     assert removed == []
@@ -96,7 +96,7 @@ def test_bn_remove_single_valued_cancer_ok_1():  # no variables need removing
 
 
 def test_bn_remove_single_valued_cancer_ok_2():  # Xray need removing
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = bn.generate_cases(100).assign(Xray='negative')
     new_bn, new_data, removed = remove_single_valued(bn, data)
     assert removed == ['Xray']
@@ -112,7 +112,7 @@ def test_bn_remove_single_valued_cancer_ok_2():  # Xray need removing
 
 
 def test_bn_remove_single_valued_cancer_ok_3():  # Xray, Smoker need removing
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = bn.generate_cases(100).assign(Xray='negative', Smoker='False')
     new_bn, new_data, removed = remove_single_valued(bn, data)
     assert removed == ['Smoker', 'Xray']
@@ -128,7 +128,7 @@ def test_bn_remove_single_valued_cancer_ok_3():  # Xray, Smoker need removing
 
 @pytest.mark.slow
 def test_bn_remove_single_valued_pathfinder_1K_ok():  # Pathfinder, 1K rows
-    bn = BN.read(TESTDATA_DIR + '/discrete/verylarge/pathfinder.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/verylarge/pathfinder.dsc')
     data = bn.generate_cases(1000)
     _, _, removed = remove_single_valued(bn, data)
     assert removed == ['F13', 'F15', 'F27', 'F69', 'F72', 'F75']
@@ -136,7 +136,7 @@ def test_bn_remove_single_valued_pathfinder_1K_ok():  # Pathfinder, 1K rows
 
 @pytest.mark.slow
 def test_bn_remove_single_valued_pathfinder_2K_ok():  # Pathfinder, 2K rows
-    bn = BN.read(TESTDATA_DIR + '/discrete/verylarge/pathfinder.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/verylarge/pathfinder.dsc')
     data = bn.generate_cases(2000)
     _, _, removed = remove_single_valued(bn, data)
     assert removed == ['F15', 'F27', 'F72', 'F75']

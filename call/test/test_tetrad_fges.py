@@ -7,7 +7,7 @@ from causaliq_core.graph import DAG, EdgeType, PDAG
 from call.tetrad import tetrad_learn
 from data import TESTDATA_DIR
 from data.numpy import NumPy
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 
 
 @pytest.fixture(scope="module")  # simple ab DataFrame
@@ -142,7 +142,7 @@ def test_tetrad_fges_ab_ok_2(ab3):  # Learning from an ab datafile, context
 
 
 def test_tetrad_fges_ab_ok_3():  # Learning generated data, no context
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     data = NumPy.from_df(bn.generate_cases(1000), dstype='categorical',
                          keep_df=False)
     graph, _ = tetrad_learn('fges', data)
@@ -153,7 +153,7 @@ def test_tetrad_fges_ab_ok_3():  # Learning generated data, no context
 
 
 def test_tetrad_fges_ab_ok_4():  # Learning generated data, check trace
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     data = NumPy.from_df(bn.generate_cases(1000), dstype='categorical',
                          keep_df=False)
     _, trace = tetrad_learn('fges', data,
@@ -167,7 +167,7 @@ def test_tetrad_fges_ab_ok_4():  # Learning generated data, check trace
 
 
 def test_tetrad_fges_ab_cb_ok_1():  # A -> B <- C, N=100
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab_cb.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab_cb.dsc')
     data = NumPy.from_df(bn.generate_cases(100), dstype='categorical',
                          keep_df=False)
     _, trace = tetrad_learn('fges', data, context={'in': 'in', 'id': 'id'})
@@ -180,7 +180,7 @@ def test_tetrad_fges_ab_cb_ok_1():  # A -> B <- C, N=100
 
 
 def test_tetrad_fges_ab_cb_ok_2():  # A -> B <- C, N=1K
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab_cb.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab_cb.dsc')
     data = NumPy.from_df(bn.generate_cases(1000), dstype='categorical',
                          keep_df=False)
     _, trace = tetrad_learn('fges', data, context={'in': 'in', 'id': 'id'})
@@ -194,7 +194,7 @@ def test_tetrad_fges_ab_cb_ok_2():  # A -> B <- C, N=1K
 
 
 def test_tetrad_fges_abc_ok_1():  # A -> B -> C, N=1K
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     data = NumPy.from_df(bn.generate_cases(1000), dstype='categorical',
                          keep_df=False)
     _, trace = tetrad_learn('fges', data, context={'in': 'in', 'id': 'id'})
@@ -208,7 +208,7 @@ def test_tetrad_fges_abc_ok_1():  # A -> B -> C, N=1K
 
 
 def test_tetrad_fges_abc_dual_ok_1():  # A -> B -> C, A -> C N=10
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/abc_dual.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/abc_dual.dsc')
     data = NumPy.from_df(bn.generate_cases(10), dstype='categorical',
                          keep_df=False)
     _, trace = tetrad_learn('fges', data, context={'in': 'in', 'id': 'id'})
@@ -221,7 +221,7 @@ def test_tetrad_fges_abc_dual_ok_1():  # A -> B -> C, A -> C N=10
 
 
 def test_tetrad_fges_abc_dual_ok_2():  # A -> B -> C, A -> C N=100
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/abc_dual.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/abc_dual.dsc')
     data = NumPy.from_df(bn.generate_cases(100), dstype='categorical',
                          keep_df=False)
     _, trace = tetrad_learn('fges', data, context={'in': 'in', 'id': 'id'})
@@ -235,7 +235,7 @@ def test_tetrad_fges_abc_dual_ok_2():  # A -> B -> C, A -> C N=100
 
 
 def test_tetrad_fges_abc_dual_ok_3():  # A -> B -> C, A -> C N=1K
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/abc_dual.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/abc_dual.dsc')
     data = NumPy.from_df(bn.generate_cases(1000), dstype='categorical',
                          keep_df=False)
     _, trace = tetrad_learn('fges', data, context={'in': 'in', 'id': 'id'})
@@ -250,7 +250,7 @@ def test_tetrad_fges_abc_dual_ok_3():  # A -> B -> C, A -> C N=1K
 
 
 def test_tetrad_fges_and4_10_ok_1():  # and4_10, 1K rows
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/and4_10.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/and4_10.dsc')
     data = NumPy.from_df(bn.generate_cases(1000), dstype='categorical',
                          keep_df=False)
     _, trace = tetrad_learn('fges', data, context={'in': 'in', 'id': 'id'})
@@ -265,7 +265,7 @@ def test_tetrad_fges_and4_10_ok_1():  # and4_10, 1K rows
 
 
 def test_tetrad_fges_and4_10_ok_2():  # and4_10, 10K rows
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/and4_10.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/and4_10.dsc')
     data = NumPy.from_df(bn.generate_cases(10000), dstype='categorical',
                          keep_df=False)
     _, trace = tetrad_learn('fges', data, context={'in': 'in', 'id': 'id'})
@@ -280,7 +280,7 @@ def test_tetrad_fges_and4_10_ok_2():  # and4_10, 10K rows
 
 
 def test_tetrad_fges_cancer_ok_1():  # Cancer, 1K rows
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = NumPy.from_df(bn.generate_cases(1000), dstype='categorical',
                          keep_df=False)
     _, trace = tetrad_learn('fges', data, context={'in': 'in', 'id': 'id'})
@@ -296,7 +296,7 @@ def test_tetrad_fges_cancer_ok_1():  # Cancer, 1K rows
 
 
 def test_tetrad_fges_cancer_ok_2():  # Cancer, 10K rows
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = NumPy.from_df(bn.generate_cases(10000), dstype='categorical',
                          keep_df=False)
     _, trace = tetrad_learn('fges', data, context={'in': 'in', 'id': 'id'})
@@ -313,7 +313,7 @@ def test_tetrad_fges_cancer_ok_2():  # Cancer, 10K rows
 
 
 def test_tetrad_fges_asia_ok_1():  # Asia, 100 rows
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     data = NumPy.from_df(bn.generate_cases(100), dstype='categorical',
                          keep_df=False)
     _, trace = tetrad_learn('fges', data, context={'in': 'in', 'id': 'id'})
@@ -333,7 +333,7 @@ def test_tetrad_fges_asia_ok_1():  # Asia, 100 rows
 
 
 def test_tetrad_fges_asia_ok_2():  # Asia, 1K rows
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     data = NumPy.from_df(bn.generate_cases(1000), dstype='categorical',
                          keep_df=False)
     _, trace = tetrad_learn('fges', data, context={'in': 'in', 'id': 'id'})
@@ -352,7 +352,7 @@ def test_tetrad_fges_asia_ok_2():  # Asia, 1K rows
 
 
 def test_tetrad_fges_asia_ok_3():  # Asia, 10K rows
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     data = NumPy.from_df(bn.generate_cases(10000), dstype='categorical',
                          keep_df=False)
     _, trace = tetrad_learn('fges', data, context={'in': 'in', 'id': 'id'})
@@ -373,7 +373,7 @@ def test_tetrad_fges_asia_ok_3():  # Asia, 10K rows
 
 
 def test_tetrad_fges_child_1k_ok_1():  # Child, 1K rows
-    bn = BN.read(TESTDATA_DIR + '/discrete/medium/child.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/medium/child.dsc')
     data = NumPy.from_df(bn.generate_cases(1000), dstype='categorical',
                          keep_df=False)
     _, trace = tetrad_learn('fges', data, context={'in': 'in', 'id': 'id'})
@@ -549,7 +549,7 @@ def test_tetrad_fges_bdeu_ab_ok_2(ab3):  # AB 3 rows
 
 
 def test_tetrad_fges_bdeu_ab_cb_ok_1():  # A -> B <- C, N=100
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab_cb.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab_cb.dsc')
     data = NumPy.from_df(bn.generate_cases(100), dstype='categorical',
                          keep_df=False)
     _, trace = tetrad_learn('fges', data, context={'in': 'in', 'id': 'id'},
@@ -563,7 +563,7 @@ def test_tetrad_fges_bdeu_ab_cb_ok_1():  # A -> B <- C, N=100
 
 
 def test_tetrad_fges_bdeu_ab_cb_ok_2():  # A -> B <- C, N=1K
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab_cb.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab_cb.dsc')
     data = NumPy.from_df(bn.generate_cases(1000), dstype='categorical',
                          keep_df=False)
     _, trace = tetrad_learn('fges', data, context={'in': 'in', 'id': 'id'},
@@ -578,7 +578,7 @@ def test_tetrad_fges_bdeu_ab_cb_ok_2():  # A -> B <- C, N=1K
 
 
 def test_tetrad_fges_bdeu_abc_ok_1():  # A -> B -> C, N=1K
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     data = NumPy.from_df(bn.generate_cases(1000), dstype='categorical',
                          keep_df=False)
     _, trace = tetrad_learn('fges', data, context={'in': 'in', 'id': 'id'},
@@ -593,7 +593,7 @@ def test_tetrad_fges_bdeu_abc_ok_1():  # A -> B -> C, N=1K
 
 
 def test_tetrad_fges_bdeu_abc_dual_ok_1():  # A -> B -> C, A -> C N=10
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/abc_dual.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/abc_dual.dsc')
     data = NumPy.from_df(bn.generate_cases(10), dstype='categorical',
                          keep_df=False)
     _, trace = tetrad_learn('fges', data, context={'in': 'in', 'id': 'id'},
@@ -607,7 +607,7 @@ def test_tetrad_fges_bdeu_abc_dual_ok_1():  # A -> B -> C, A -> C N=10
 
 
 def test_tetrad_fges_bdeu_abc_dual_ok_2():  # A -> B -> C, A -> C N=100
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/abc_dual.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/abc_dual.dsc')
     data = NumPy.from_df(bn.generate_cases(100), dstype='categorical',
                          keep_df=False)
     _, trace = tetrad_learn('fges', data, context={'in': 'in', 'id': 'id'},
@@ -621,7 +621,7 @@ def test_tetrad_fges_bdeu_abc_dual_ok_2():  # A -> B -> C, A -> C N=100
 
 
 def test_tetrad_fges_bdeu_abc_dual_ok_3():  # A -> B -> C, A -> C N=1K
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/abc_dual.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/abc_dual.dsc')
     data = NumPy.from_df(bn.generate_cases(1000), dstype='categorical',
                          keep_df=False)
     _, trace = tetrad_learn('fges', data, context={'in': 'in', 'id': 'id'},
@@ -636,7 +636,7 @@ def test_tetrad_fges_bdeu_abc_dual_ok_3():  # A -> B -> C, A -> C N=1K
 
 
 def test_tetrad_fges_bdeu_and4_10_ok_1():  # and4_10, 1K rows
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/and4_10.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/and4_10.dsc')
     data = NumPy.from_df(bn.generate_cases(1000), dstype='categorical',
                          keep_df=False)
     _, trace = tetrad_learn('fges', data, context={'in': 'in', 'id': 'id'},
@@ -651,7 +651,7 @@ def test_tetrad_fges_bdeu_and4_10_ok_1():  # and4_10, 1K rows
 
 
 def test_tetrad_fges_bdeu_and4_10_ok_2():  # and4_10, 10K rows
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/and4_10.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/and4_10.dsc')
     data = NumPy.from_df(bn.generate_cases(10000), dstype='categorical',
                          keep_df=False)
     _, trace = tetrad_learn('fges', data, context={'in': 'in', 'id': 'id'},
@@ -667,7 +667,7 @@ def test_tetrad_fges_bdeu_and4_10_ok_2():  # and4_10, 10K rows
 
 
 def test_tetrad_fges_bdeu_cancer_ok_1():  # Cancer, 1K rows
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = NumPy.from_df(bn.generate_cases(1000), dstype='categorical',
                          keep_df=False)
     _, trace = tetrad_learn('fges', data, context={'in': 'in', 'id': 'id'},
@@ -683,7 +683,7 @@ def test_tetrad_fges_bdeu_cancer_ok_1():  # Cancer, 1K rows
 
 
 def test_tetrad_fges_bdeu_cancer_ok_2():  # Cancer, 10K rows
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = NumPy.from_df(bn.generate_cases(10000), dstype='categorical',
                          keep_df=False)
     _, trace = tetrad_learn('fges', data, context={'in': 'in', 'id': 'id'},
@@ -701,7 +701,7 @@ def test_tetrad_fges_bdeu_cancer_ok_2():  # Cancer, 10K rows
 
 
 def test_tetrad_fges_bdeu_asia_ok_1():  # Asia, 100 rows
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     data = NumPy.from_df(bn.generate_cases(100), dstype='categorical',
                          keep_df=False)
     _, trace = tetrad_learn('fges', data, context={'in': 'in', 'id': 'id'},
@@ -720,7 +720,7 @@ def test_tetrad_fges_bdeu_asia_ok_1():  # Asia, 100 rows
 
 
 def test_tetrad_fges_bdeu_asia_ok_2():  # Asia, 1K rows
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     data = NumPy.from_df(bn.generate_cases(1000), dstype='categorical',
                          keep_df=False)
     _, trace = tetrad_learn('fges', data, context={'in': 'in', 'id': 'id'},
@@ -741,7 +741,7 @@ def test_tetrad_fges_bdeu_asia_ok_2():  # Asia, 1K rows
 
 
 def test_tetrad_fges_bdeu_asia_ok_3():  # Asia, 10K rows
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     data = NumPy.from_df(bn.generate_cases(10000), dstype='categorical',
                          keep_df=False)
     _, trace = tetrad_learn('fges', data, context={'in': 'in', 'id': 'id'},
@@ -762,7 +762,7 @@ def test_tetrad_fges_bdeu_asia_ok_3():  # Asia, 10K rows
 
 
 def test_tetrad_fges_bdeu_child_1k_ok_1():  # Child, 1K rows
-    bn = BN.read(TESTDATA_DIR + '/discrete/medium/child.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/medium/child.dsc')
     data = NumPy.from_df(bn.generate_cases(1000), dstype='categorical',
                          keep_df=False)
     _, trace = tetrad_learn('fges', data, context={'in': 'in', 'id': 'id'},

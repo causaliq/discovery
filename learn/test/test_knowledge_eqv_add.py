@@ -8,34 +8,34 @@ from learn.knowledge import Knowledge, Rule, RuleSet, \
 from learn.trace import Activity
 from learn.dagchange import DAGChange, BestDAGChanges
 from data import TESTDATA_DIR
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 from causaliq_core.utils.random import init_stable_random
 
 
 @pytest.fixture
 def know_abc_1():  # rule with limit of one
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     return Knowledge(rules=RuleSet.EQUIV_ADD,
                      params={'ref': ref, 'limit': 1})
 
 
 @pytest.fixture
 def know_abc_2():  # rule with limit of two, ignore first
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     return Knowledge(rules=RuleSet.EQUIV_ADD,
                      params={'ref': ref, 'limit': 2, 'ignore': 1})
 
 
 @pytest.fixture
 def know_abc_3():  # rule with limit of 3, expertise 0.5
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     return Knowledge(rules=RuleSet.EQUIV_ADD,
                      params={'ref': ref, 'limit': 3, 'expertise': 0.5})
 
 
 @pytest.fixture
 def know_abc_4():  # rule with limit of 1, ignore 1, expertise 0.8
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     return Knowledge(rules=RuleSet.EQUIV_ADD,
                      params={'ref': ref, 'limit': 1, 'ignore': 1,
                              'expertise': 0.8})
@@ -43,7 +43,7 @@ def know_abc_4():  # rule with limit of 1, ignore 1, expertise 0.8
 
 @pytest.fixture
 def know_abc_5():  # rule with limit of 3, expertise 0.5
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     return Knowledge(rules=RuleSet.EQUIV_ADD,
                      params={'ref': ref, 'limit': 3, 'expertise': 0.5,
                              'partial': True})
@@ -51,7 +51,7 @@ def know_abc_5():  # rule with limit of 3, expertise 0.5
 
 @pytest.fixture
 def asia1():  # Asia network with perfect partial expert
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     data = ref.generate_cases(10)
     parents = {n: set() for n in ref.dag.nodes}
     know = Knowledge(rules=RuleSet.EQUIV_ADD,
@@ -61,7 +61,7 @@ def asia1():  # Asia network with perfect partial expert
 
 @pytest.fixture
 def asia2():  # Asia network with imperfect partial expert
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     data = ref.generate_cases(10)
     parents = {n: set() for n in ref.dag.nodes}
     know = Knowledge(rules=RuleSet.EQUIV_ADD,
@@ -72,14 +72,14 @@ def asia2():  # Asia network with imperfect partial expert
 
 @pytest.fixture
 def abc1():  # data and parents for A->B->C graph
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     parents = {'A': set(), 'B': {'A'}, 'C': {'B'}}
     return (ref.generate_cases(10), parents)
 
 
 @pytest.fixture
 def ab():  # return ab DAG
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     return ref.dag
 
 
@@ -117,7 +117,7 @@ def test_knowledge_type_error_5():  # rules must be set if params not None
 
 
 def test_knowledge_type_error_6():  # limit must be an int, float or None
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     with pytest.raises(TypeError):
         Knowledge(rules=RuleSet.EQUIV_ADD, params={'limit': 'a'})
     with pytest.raises(TypeError):
@@ -184,7 +184,7 @@ def test_knowledge_value_error_4():  # limit is float, ref not specified
 
 
 def test_knowledge_value_error_5():  # float limit not between 0 and 1
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     with pytest.raises(ValueError):
         Knowledge(rules=RuleSet.EQUIV_ADD, params={'limit': 0.0, 'ref': ref})
     with pytest.raises(ValueError):
@@ -215,27 +215,27 @@ def test_knowledge_value_error_8():  # EQUIV_ADD needs ref parameter
 
 
 def test_knowledge_value_error_9():  # sample not allowed for equiv_add
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     with pytest.raises(ValueError):
         Knowledge(rules=RuleSet.EQUIV_ADD, params={'ref': ref, 'sample': 2})
 
 
 def test_knowledge_value_error_10():  # threshold not allowed for equiv_add
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     with pytest.raises(ValueError):
         Knowledge(rules=RuleSet.EQUIV_ADD, params={'ref': ref,
                                                    'threshold': 0.1})
 
 
 def test_knowledge_value_error_11():  # earlyok not allowed without expertise
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     with pytest.raises(ValueError):
         Knowledge(rules=RuleSet.EQUIV_ADD, params={'ref': ref,
                                                    'earlyok': True})
 
 
 def test_knowledge_ok_1():  # EQUIV_ADD ruleset, ref param
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     knowledge = Knowledge(rules=RuleSet.EQUIV_ADD, params={'ref': ref})
     assert knowledge.rules.rules == [Rule.EQUIV_ADD]
     assert knowledge.ref == ref
@@ -255,7 +255,7 @@ def test_knowledge_ok_1():  # EQUIV_ADD ruleset, ref param
 
 
 def test_knowledge_ok_2():  # EQUIV_ADD ruleset, ref & limit params
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     knowledge = Knowledge(rules=RuleSet.EQUIV_ADD,
                           params={'ref': ref, 'limit': 10})
     assert knowledge.rules.rules == [Rule.EQUIV_ADD]
@@ -354,7 +354,7 @@ def test_knowledge_ok_6(know_abc_4):
 # Knowledge constructor with Cancer
 
 def test_knowledge_ok_7():  # EQUIV_ADD, limit 0.2 --> 1
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.EQUIV_ADD,
                      params={'limit': 0.2, 'ref': ref})
     assert know.rules.rules == [Rule.EQUIV_ADD]
@@ -376,7 +376,7 @@ def test_knowledge_ok_7():  # EQUIV_ADD, limit 0.2 --> 1
 
 
 def test_knowledge_ok_8():  # EQUIV_ADD, limit 0.5 --> 2
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.EQUIV_ADD,
                      params={'limit': 0.5, 'ref': ref})
     assert know.rules.rules == [Rule.EQUIV_ADD]
@@ -398,7 +398,7 @@ def test_knowledge_ok_8():  # EQUIV_ADD, limit 0.5 --> 2
 
 
 def test_knowledge_ok_9():  # EQUIV_ADD, limit 0.05 --> 1
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.EQUIV_ADD,
                      params={'limit': 0.05, 'ref': ref})
     assert know.rules.rules == [Rule.EQUIV_ADD]
@@ -420,7 +420,7 @@ def test_knowledge_ok_9():  # EQUIV_ADD, limit 0.05 --> 1
 
 
 def test_knowledge_ok_10():  # EQUIV_ADD, limit 0.05 --> 1, partial T
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.EQUIV_ADD,
                      params={'limit': 0.05, 'ref': ref, 'partial': True})
     assert know.rules.rules == [Rule.EQUIV_ADD]
@@ -444,7 +444,7 @@ def test_knowledge_ok_10():  # EQUIV_ADD, limit 0.05 --> 1, partial T
 # Knowledge constructor with asia
 
 def test_knowledge_asia_1_ok():  # EQUIV_ADD Knowledge, 0.2 expertise
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     know = Knowledge(rules=RuleSet.EQUIV_ADD,
                      params={'limit': 0.2, 'ref': ref, 'expertise': 1.0})
     assert know.rules.rules == [Rule.EQUIV_ADD]
@@ -464,7 +464,7 @@ def test_knowledge_asia_1_ok():  # EQUIV_ADD Knowledge, 0.2 expertise
 
 
 def test_knowledge_asia_2_ok():  # EQUIV_ADD Knowledge, 0.2 expertise
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     know = Knowledge(rules=RuleSet.EQUIV_ADD,
                      params={'limit': 0.5, 'ref': ref, 'expertise': 0.8,
                              'earlyok': True})
@@ -1210,7 +1210,7 @@ def test_hc_best_abc_16_ok(abc1):  # lim 4, expert 0.5, get FTF sequence
 
     init_stable_random()
 
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     know = Knowledge(rules=RuleSet.EQUIV_ADD,
                      params={'ref': ref, 'limit': 3, 'expertise': 0.5,
                              'partial': False})
@@ -1270,7 +1270,7 @@ def test_hc_best_abc_17_ok(abc1):  # lim 4, expert 0.5, earlyok=True
 
     init_stable_random()
 
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     know = Knowledge(rules=RuleSet.EQUIV_ADD,
                      params={'ref': ref, 'limit': 3, 'expertise': 0.5,
                              'earlyok': True})
@@ -1328,7 +1328,7 @@ def test_hc_best_abc_18_ok(abc1):  # lim 4, expert 0.5, get FTF sequence
 
     init_stable_random()
 
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     know = Knowledge(rules=RuleSet.EQUIV_ADD,
                      params={'ref': ref, 'limit': 3, 'expertise': 0.5,
                              'partial': False})

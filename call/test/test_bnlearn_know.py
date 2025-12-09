@@ -9,7 +9,7 @@ from data import TESTDATA_DIR
 from knowledge.bayesys import read_constraints
 from data.numpy import NumPy
 from causaliq_core.graph import DAG, EdgeType
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 from learn.knowledge import Knowledge
 from learn.knowledge_rule import RuleSet
 
@@ -17,7 +17,7 @@ from learn.knowledge_rule import RuleSet
 # Generate 10 categorical rows for A --> B
 @pytest.fixture(scope="module")
 def ab10():
-    bn = BN.read(TESTDATA_DIR + '/dsc/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/dsc/ab.dsc')
     data = NumPy.from_df(df=bn.generate_cases(10), dstype='categorical',
                          keep_df=False)
     return (data, bn)
@@ -224,7 +224,7 @@ def test_reqd_h2pc_cancer_1_ok():
 # Cancer, S --> C, P --> C required
 @requires_r_and_bnlearn
 def test_reqd_hc_cancer_2_ok():
-    bn = BN.read(TESTDATA_DIR + '/experiments/bn/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/experiments/bn/cancer.dsc')
     data = NumPy.read(TESTDATA_DIR + '/experiments/datasets/cancer.data.gz',
                       dstype='categorical', N=1000)
     initial = DAG(bn.dag.nodes, [('Smoker', '->', 'Cancer'),
@@ -271,7 +271,7 @@ def test_reqd_hc_cancer_2_ok():
 # PC, Cancer data, No knowledge
 @requires_r_and_bnlearn
 def test_reqd_pc_cancer_2_ok():
-    bn = BN.read(TESTDATA_DIR + '/experiments/bn/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/experiments/bn/cancer.dsc')
     data = NumPy.read(TESTDATA_DIR + '/experiments/datasets/cancer.data.gz',
                       dstype='categorical', N=1000)
     initial = DAG(bn.dag.nodes, [('Smoker', '->', 'Cancer'),
@@ -292,7 +292,7 @@ def test_reqd_pc_cancer_2_ok():
 # MMHC, Cancer data, 2 reqd
 @requires_r_and_bnlearn
 def test_reqd_mmhc_cancer_2_ok():
-    bn = BN.read(TESTDATA_DIR + '/experiments/bn/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/experiments/bn/cancer.dsc')
     data = NumPy.read(TESTDATA_DIR + '/experiments/datasets/cancer.data.gz',
                       dstype='categorical', N=1000)
     initial = DAG(bn.dag.nodes, [('Smoker', '->', 'Cancer'),
@@ -314,7 +314,7 @@ def test_reqd_mmhc_cancer_2_ok():
 # H2PC, Cancer data, 2 reqd
 @requires_r_and_bnlearn
 def test_reqd_h2pc_cancer_2_ok():
-    bn = BN.read(TESTDATA_DIR + '/experiments/bn/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/experiments/bn/cancer.dsc')
     data = NumPy.read(TESTDATA_DIR + '/experiments/datasets/cancer.data.gz',
                       dstype='categorical', N=1000)
     initial = DAG(bn.dag.nodes, [('Smoker', '->', 'Cancer'),
@@ -334,7 +334,7 @@ def test_reqd_h2pc_cancer_2_ok():
 # H2PC, Cancer data, 1 reqd
 @requires_r_and_bnlearn
 def test_reqd_h2pc_cancer_3_ok():
-    bn = BN.read(TESTDATA_DIR + '/experiments/bn/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/experiments/bn/cancer.dsc')
     data = NumPy.read(TESTDATA_DIR + '/experiments/datasets/cancer.data.gz',
                       dstype='categorical', N=1000)
     initial = DAG(bn.dag.nodes, [('Smoker', '->', 'Cancer'),
@@ -378,7 +378,7 @@ def test_reqd_hc_sports_1_ok():
 # Sports, 9 required arcs
 @requires_r_and_bnlearn
 def test_reqd_hc_sports_7_ok():
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/sports.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/sports.dsc')
     data = NumPy.read(TESTDATA_DIR + '/experiments/datasets/sports.data.gz',
                       dstype='categorical', N=1000)
     constraints = TESTDATA_DIR + '/bayesys/constraintsDirected_SPORTS_7.csv'
@@ -420,7 +420,7 @@ def test_reqd_pc_sports_1_ok():
 # PC, Sports, 9 required arcs
 @requires_r_and_bnlearn
 def test_reqd_pc_sports_7_ok():
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/sports.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/sports.dsc')
     data = NumPy.read(TESTDATA_DIR + '/experiments/datasets/sports.data.gz',
                       dstype='categorical', N=1000)
     constraints = TESTDATA_DIR + '/bayesys/constraintsDirected_SPORTS_7.csv'
@@ -462,7 +462,7 @@ def test_reqd_mmhc_sports_1_ok():
 # MMHC, Sports, 9 required arcs
 @requires_r_and_bnlearn
 def test_reqd_mmhc_sports_7_ok():
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/sports.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/sports.dsc')
     data = NumPy.read(TESTDATA_DIR + '/experiments/datasets/sports.data.gz',
                       dstype='categorical', N=1000)
     constraints = TESTDATA_DIR + '/bayesys/constraintsDirected_SPORTS_7.csv'
@@ -503,7 +503,7 @@ def test_reqd_h2pc_sports_1_ok():
 # H2PC, Sports, 9 required arcs
 @requires_r_and_bnlearn
 def test_reqd_h2pc_sports_7_ok():
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/sports.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/sports.dsc')
     data = NumPy.read(TESTDATA_DIR + '/experiments/datasets/sports.data.gz',
                       dstype='categorical', N=1000)
     constraints = TESTDATA_DIR + '/bayesys/constraintsDirected_SPORTS_7.csv'
@@ -519,7 +519,7 @@ def test_reqd_h2pc_sports_7_ok():
 # H2PC, Sports, 4 required arcs
 @requires_r_and_bnlearn
 def test_reqd_h2pc_sports_7a_ok():
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/sports.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/sports.dsc')
     data = NumPy.read(TESTDATA_DIR + '/experiments/datasets/sports.data.gz',
                       dstype='categorical', N=1000)
 
@@ -724,7 +724,7 @@ def test_stop_h2pc_cancer_2_ok():
 # Sports, HC, 3 tiers
 @requires_r_and_bnlearn
 def test_tiers_hc_sports_7_ok():
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/sports.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/sports.dsc')
     data = NumPy.read(TESTDATA_DIR + '/experiments/datasets/sports.data.gz',
                       dstype='categorical', N=1000)
     constraints = TESTDATA_DIR + '/bayesys/constraintsTemporal_SPORTS_7.csv'
@@ -749,7 +749,7 @@ def test_tiers_hc_sports_7_ok():
 # PC, Sports, 3 tiers
 @requires_r_and_bnlearn
 def test_tiers_pc_sports_7_ok():
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/sports.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/sports.dsc')
     data = NumPy.read(TESTDATA_DIR + '/experiments/datasets/sports.data.gz',
                       dstype='categorical', N=1000)
     constraints = TESTDATA_DIR + '/bayesys/constraintsTemporal_SPORTS_7.csv'
@@ -770,7 +770,7 @@ def test_tiers_pc_sports_7_ok():
 # MMHC, Sports, 3 tiers
 @requires_r_and_bnlearn
 def test_tiers_mmhc_sports_7_ok():
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/sports.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/sports.dsc')
     data = NumPy.read(TESTDATA_DIR + '/experiments/datasets/sports.data.gz',
                       dstype='categorical', N=1000)
     constraints = TESTDATA_DIR + '/bayesys/constraintsTemporal_SPORTS_7.csv'
@@ -794,7 +794,7 @@ def test_tiers_mmhc_sports_7_ok():
 # H2PC, Sports, 3 tiers
 @requires_r_and_bnlearn
 def test_tiers_h2pc_sports_7_ok():
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/sports.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/sports.dsc')
     data = NumPy.read(TESTDATA_DIR + '/experiments/datasets/sports.data.gz',
                       dstype='categorical', N=1000)
     constraints = TESTDATA_DIR + '/bayesys/constraintsTemporal_SPORTS_7.csv'

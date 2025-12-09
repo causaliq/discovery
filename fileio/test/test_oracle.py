@@ -6,7 +6,7 @@ import pytest
 from data import TESTDATA_DIR
 from data import Data
 from data.oracle import Oracle
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 
 
 def test_data_type_error_1():  # cannot call constructor directly
@@ -28,7 +28,7 @@ def test_create_type_error_1():  # bad bn type
 
 
 def test_create_ab_1_ok():  # A-->B BN
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     data = Oracle(bn=bn)
 
     assert isinstance(data, Oracle)
@@ -46,7 +46,7 @@ def test_create_ab_1_ok():  # A-->B BN
 
 
 def test_create_cancer_2_ok():  # Cancer BN
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = Oracle(bn=bn)
 
     assert isinstance(data, Oracle)
@@ -72,7 +72,7 @@ def test_create_cancer_2_ok():  # Cancer BN
 
 
 def test_create_asia_2_ok():  # Asia BN
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     data = Oracle(bn=bn)
 
     assert isinstance(data, Oracle)
@@ -105,7 +105,7 @@ def test_create_asia_2_ok():  # Asia BN
 # Test set_N function
 
 def test_set_N_type_error_1():  # Asia BN - no args
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     data = Oracle(bn=bn)
 
     with pytest.raises(TypeError):
@@ -113,7 +113,7 @@ def test_set_N_type_error_1():  # Asia BN - no args
 
 
 def test_set_N_type_error_2():  # Asia, BN - non-integer arg
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     data = Oracle(bn=bn)
 
     with pytest.raises(TypeError):
@@ -125,7 +125,7 @@ def test_set_N_type_error_2():  # Asia, BN - non-integer arg
 
 
 def test_set_N_type_error_3():  # Asia, BN - seed is not None
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     data = Oracle(bn=bn)
 
     with pytest.raises(TypeError):
@@ -137,7 +137,7 @@ def test_set_N_type_error_3():  # Asia, BN - seed is not None
 
 
 def test_set_N_value_error_4_ok():  # Asia BN - set non-positive N
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     data = Oracle(bn=bn)
 
     with pytest.raises(ValueError):
@@ -147,7 +147,7 @@ def test_set_N_value_error_4_ok():  # Asia BN - set non-positive N
 
 
 def test_set_N_asia_1_ok():  # Asia BN - set N to 50
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     data = Oracle(bn=bn)
     data.set_N(50)
 
@@ -191,7 +191,7 @@ def test_set_N_asia_1_ok():  # Asia BN - set N to 50
 # Test set_order function
 
 def test_set_order_type_error_1_ok():  # Asia BN - no args
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     data = Oracle(bn=bn)
 
     with pytest.raises(TypeError):
@@ -199,7 +199,7 @@ def test_set_order_type_error_1_ok():  # Asia BN - no args
 
 
 def test_set_order_type_error_2_ok():  # Asia BN - bad arg type
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     data = Oracle(bn=bn)
 
     with pytest.raises(TypeError):
@@ -213,7 +213,7 @@ def test_set_order_type_error_2_ok():  # Asia BN - bad arg type
 
 
 def test_set_order_value_error_1_ok():  # Asia BN - names mismatch
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     data = Oracle(bn=bn)
     nodes = bn.dag.nodes
 
@@ -226,7 +226,7 @@ def test_set_order_value_error_1_ok():  # Asia BN - names mismatch
 
 
 def test_set_order_asia_1_ok():  # Asia BN - optimal/worst/original order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     data = Oracle(bn=bn)
     std_order = tuple(bn.dag.nodes)
 

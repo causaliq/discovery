@@ -9,7 +9,7 @@ from os import remove
 
 from data import TESTDATA_DIR
 from learn.trace import Trace
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 from analysis.graphviz import traceviz
 from analysis.trace import TraceAnalysis
 import testdata.example_dags as ex_dag
@@ -115,7 +115,7 @@ def test_traceviz_asia_ok_1(dir, filename, refdir):
 
 def test_traceviz_sachs_ok_1(dir, filename, refdir):
     trace = Trace.read('HC/STD/sachs', TESTDATA_DIR + '/experiments')['N100']
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/sachs.dsc').dag
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/sachs.dsc').dag
     analysis = TraceAnalysis(trace, ref)
     traceviz(analysis, dir, filename)
     assert cmp(refdir + 'HC_STD_sachs_N100.gv', dir + '/' + filename + '.gv')
@@ -123,7 +123,7 @@ def test_traceviz_sachs_ok_1(dir, filename, refdir):
 
 def test_traceviz_sports_ok_1(dir, filename, refdir):
     trace = Trace.read('HC/STD/sports', TESTDATA_DIR + '/experiments')['N1000']
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/sports.dsc').dag
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/sports.dsc').dag
     analysis = TraceAnalysis(trace, ref)
     traceviz(analysis, dir, filename)
     assert cmp(refdir + 'HC_STD_sports_N1000.gv', dir + '/' + filename + '.gv')
@@ -131,7 +131,7 @@ def test_traceviz_sports_ok_1(dir, filename, refdir):
 
 def test_traceviz_hepar2_ok_1(dir, filename, refdir):
     trace = Trace.read('HC/STD/hepar2', TESTDATA_DIR + '/experiments')['N1000']
-    ref = BN.read(TESTDATA_DIR + '/discrete/large/hepar2.dsc').dag
+    ref = read_bn(TESTDATA_DIR + '/discrete/large/hepar2.dsc').dag
     analysis = TraceAnalysis(trace, ref)
     traceviz(analysis, dir, filename)
     assert cmp(refdir + 'HC_STD_hepar2_N1000.gv', dir + '/' + filename + '.gv')

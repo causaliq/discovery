@@ -6,7 +6,7 @@ from pandas import DataFrame
 
 from causaliq_core.graph import EdgeType, BAYESYS_VERSIONS
 from causaliq_core.graph import DAG, dag_to_pdag, is_cpdag, pdag_to_cpdag
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 from core.metrics import pdag_compare
 from data.indep import indep
 from data import EXPTS_DIR
@@ -254,7 +254,7 @@ class TraceAnalysis():
             raise TypeError('TraceAnalysis.select() bad arg types')
 
         try:
-            ref = BN.read(bn_dir + '/' + network + '.dsc').dag
+            ref = read_bn(bn_dir + '/' + network + '.dsc').dag
         except FileNotFoundError:
             raise ValueError('TraceAnalysis.select() unknown series/network')
 

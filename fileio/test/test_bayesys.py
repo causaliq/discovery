@@ -11,7 +11,7 @@ from data import TESTDATA_DIR
 from causaliq_core.utils import FileFormatError
 import testdata.example_dags as ex_dag
 import testdata.example_pdags as ex_pdag
-from causaliq_core.bn import BN
+from causaliq_core.bn import read_bn
 from learn.knowledge import Knowledge
 from learn.knowledge_rule import Rule
 
@@ -125,12 +125,12 @@ def test_triple_chain_all_nodes_ok():
 
 def test_bayesys_read_alarm_ok():
     dag = read(TESTDATA_DIR + '/bayesys/alarm.csv')
-    assert dag == BN.read(TESTDATA_DIR + '/discrete/medium/alarm.dsc').dag
+    assert dag == read_bn(TESTDATA_DIR + '/discrete/medium/alarm.dsc').dag
 
 
 def test_bayesys_read_diarrhoea_ok():
     dag = read(TESTDATA_DIR + '/bayesys/diarrhoea.csv')
-    assert dag == BN.read(TESTDATA_DIR + '/discrete/medium/diarrhoea.dsc').dag
+    assert dag == read_bn(TESTDATA_DIR + '/discrete/medium/diarrhoea.dsc').dag
 
 
 # These perfect PDAG files should not raise any exceptions
@@ -253,13 +253,13 @@ def test_bayesys_write_ac_bc_ok_1(tmpfile):  # A -> C <- B
 
 
 def test_bayesys_write_alarm_ok_1(tmpfile):  # Alarm [37 nodes]
-    dag = BN.read(TESTDATA_DIR + '/discrete/medium/alarm.dsc').dag
+    dag = read_bn(TESTDATA_DIR + '/discrete/medium/alarm.dsc').dag
     write(dag, tmpfile)
     assert dag == read(tmpfile)
 
 
 def test_bayesys_write_diarrhoea_ok_1(tmpfile):  # Diarrhoea [28 nodes]
-    dag = BN.read(TESTDATA_DIR + '/discrete/medium/diarrhoea.dsc').dag
+    dag = read_bn(TESTDATA_DIR + '/discrete/medium/diarrhoea.dsc').dag
     write(dag, tmpfile)
     assert dag == read(tmpfile)
 
@@ -381,7 +381,7 @@ def test_read_directed_ab_1_ok():  # A --> B with 1 reqd
 
 
 def test_read_directed_sports_7_ok():  # sports with 8 reqd
-    dag = BN.read(TESTDATA_DIR + '/discrete/small/sports.dsc').dag
+    dag = read_bn(TESTDATA_DIR + '/discrete/small/sports.dsc').dag
     know = read_constraints(C_FILE.format('SPORTS_7'), set(dag.nodes))
     assert isinstance(know, Knowledge)
     assert know.rules.rules == [Rule.REQD_ARC]
@@ -404,7 +404,7 @@ def test_read_directed_sports_7_ok():  # sports with 8 reqd
 
 
 def test_read_directed_covid_7_ok():  # covid with 13 required
-    dag = BN.read(TESTDATA_DIR + '/discrete/medium/covid.dsc').dag
+    dag = read_bn(TESTDATA_DIR + '/discrete/medium/covid.dsc').dag
     know = read_constraints(C_FILE.format('COVID-19_7'), set(dag.nodes))
     assert isinstance(know, Knowledge)
     assert know.rules.rules == [Rule.REQD_ARC]
@@ -434,7 +434,7 @@ def test_read_directed_covid_7_ok():  # covid with 13 required
 
 
 def test_read_directed_diarrhoea_7_ok():  # diarrhoea with 9 required
-    dag = BN.read(TESTDATA_DIR + '/discrete/medium/diarrhoea.dsc').dag
+    dag = read_bn(TESTDATA_DIR + '/discrete/medium/diarrhoea.dsc').dag
 
     # Correct spelling of DIA_HadDiarrhoea
 
@@ -463,7 +463,7 @@ def test_read_directed_diarrhoea_7_ok():  # diarrhoea with 9 required
 
 
 def test_read_directed_formed_5_ok():  # formed with 7 required
-    dag = BN.read(TESTDATA_DIR + '/discrete/large/formed.dsc').dag
+    dag = read_bn(TESTDATA_DIR + '/discrete/large/formed.dsc').dag
     know = read_constraints(C_FILE.format('FORMED_5'), set(dag.nodes))
     assert isinstance(know, Knowledge)
     assert know.rules.rules == [Rule.REQD_ARC]
@@ -552,7 +552,7 @@ def test_read_temporal_ab_1_ok():  # A --> B
 
 
 def test_read_temporal_sports_7_ok():  # Sports
-    dag = BN.read(TESTDATA_DIR + '/discrete/small/sports.dsc').dag
+    dag = read_bn(TESTDATA_DIR + '/discrete/small/sports.dsc').dag
     know = read_constraints(T_FILE.format('SPORTS_7'), set(dag.nodes))
     assert isinstance(know, Knowledge)
     assert know.rules.rules == [Rule.STOP_ARC]
@@ -593,7 +593,7 @@ def test_read_temporal_sports_7_ok():  # Sports
 
 
 def test_read_temporal_covid_7_ok():  # Sports, 3 tiers
-    dag = BN.read(TESTDATA_DIR + '/discrete/medium/covid.dsc').dag
+    dag = read_bn(TESTDATA_DIR + '/discrete/medium/covid.dsc').dag
     know = read_constraints(T_FILE.format('COVID-19_7'), set(dag.nodes))
     assert isinstance(know, Knowledge)
     assert know.rules.rules == [Rule.STOP_ARC]
@@ -687,7 +687,7 @@ def test_read_temporal_covid_7_ok():  # Sports, 3 tiers
 
 
 def test_read_temporal_diarrhoea_7_ok():  # Diarrhoea, 3 tiers
-    dag = BN.read(TESTDATA_DIR + '/discrete/medium/diarrhoea.dsc').dag
+    dag = read_bn(TESTDATA_DIR + '/discrete/medium/diarrhoea.dsc').dag
     nodes = (set(dag.nodes) - {'DIA_HadDiahorrea'}) | {'DIA_HadDiarrhoea'}
     know = read_constraints(T_FILE.format('DIARRHOEA_7'), nodes)
     assert isinstance(know, Knowledge)
@@ -739,7 +739,7 @@ def test_read_temporal_diarrhoea_7_ok():  # Diarrhoea, 3 tiers
 
 
 def test_read_temporal_formed_5_ok():  # Formed, 2 tiers
-    dag = BN.read(TESTDATA_DIR + '/discrete/large/formed.dsc').dag
+    dag = read_bn(TESTDATA_DIR + '/discrete/large/formed.dsc').dag
     know = read_constraints(T_FILE.format('FORMED_5'), set(dag.nodes))
     assert isinstance(know, Knowledge)
     assert know.rules.rules == [Rule.STOP_ARC]

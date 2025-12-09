@@ -13,7 +13,7 @@ from call.bnlearn import bnlearn_learn
 from call.tetrad import tetrad_learn
 from causaliq_core.graph.io.tetrad import write as write_tetrad, read as read_tetrad
 from causaliq_core.graph.io.bayesys import write as write_bayesys
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn, write_bn
 from causaliq_core.graph import DAG, is_cpdag, extend_pdag
 from causaliq_core.utils.timing import Timing
 
@@ -204,7 +204,7 @@ def graph_gaming_knowledge():
     """
         Process Bayesys format knowledge file and create dsc and xdsl files
     """
-    dag = read(EXPTS_DIR + '/bn/bayesys/gaming.csv')
+    dag = read_bn(EXPTS_DIR + '/bn/bayesys/gaming.csv')
 
     print('\n\nReading data file ...\n')
     data = Pandas.read(EXPTS_DIR + '/realdata/ht_disc.data.gz',
@@ -215,16 +215,16 @@ def graph_gaming_knowledge():
     bn = BN.fit(dag, data)
 
     print('\nWriting .dsc and .xdsl files ...')
-    bn.write(EXPTS_DIR + '/bn/gaming.dsc')
+    write_bn(bn, EXPTS_DIR + '/bn/gaming.dsc')
 
-    bn.write(EXPTS_DIR + '/bn/xdsl/gaming.xdsl')
+    write_bn(bn, EXPTS_DIR + '/bn/xdsl/gaming.xdsl')
 
 
 def graph_gaming_synthetic():
     """
         Generate 10M rows of synthetic data file for Gaming
     """
-    bn = BN.read(EXPTS_DIR + '/bn/xdsl/gaming.xdsl')
+    bn = read_bn(EXPTS_DIR + '/bn/xdsl/gaming.xdsl')
 
     bn.generate_cases(1000000, EXPTS_DIR + '/datasets/gaming.data.gz')
 
@@ -235,7 +235,7 @@ def graph_gaming_analysis():
     """
     ALGOS = ['bnlearn_gs', 'bnlearn_hc', 'bnlearn_mmhc', 'bnlearn_pc-stable',
              'bnlearn_tabu', 'hc-stable', 'tabu-stable', 'tetrad_fges']
-    ref = BN.read(EXPTS_DIR + '/bn/gaming.dsc').dag
+    ref = read_bn(EXPTS_DIR + '/bn/gaming.dsc').dag
 
     comparisons = []
     for algo in ALGOS:

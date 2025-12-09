@@ -3,7 +3,7 @@ from pandas import Series
 from numpy import NaN
 import pytest
 
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 from core.metrics import kl
 from causaliq_core.utils import values_same
 from data import TESTDATA_DIR
@@ -88,7 +88,7 @@ def test_metrics_kl_wiki_ok():  # Kullback-Leibler_divergence Wikipedia
 
 
 def test_metrics_kl_ab_ok():  # KL of sample from true in A --> B
-    ab = BN.read(TESTDATA_DIR + '/dsc/ab.dsc')  # get A-->B BN
+    ab = read_bn(TESTDATA_DIR + '/dsc/ab.dsc')  # get A-->B BN
 
     limit = ab.global_distribution()  # theoretical distribution
     limit = limit.set_index(ab.dag.nodes).squeeze()  # convert to Series
@@ -106,7 +106,7 @@ def test_metrics_kl_ab_ok():  # KL of sample from true in A --> B
 
 
 def test_metrics_kl_abc_ok():  # KL of sample from true in A --> B --> C
-    abc = BN.read(TESTDATA_DIR + '/dsc/abc.dsc')  # get A-->B-->C BN
+    abc = read_bn(TESTDATA_DIR + '/dsc/abc.dsc')  # get A-->B-->C BN
 
     limit = abc.global_distribution()  # theoretical distribution
     limit = limit.set_index(abc.dag.nodes).squeeze()  # convert to Series
@@ -120,7 +120,7 @@ def test_metrics_kl_abc_ok():  # KL of sample from true in A --> B --> C
 
 
 def test_metrics_kl_ab_cb_ok():  # KL of sample from true in A --> B <-- C
-    ab_cb = BN.read(TESTDATA_DIR + '/dsc/ab_cb.dsc')  # get A-->B<--C BN
+    ab_cb = read_bn(TESTDATA_DIR + '/dsc/ab_cb.dsc')  # get A-->B<--C BN
 
     limit = ab_cb.global_distribution()  # theoretical distribution
     limit = limit.set_index(ab_cb.dag.nodes).squeeze()  # convert to Series

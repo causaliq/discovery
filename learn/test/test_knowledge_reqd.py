@@ -8,19 +8,19 @@ from learn.knowledge import Knowledge, Rule, RuleSet, \
 from learn.trace import Activity
 from learn.dagchange import DAGChange, BestDAGChanges
 from data import TESTDATA_DIR
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 from causaliq_core.graph import DAG
 
 
 @pytest.fixture
 def ab():  # return ab DAG
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     return ref.dag
 
 
 @pytest.fixture
 def reqd1():  # reqd list with arc B --> C (incorrect knowledge)
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     return Knowledge(rules=RuleSet.REQD_ARC,
                      params={'reqd': {('B', 'C'): False},
                              'initial': ref.dag})
@@ -28,7 +28,7 @@ def reqd1():  # reqd list with arc B --> C (incorrect knowledge)
 
 @pytest.fixture
 def abc1():  # data for A->B->C graph
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     parents = {'A': set(), 'B': {'A'}, 'C': {'B'}}
     return (ref.generate_cases(10), parents)
 
@@ -78,7 +78,7 @@ def test_reqd_type_error_6():  # reqd tuples have boolean values
 
 
 def test_reqd_type_error_7():  # sample must be an integer
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     with pytest.raises(TypeError):
         Knowledge(rules=RuleSet.REQD_ARC, params={'reqd': 1, 'ref': ref},
                   sample='badtype')
@@ -130,14 +130,14 @@ def test_reqd_value_error_5():  # REQD_ARC stop frac missing ref
 
 
 def test_reqd_value_error_6():  # REQD_ARC stop frac, initial attribute
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     with pytest.raises(ValueError):
         Knowledge(rules=RuleSet.REQD_ARC,
                   params={'reqd': 0.1, 'ref': ref, 'initial': True})
 
 
 def test_reqd_value_error_7():  # REQD_ARC stop frac, sample < 1. > 100
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     with pytest.raises(ValueError):
         Knowledge(rules=RuleSet.REQD_ARC, sample=-1,
                   params={'reqd': 0.5, 'ref': ref})
@@ -147,7 +147,7 @@ def test_reqd_value_error_7():  # REQD_ARC stop frac, sample < 1. > 100
 
 
 def test_reqd_value_error_8():  # REQD_ARC with earlyok
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     with pytest.raises(ValueError):
         Knowledge(rules=RuleSet.REQD_ARC,
                   params={'reqd': 0.5, 'ref': ref, 'expertise': 0.5,
@@ -167,7 +167,7 @@ def test_reqd_reqd1_1_ok(reqd1):  # REQD_ARC with specified arcs
     assert reqd1.reqd == {('B', 'C'): (False, True)}
     assert reqd1.event is None
     assert reqd1.event_delta is None
-    ref = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     assert reqd1.initial == ref.dag
 
 
@@ -332,7 +332,7 @@ def test_reqd1_9_ok(reqd1):  # blocks del arc then add of reverse arc
 # Cancer DAG
 
 def test_reqd_cancer_1_ok():  # REQD_ARC, reqd 2
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.REQD_ARC,
                      params={'reqd': 2, 'ref': ref, 'expertise': 1.0})
     assert know.rules.rules == [Rule.REQD_ARC]
@@ -361,7 +361,7 @@ def test_reqd_cancer_1_ok():  # REQD_ARC, reqd 2
 
 
 def test_reqd_cancer_2_ok():  # REQD_ARC, reqd 0.5
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.REQD_ARC,
                      params={'reqd': 0.5, 'ref': ref, 'expertise': 1.0})
     assert know.rules.rules == [Rule.REQD_ARC]
@@ -390,7 +390,7 @@ def test_reqd_cancer_2_ok():  # REQD_ARC, reqd 0.5
 
 
 def test_reqd_cancer_3_ok():  # REQD_ARC, reqd 2, sample 1
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.REQD_ARC, sample=1,
                      params={'reqd': 2, 'ref': ref, 'expertise': 1.0})
     assert know.rules.rules == [Rule.REQD_ARC]
@@ -419,7 +419,7 @@ def test_reqd_cancer_3_ok():  # REQD_ARC, reqd 2, sample 1
 
 
 def test_reqd_cancer_4_ok():  # REQD_ARC, reqd 5, expetise 0.2
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.REQD_ARC,
                      params={'reqd': 5, 'ref': ref, 'expertise': 0.2})
     assert know.rules.rules == [Rule.REQD_ARC]
@@ -455,7 +455,7 @@ def test_reqd_cancer_4_ok():  # REQD_ARC, reqd 5, expetise 0.2
 
 
 def test_reqd_cancer_5_ok():  # REQD_ARC, reqd 1.25, expetise 0.2
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.REQD_ARC,
                      params={'reqd': 1.0, 'ref': ref, 'expertise': 0.2})
     assert know.rules.rules == [Rule.REQD_ARC]
@@ -491,7 +491,7 @@ def test_reqd_cancer_5_ok():  # REQD_ARC, reqd 1.25, expetise 0.2
 
 
 def test_reqd_cancer_6_ok():  # REQD_ARC, reqd 1.25, expertise 0.2
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.REQD_ARC,
                      params={'reqd': 1.0, 'ref': ref, 'expertise': 0.2})
     assert know.rules.rules == [Rule.REQD_ARC]
@@ -527,7 +527,7 @@ def test_reqd_cancer_6_ok():  # REQD_ARC, reqd 1.25, expertise 0.2
 
 
 def test_reqd_cancer_7_ok():  # REQD_ARC with fraction 0.5
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.REQD_ARC,
                      params={'reqd': 0.5, 'ref': ref, 'expertise': 1.0})
     assert know.rules.rules == [Rule.REQD_ARC]
@@ -551,7 +551,7 @@ def test_reqd_cancer_7_ok():  # REQD_ARC with fraction 0.5
 
 
 def test_reqd_cancer_8_ok():  # REQD_ARC with fraction 0.5, sample 1
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.REQD_ARC, sample=1,
                      params={'reqd': 0.5, 'ref': ref, 'expertise': 1.0})
     assert know.rules.rules == [Rule.REQD_ARC]
@@ -575,7 +575,7 @@ def test_reqd_cancer_8_ok():  # REQD_ARC with fraction 0.5, sample 1
 
 
 def test_reqd_cancer_9_ok():  # REQD_ARC with fraction 0.5, expertise 0.5
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.REQD_ARC,
                      params={'reqd': 0.5, 'ref': ref, 'expertise': 0.5})
     assert know.rules.rules == [Rule.REQD_ARC]
@@ -599,7 +599,7 @@ def test_reqd_cancer_9_ok():  # REQD_ARC with fraction 0.5, expertise 0.5
 
 
 def test_reqd_cancer_10_ok():  # REQD_ARC 0.5, expertise 0.5, sample 1
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.REQD_ARC, sample=1,
                      params={'reqd': 0.5, 'ref': ref, 'expertise': 0.5})
     assert know.rules.rules == [Rule.REQD_ARC]
@@ -623,7 +623,7 @@ def test_reqd_cancer_10_ok():  # REQD_ARC 0.5, expertise 0.5, sample 1
 
 
 def test_reqd_cancer_11_ok(reqd1):  # REQD_ARC with fraction 0.95
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.REQD_ARC,
                      params={'reqd': 0.95, 'ref': ref, 'expertise': 1.0})
     assert know.rules.rules == [Rule.REQD_ARC]
@@ -646,7 +646,7 @@ def test_reqd_cancer_11_ok(reqd1):  # REQD_ARC with fraction 0.95
 
 
 def test_reqd_cancer_12_ok(reqd1):  # REQD_ARC 0.95, exp 0.05
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.REQD_ARC,
                      params={'reqd': 0.80, 'ref': ref, 'expertise': 0.05})
     assert know.rules.rules == [Rule.REQD_ARC]
@@ -674,7 +674,7 @@ def test_reqd_cancer_12_ok(reqd1):  # REQD_ARC 0.95, exp 0.05
 
 
 def test_reqd_cancer_13_ok(reqd1):  # REQD_ARC 0.40, suppress initial
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     know = Knowledge(rules=RuleSet.REQD_ARC,
                      params={'reqd': 0.40, 'ref': ref, 'expertise': 1.0,
                              'initial': False})
@@ -696,7 +696,7 @@ def test_reqd_cancer_13_ok(reqd1):  # REQD_ARC 0.40, suppress initial
 
 
 def test_reqd_cancer_14_ok(reqd1):  # REQD_ARC 0.40, specify initial
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     initial = DAG(['Cancer', 'Dyspnoea', 'Pollution', 'Smoker', 'Xray'],
                   [('Dyspnoea', '->', 'Cancer'),
                    ('Dyspnoea', '->', 'Xray'),
@@ -757,7 +757,7 @@ def test_reqd_asia_1_ok():  # REQD_ARC, explicit list
 
 
 def test_reqd_asia_2_ok():  # REQD_ARC, reqd 4 correct
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     know = Knowledge(rules=RuleSet.REQD_ARC,
                      params={'reqd': 4, 'ref': ref, 'expertise': 1.0})
     assert know.rules.rules == [Rule.REQD_ARC]
@@ -785,7 +785,7 @@ def test_reqd_asia_2_ok():  # REQD_ARC, reqd 4 correct
 
 
 def test_reqd_asia_3_ok():  # REQD_ARC, reqd 0.5 correct
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     know = Knowledge(rules=RuleSet.REQD_ARC,
                      params={'reqd': 0.5, 'ref': ref, 'expertise': 1.0})
     assert know.rules.rules == [Rule.REQD_ARC]
@@ -813,7 +813,7 @@ def test_reqd_asia_3_ok():  # REQD_ARC, reqd 0.5 correct
 
 
 def test_reqd_asia_4_ok():  # REQD_ARC, reqd 16, expertise 1/7
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     know = Knowledge(rules=RuleSet.REQD_ARC,
                      params={'reqd': 16, 'ref': ref, 'expertise': 1/7})
     assert know.rules.rules == [Rule.REQD_ARC]
@@ -866,7 +866,7 @@ def test_reqd_asia_4_ok():  # REQD_ARC, reqd 16, expertise 1/7
 
 
 def test_reqd_asia_5_ok():  # REQD_ARC, reqd 16, expertise unspecified
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     know = Knowledge(rules=RuleSet.REQD_ARC,
                      params={'reqd': 16, 'ref': ref})
     assert know.rules.rules == [Rule.REQD_ARC]
@@ -920,7 +920,7 @@ def test_reqd_asia_5_ok():  # REQD_ARC, reqd 16, expertise unspecified
 
 
 def test_reqd_asia_6_ok():  # REQD_ARC, reqd 16 correct
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     know = Knowledge(rules=RuleSet.REQD_ARC,
                      params={'reqd': 16, 'ref': ref, 'expertise': 1.0})
     assert know.rules.rules == [Rule.REQD_ARC]
@@ -957,7 +957,7 @@ def test_reqd_asia_6_ok():  # REQD_ARC, reqd 16 correct
 
 
 def test_reqd_insurance_1_ok():  # REQD_ARC 0.25 expertise 1.0
-    ref = BN.read(TESTDATA_DIR + '/discrete/medium/insurance.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/medium/insurance.dsc')
     know = Knowledge(rules=RuleSet.REQD_ARC,
                      params={'reqd': 0.25, 'ref': ref, 'expertise': 1.0})
     assert know.rules.rules == [Rule.REQD_ARC]
@@ -994,7 +994,7 @@ def test_reqd_insurance_1_ok():  # REQD_ARC 0.25 expertise 1.0
 
 
 def test_reqd_insurance_2_ok():  # REQD_ARC, reqd 0.25 expertise 1.0, sample 1
-    ref = BN.read(TESTDATA_DIR + '/discrete/medium/insurance.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/medium/insurance.dsc')
     know = Knowledge(rules=RuleSet.REQD_ARC, sample=1,
                      params={'reqd': 0.25, 'ref': ref, 'expertise': 1.0})
     assert know.rules.rules == [Rule.REQD_ARC]
@@ -1030,7 +1030,7 @@ def test_reqd_insurance_2_ok():  # REQD_ARC, reqd 0.25 expertise 1.0, sample 1
 
 
 def test_reqd_insurance_3_ok():  # REQD_ARC, reqd 0.25 expertise 1.0, sample 2
-    ref = BN.read(TESTDATA_DIR + '/discrete/medium/insurance.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/medium/insurance.dsc')
     know = Knowledge(rules=RuleSet.REQD_ARC, sample=2,
                      params={'reqd': 0.25, 'ref': ref, 'expertise': 1.0})
     assert know.rules.rules == [Rule.REQD_ARC]
@@ -1067,7 +1067,7 @@ def test_reqd_insurance_3_ok():  # REQD_ARC, reqd 0.25 expertise 1.0, sample 2
 
 
 def test_reqd_insurance_4_ok():  # REQD_ARC 0.25 expertise 0.70
-    ref = BN.read(TESTDATA_DIR + '/discrete/medium/insurance.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/medium/insurance.dsc')
     know = Knowledge(rules=RuleSet.REQD_ARC,
                      params={'reqd': 0.25, 'ref': ref, 'expertise': 0.7})
     assert know.rules.rules == [Rule.REQD_ARC]
@@ -1104,7 +1104,7 @@ def test_reqd_insurance_4_ok():  # REQD_ARC 0.25 expertise 0.70
 
 
 def test_reqd_insurance_5_ok():  # REQD_ARC 0.25 expertise 0.70, sample 1
-    ref = BN.read(TESTDATA_DIR + '/discrete/medium/insurance.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/medium/insurance.dsc')
     know = Knowledge(rules=RuleSet.REQD_ARC, sample=1,
                      params={'reqd': 0.25, 'ref': ref, 'expertise': 0.7})
     assert know.rules.rules == [Rule.REQD_ARC]
@@ -1141,7 +1141,7 @@ def test_reqd_insurance_5_ok():  # REQD_ARC 0.25 expertise 0.70, sample 1
 
 
 def test_reqd_insurance_6_ok():  # REQD_ARC 0.25 expertise 0.70, sample 2
-    ref = BN.read(TESTDATA_DIR + '/discrete/medium/insurance.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/medium/insurance.dsc')
     know = Knowledge(rules=RuleSet.REQD_ARC, sample=2,
                      params={'reqd': 0.25, 'ref': ref, 'expertise': 0.7})
     assert know.rules.rules == [Rule.REQD_ARC]
@@ -1178,7 +1178,7 @@ def test_reqd_insurance_6_ok():  # REQD_ARC 0.25 expertise 0.70, sample 2
 
 
 def test_reqd_insurance_7_ok():  # REQD_ARC 0.25 expertise 0.30, sample 3
-    ref = BN.read(TESTDATA_DIR + '/discrete/medium/insurance.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/medium/insurance.dsc')
     know = Knowledge(rules=RuleSet.REQD_ARC, sample=3,
                      params={'reqd': 0.25, 'ref': ref, 'expertise': 0.3})
     assert know.rules.rules == [Rule.REQD_ARC]

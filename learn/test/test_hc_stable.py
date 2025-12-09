@@ -7,7 +7,7 @@ from pandas import DataFrame
 from data import TESTDATA_DIR
 from data.pandas import Pandas
 from data.numpy import NumPy
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 from learn.hc import hc, set_stable_order, Stability
 from learn.hc_worker import HCWorker, Prefer
 from learn.knowledge import Knowledge
@@ -24,7 +24,7 @@ def d_params():
 # Test checks on "stable" parameter
 
 def test_hc_stable_type_error_1():  # stable param has bad type
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     data = Pandas(df=bn.generate_cases(10))
     with pytest.raises(TypeError):
         dag, _ = hc(data, params={'stable': 2})
@@ -37,7 +37,7 @@ def test_hc_stable_type_error_1():  # stable param has bad type
 
 
 def test_hc_stable_value_error_1():  # Invalid stable value
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     data = Pandas(df=bn.generate_cases(10))
     with pytest.raises(ValueError):
         dag, _ = hc(data, params={'stable': 'invalid'})
@@ -50,7 +50,7 @@ def test_hc_stable_value_error_1():  # Invalid stable value
 
 
 def test_hc_stable_value_error_2():  # stable & knowledge incompatible
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     data = Pandas(df=bn.generate_cases(10))
     context = {'id': 'test/hc_stable/ab_1', 'in': 'ab_1'}
     know = Knowledge(rules=RuleSet.STOP_ARC,
@@ -280,7 +280,7 @@ def test_stable_order_abc_12_ok(d_params):  # C, B, A best score+ order
 
 
 def test_stable_order_cancer_1_ok(d_params):  # Cancer, CDPSX col order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = Pandas(df=bn.generate_cases(10))
     assert data.get_order() == ('Cancer', 'Dyspnoea', 'Pollution', 'Smoker',
                                 'Xray')
@@ -295,7 +295,7 @@ def test_stable_order_cancer_1_ok(d_params):  # Cancer, CDPSX col order
 
 
 def test_stable_order_cancer_2_ok(d_params):  # Cancer, CDPSX col order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = Pandas(df=bn.generate_cases(10))
     assert data.get_order() == ('Cancer', 'Dyspnoea', 'Pollution', 'Smoker',
                                 'Xray')
@@ -310,7 +310,7 @@ def test_stable_order_cancer_2_ok(d_params):  # Cancer, CDPSX col order
 
 
 def test_stable_order_cancer_3_ok(d_params):  # Cancer, CDPSX col order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = Pandas(df=bn.generate_cases(10))
     assert data.get_order() == ('Cancer', 'Dyspnoea', 'Pollution', 'Smoker',
                                 'Xray')
@@ -324,7 +324,7 @@ def test_stable_order_cancer_3_ok(d_params):  # Cancer, CDPSX col order
 
 
 def test_stable_order_cancer_4_ok(d_params):  # Cancer, CDPSX col order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = Pandas(df=bn.generate_cases(10))
     assert data.get_order() == ('Cancer', 'Dyspnoea', 'Pollution', 'Smoker',
                                 'Xray')
@@ -338,7 +338,7 @@ def test_stable_order_cancer_4_ok(d_params):  # Cancer, CDPSX col order
 
 
 def test_stable_order_cancer_5_ok(d_params):  # Cancer, DXSPC col order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = Pandas(df=bn.generate_cases(1000))
     col_order = tuple(['Dyspnoea', 'Xray', 'Smoker', 'Pollution', 'Cancer'])
     data.set_order(col_order)
@@ -352,7 +352,7 @@ def test_stable_order_cancer_5_ok(d_params):  # Cancer, DXSPC col order
 
 
 def test_stable_order_cancer_6_ok(d_params):  # Cancer, DXSPC col order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = Pandas(df=bn.generate_cases(1000))
     col_order = tuple(['Dyspnoea', 'Xray', 'Smoker', 'Pollution', 'Cancer'])
     data.set_order(col_order)
@@ -367,7 +367,7 @@ def test_stable_order_cancer_6_ok(d_params):  # Cancer, DXSPC col order
 
 
 def test_stable_order_cancer_7_ok(d_params):  # Cancer, DXSPC col order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = Pandas(df=bn.generate_cases(1000))
     col_order = tuple(['Dyspnoea', 'Xray', 'Smoker', 'Pollution', 'Cancer'])
     data.set_order(col_order)
@@ -382,7 +382,7 @@ def test_stable_order_cancer_7_ok(d_params):  # Cancer, DXSPC col order
 
 
 def test_stable_order_cancer_8_ok(d_params):  # Cancer, DXSPC col order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = Pandas(df=bn.generate_cases(1000))
     col_order = tuple(['Dyspnoea', 'Xray', 'Smoker', 'Pollution', 'Cancer'])
     data.set_order(col_order)
@@ -397,7 +397,7 @@ def test_stable_order_cancer_8_ok(d_params):  # Cancer, DXSPC col order
 
 
 def test_stable_order_cancer_9_ok(d_params):  # Cancer, CXPSD col order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = Pandas(df=bn.generate_cases(1000))
     col_order = tuple(['Cancer', 'Xray', 'Pollution', 'Smoker', 'Dyspnoea'])
     data.set_order(col_order)
@@ -411,7 +411,7 @@ def test_stable_order_cancer_9_ok(d_params):  # Cancer, CXPSD col order
 
 
 def test_stable_order_cancer_10_ok(d_params):  # Cancer, CXPSD col order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = Pandas(df=bn.generate_cases(1000))
     col_order = tuple(['Cancer', 'Xray', 'Pollution', 'Smoker', 'Dyspnoea'])
     data.set_order(col_order)
@@ -426,7 +426,7 @@ def test_stable_order_cancer_10_ok(d_params):  # Cancer, CXPSD col order
 
 
 def test_stable_order_cancer_11_ok(d_params):  # Cancer, CXPSD col order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = Pandas(df=bn.generate_cases(1000))
     col_order = tuple(['Cancer', 'Xray', 'Pollution', 'Smoker', 'Dyspnoea'])
     data.set_order(col_order)
@@ -441,7 +441,7 @@ def test_stable_order_cancer_11_ok(d_params):  # Cancer, CXPSD col order
 
 
 def test_stable_order_cancer_12_ok(d_params):  # Cancer, CXPSD col order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = Pandas(df=bn.generate_cases(1000))
     col_order = tuple(['Cancer', 'Xray', 'Pollution', 'Smoker', 'Dyspnoea'])
     data.set_order(col_order)
@@ -456,7 +456,7 @@ def test_stable_order_cancer_12_ok(d_params):  # Cancer, CXPSD col order
 
 
 def test_stable_order_cancer_13_ok(d_params):  # Cancer, CDPSX col order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = Pandas(df=bn.generate_cases(1000))
     data.randomise_names(seed=3)
     assert tuple([data.ext_to_orig[n] for n in data.get_order()]) == \
@@ -470,7 +470,7 @@ def test_stable_order_cancer_13_ok(d_params):  # Cancer, CDPSX col order
 
 
 def test_stable_order_cancer_14_ok(d_params):  # Cancer, CDPSX col order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = Pandas(df=bn.generate_cases(1000))
     data.randomise_names(seed=3)
     assert tuple([data.ext_to_orig[n] for n in data.get_order()]) == \
@@ -485,7 +485,7 @@ def test_stable_order_cancer_14_ok(d_params):  # Cancer, CDPSX col order
 
 
 def test_stable_order_cancer_15_ok(d_params):  # Cancer, CDPSX col order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = Pandas(df=bn.generate_cases(1000))
     data.randomise_names(seed=3)
     assert tuple([data.ext_to_orig[n] for n in data.get_order()]) == \
@@ -500,7 +500,7 @@ def test_stable_order_cancer_15_ok(d_params):  # Cancer, CDPSX col order
 
 
 def test_stable_order_cancer_16_ok(d_params):  # Cancer, CDPSX col order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = Pandas(df=bn.generate_cases(1000))
     data.randomise_names(seed=3)
     assert tuple([data.ext_to_orig[n] for n in data.get_order()]) == \
@@ -515,7 +515,7 @@ def test_stable_order_cancer_16_ok(d_params):  # Cancer, CDPSX col order
 
 
 def test_stable_order_cancer_17_ok(d_params):  # Cancer, rand ord & names
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = Pandas(df=bn.generate_cases(1000))
     data.randomise_names(seed=0)
     data.randomise_order(seed=0)
@@ -530,7 +530,7 @@ def test_stable_order_cancer_17_ok(d_params):  # Cancer, rand ord & names
 
 
 def test_stable_order_cancer_18_ok(d_params):  # Cancer, rand ord & names
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = Pandas(df=bn.generate_cases(1000))
     data.randomise_names(seed=0)
     data.randomise_order(seed=0)
@@ -546,7 +546,7 @@ def test_stable_order_cancer_18_ok(d_params):  # Cancer, rand ord & names
 
 
 def test_stable_order_cancer_19_ok(d_params):  # Cancer, rand ord & names
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = Pandas(df=bn.generate_cases(1000))
     data.randomise_names(seed=0)
     data.randomise_order(seed=0)
@@ -562,7 +562,7 @@ def test_stable_order_cancer_19_ok(d_params):  # Cancer, rand ord & names
 
 
 def test_stable_order_cancer_20_ok(d_params):  # Cancer, rand ord & names
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     data = Pandas(df=bn.generate_cases(1000))
     data.randomise_names(seed=0)
     data.randomise_order(seed=0)
@@ -578,7 +578,7 @@ def test_stable_order_cancer_20_ok(d_params):  # Cancer, rand ord & names
 
 
 def test_stable_order_asia_1_ok(d_params):  # Asia, std order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     data = Pandas(df=bn.generate_cases(100))
 
     HCWorker.init_score_cache()
@@ -591,7 +591,7 @@ def test_stable_order_asia_1_ok(d_params):  # Asia, std order
 
 
 def test_stable_order_asia_2_ok(d_params):  # Asia, std order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     data = Pandas(df=bn.generate_cases(100))
 
     HCWorker.init_score_cache()
@@ -605,7 +605,7 @@ def test_stable_order_asia_2_ok(d_params):  # Asia, std order
 
 
 def test_stable_order_asia_3_ok(d_params):  # Asia, std order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     data = Pandas(df=bn.generate_cases(100))
 
     HCWorker.init_score_cache()
@@ -619,7 +619,7 @@ def test_stable_order_asia_3_ok(d_params):  # Asia, std order
 
 
 def test_stable_order_asia_4_ok(d_params):  # Asia, std order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     data = Pandas(df=bn.generate_cases(100))
 
     HCWorker.init_score_cache()
@@ -633,7 +633,7 @@ def test_stable_order_asia_4_ok(d_params):  # Asia, std order
 
 
 def test_stable_order_asia_5_ok(d_params):  # Asia, sc4+ order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     data = Pandas(df=bn.generate_cases(100))
 
     HCWorker.init_score_cache()
@@ -647,7 +647,7 @@ def test_stable_order_asia_5_ok(d_params):  # Asia, sc4+ order
 
 
 def test_stable_order_sports_1_ok(d_params):  # Sports, std order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/sports.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/sports.dsc')
     data = Pandas(df=bn.generate_cases(100))
 
     HCWorker.init_score_cache()
@@ -662,7 +662,7 @@ def test_stable_order_sports_1_ok(d_params):  # Sports, std order
 
 
 def test_stable_order_sports_2_ok(d_params):  # Sports, std order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/sports.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/sports.dsc')
     data = Pandas(df=bn.generate_cases(100))
 
     HCWorker.init_score_cache()
@@ -678,7 +678,7 @@ def test_stable_order_sports_2_ok(d_params):  # Sports, std order
 
 
 def test_stable_order_sports_3_ok(d_params):  # Sports, std order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/sports.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/sports.dsc')
     data = Pandas(df=bn.generate_cases(100))
 
     HCWorker.init_score_cache()
@@ -694,7 +694,7 @@ def test_stable_order_sports_3_ok(d_params):  # Sports, std order
 
 
 def test_stable_order_sports_4_ok(d_params):  # Sports, std order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/sports.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/sports.dsc')
     data = Pandas(df=bn.generate_cases(100))
 
     HCWorker.init_score_cache()
@@ -710,7 +710,7 @@ def test_stable_order_sports_4_ok(d_params):  # Sports, std order
 
 
 def test_stable_order_sports_5_ok(d_params):  # Sports, sc4+ order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/sports.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/sports.dsc')
     data = Pandas(df=bn.generate_cases(100))
 
     HCWorker.init_score_cache()
@@ -726,7 +726,7 @@ def test_stable_order_sports_5_ok(d_params):  # Sports, sc4+ order
 
 
 def test_stable_order_sachs_1_ok(d_params):  # Sachs, std order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/sachs.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/sachs.dsc')
     data = Pandas(df=bn.generate_cases(100))
 
     HCWorker.init_score_cache()
@@ -742,7 +742,7 @@ def test_stable_order_sachs_1_ok(d_params):  # Sachs, std order
 
 
 def test_stable_order_sachs_2_ok(d_params):  # Sachs, std order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/sachs.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/sachs.dsc')
     data = Pandas(df=bn.generate_cases(100))
 
     HCWorker.init_score_cache()
@@ -758,7 +758,7 @@ def test_stable_order_sachs_2_ok(d_params):  # Sachs, std order
 
 
 def test_stable_order_sachs_3_ok(d_params):  # Sachs, std order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/sachs.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/sachs.dsc')
     data = Pandas(df=bn.generate_cases(100))
 
     HCWorker.init_score_cache()
@@ -774,7 +774,7 @@ def test_stable_order_sachs_3_ok(d_params):  # Sachs, std order
 
 
 def test_stable_order_sachs_4_ok(d_params):  # Sachs, std order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/sachs.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/sachs.dsc')
     data = Pandas(df=bn.generate_cases(100))
 
     HCWorker.init_score_cache()
@@ -790,7 +790,7 @@ def test_stable_order_sachs_4_ok(d_params):  # Sachs, std order
 
 
 def test_stable_order_sachs_5_ok(d_params):  # Sachs, sc4+ order
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/sachs.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/sachs.dsc')
     data = Pandas(df=bn.generate_cases(100))
 
     HCWorker.init_score_cache()
@@ -806,7 +806,7 @@ def test_stable_order_sachs_5_ok(d_params):  # Sachs, sc4+ order
 
 
 def test_stable_order_child_1_ok(d_params):  # Child, std order
-    bn = BN.read(TESTDATA_DIR + '/discrete/medium/child.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/medium/child.dsc')
     data = Pandas(df=bn.generate_cases(100))
     HCWorker.init_score_cache()
     data, _ = set_stable_order(data, d_params)
@@ -822,7 +822,7 @@ def test_stable_order_child_1_ok(d_params):  # Child, std order
 
 
 def test_stable_order_child_4_ok(d_params):  # Child, std order
-    bn = BN.read(TESTDATA_DIR + '/discrete/medium/child.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/medium/child.dsc')
     data = Pandas(df=bn.generate_cases(100))
 
     HCWorker.init_score_cache()
@@ -840,7 +840,7 @@ def test_stable_order_child_4_ok(d_params):  # Child, std order
 
 
 def test_stable_order_child_5_ok(d_params):  # Child, sc4+ order
-    bn = BN.read(TESTDATA_DIR + '/discrete/medium/child.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/medium/child.dsc')
     data = Pandas(df=bn.generate_cases(100))
 
     HCWorker.init_score_cache()
@@ -859,7 +859,7 @@ def test_stable_order_child_5_ok(d_params):  # Child, sc4+ order
 
 @pytest.mark.slow
 def test_stable_order_insurance_1_ok(d_params):  # Insurance, std order
-    bn = BN.read(TESTDATA_DIR + '/discrete/medium/insurance.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/medium/insurance.dsc')
     data = Pandas(df=bn.generate_cases(1000))
 
     HCWorker.init_score_cache()
@@ -880,7 +880,7 @@ def test_stable_order_insurance_1_ok(d_params):  # Insurance, std order
 
 @pytest.mark.slow
 def test_stable_order_insurance_3_ok(d_params):  # Insurance, std order
-    bn = BN.read(TESTDATA_DIR + '/discrete/medium/insurance.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/medium/insurance.dsc')
     data = Pandas(df=bn.generate_cases(1000))
 
     HCWorker.init_score_cache()
@@ -900,7 +900,7 @@ def test_stable_order_insurance_3_ok(d_params):  # Insurance, std order
 
 @pytest.mark.slow
 def test_stable_order_insurance_4_ok(d_params):  # Insurance, std order
-    bn = BN.read(TESTDATA_DIR + '/discrete/medium/insurance.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/medium/insurance.dsc')
     data = Pandas(df=bn.generate_cases(1000))
 
     HCWorker.init_score_cache()
@@ -920,7 +920,7 @@ def test_stable_order_insurance_4_ok(d_params):  # Insurance, std order
 
 @pytest.mark.slow
 def test_stable_order_insurance_5_ok(d_params):  # Insurance, sc4 order
-    bn = BN.read(TESTDATA_DIR + '/discrete/medium/insurance.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/medium/insurance.dsc')
     data = Pandas(df=bn.generate_cases(1000))
 
     HCWorker.init_score_cache()
@@ -941,7 +941,7 @@ def test_stable_order_insurance_5_ok(d_params):  # Insurance, sc4 order
 @pytest.mark.slow
 def test_stable_order_property_1_ok(d_params):  # Property, std order
     print()
-    bn = BN.read(TESTDATA_DIR + '/discrete/medium/property.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/medium/property.dsc')
     # data = Pandas(df=bn.generate_cases(100))
     data = NumPy.from_df(bn.generate_cases(100), dstype='categorical',
                          keep_df=True)
@@ -964,7 +964,7 @@ def test_stable_order_property_1_ok(d_params):  # Property, std order
 @pytest.mark.slow
 def test_stable_order_property_2_ok(d_params):  # Property, rev std order
     print()
-    bn = BN.read(TESTDATA_DIR + '/discrete/medium/property.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/medium/property.dsc')
     # data = Pandas(df=bn.generate_cases(100))
     data = NumPy.from_df(bn.generate_cases(100), dstype='categorical',
                          keep_df=True)
@@ -988,7 +988,7 @@ def test_stable_order_property_2_ok(d_params):  # Property, rev std order
 
 @pytest.mark.slow
 def test_stable_order_diarrhoea_1_ok(d_params):  # Diarrhoea, std order
-    bn = BN.read(TESTDATA_DIR + '/discrete/medium/diarrhoea.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/medium/diarrhoea.dsc')
     data = Pandas(df=bn.generate_cases(100))
     HCWorker.init_score_cache()
     data, _ = set_stable_order(data, d_params)
@@ -1009,7 +1009,7 @@ def test_stable_order_diarrhoea_1_ok(d_params):  # Diarrhoea, std order
 
 @pytest.mark.slow
 def test_stable_order_hailfinder_1_ok(d_params):  # Hailfinder, std order
-    bn = BN.read(TESTDATA_DIR + '/discrete/large/hailfinder.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/large/hailfinder.dsc')
     data = Pandas(df=bn.generate_cases(1000))
     HCWorker.init_score_cache()
     data, _ = set_stable_order(data, d_params)
@@ -1033,7 +1033,7 @@ def test_stable_order_hailfinder_1_ok(d_params):  # Hailfinder, std order
 
 @pytest.mark.slow
 def test_stable_order_hailfinder_2_ok(d_params):  # Hailfind, rev std order
-    bn = BN.read(TESTDATA_DIR + '/discrete/large/hailfinder.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/large/hailfinder.dsc')
     data = Pandas(df=bn.generate_cases(1000))
     print('\nStandard order starting from {}'.format(data.get_order()[0]))
     data.set_order(tuple(list(data.get_order())[::-1]))  # reverse order
@@ -1124,7 +1124,7 @@ def test_stable_order_win95pts_2_ok(d_params):  # Win95pts, 1K, rev std order
 
 @pytest.mark.slow
 def test_stable_order_pathfinder_1_ok(d_params):  # Path.., std order
-    bn = BN.read(TESTDATA_DIR + '/discrete/verylarge/pathfinder.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/verylarge/pathfinder.dsc')
     data = Pandas(df=bn.generate_cases(10000))
     HCWorker.init_score_cache()
     data, _ = set_stable_order(data, d_params)
@@ -1147,7 +1147,7 @@ def test_stable_order_pathfinder_1_ok(d_params):  # Path.., std order
 
 @pytest.mark.slow
 def test_stable_order_pathfinder_2_ok(d_params):  # Path.., rev std order
-    bn = BN.read(TESTDATA_DIR + '/discrete/verylarge/pathfinder.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/verylarge/pathfinder.dsc')
     data = Pandas(df=bn.generate_cases(10000))
     print('\nStandard order starting from {}'.format(data.get_order()[0]))
     data.set_order(tuple(list(data.get_order())[::-1]))  # reverse order
@@ -1205,7 +1205,7 @@ def test_hc_stable_ab_3_ok():
 
 
 def test_hc_stable_abc_1_ok(d_params):  # A->B->C, some order dependence
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     data = Pandas(df=bn.generate_cases(10))
     context = {'id': 'test/hc_stable/abc_1', 'in': 'abc_1'}
     dag, trace = hc(data, params={'stable': True}, context=context)
@@ -1218,7 +1218,7 @@ def test_hc_stable_abc_1_ok(d_params):  # A->B->C, some order dependence
 
 
 def test_hc_stable_abc_2_ok(d_params):  # A->B->C, some order dependence
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     data = Pandas(df=bn.generate_cases(10))
     data.set_order(tuple(['C', 'B', 'A']))
     context = {'id': 'test/hc_stable/abc_2', 'in': 'abc_2'}
@@ -1233,7 +1233,7 @@ def test_hc_stable_abc_2_ok(d_params):  # A->B->C, some order dependence
 
 
 def test_hc_stable_abc_3_ok(d_params):  # A->B->C, stable order
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     data = Pandas(df=bn.generate_cases(100))
     context = {'id': 'test/hc_stable/abc_1', 'in': 'abc_1'}
     dag, trace = hc(data, params={'stable': True}, context=context)
@@ -1246,7 +1246,7 @@ def test_hc_stable_abc_3_ok(d_params):  # A->B->C, stable order
 
 
 def test_hc_stable_abc_4_ok(d_params):  # A->B->C, stable order
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     data = Pandas(df=bn.generate_cases(100))
     data.set_order(tuple(['C', 'B', 'A']))
     context = {'id': 'test/hc_stable/abc_2', 'in': 'abc_2'}
@@ -1260,7 +1260,7 @@ def test_hc_stable_abc_4_ok(d_params):  # A->B->C, stable order
 
 
 def test_hc_stable_abc_5_ok(d_params):  # A->B->C, stable order
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     data = Pandas(df=bn.generate_cases(100))
     data.set_order(tuple(['B', 'A', 'C']))
     context = {'id': 'test/hc_stable/abc_2', 'in': 'abc_2'}
@@ -1275,7 +1275,7 @@ def test_hc_stable_abc_5_ok(d_params):  # A->B->C, stable order
 
 def test_hc_stable_cancer_1_ok(d_params):  # Cancer, CDPSX col order
     dsc = TESTDATA_DIR + '/discrete/small/cancer.dsc'
-    data = Pandas(df=BN.read(dsc).generate_cases(10000))
+    data = Pandas(df=read_bn(dsc).generate_cases(10000))
     context = {'id': 'test/hc_stable/cancer_1', 'in': dsc}
     dag, trace = hc(data, params={'stable': True}, context=context)
     print('\n\n{}\n\n{}'.format(trace, dag))
@@ -1294,7 +1294,7 @@ def test_hc_stable_cancer_1_ok(d_params):  # Cancer, CDPSX col order
 
 def test_hc_stable_cancer_2_ok(d_params):  # Cancer, DXSPC col order
     dsc = TESTDATA_DIR + '/discrete/small/cancer.dsc'
-    data = Pandas(df=BN.read(dsc).generate_cases(10000))
+    data = Pandas(df=read_bn(dsc).generate_cases(10000))
     data.set_order(tuple(['Dyspnoea', 'Xray', 'Smoker',
                           'Pollution', 'Cancer']))
     context = {'id': 'test/hc_stable/cancer_2', 'in': dsc}
@@ -1315,7 +1315,7 @@ def test_hc_stable_cancer_2_ok(d_params):  # Cancer, DXSPC col order
 
 def test_hc_stable_cancer_3_ok(d_params):  # Cancer, XCSPD col order
     dsc = TESTDATA_DIR + '/discrete/small/cancer.dsc'
-    data = Pandas(df=BN.read(dsc).generate_cases(10000))
+    data = Pandas(df=read_bn(dsc).generate_cases(10000))
     data.set_order(tuple(['Xray', 'Cancer', 'Smoker',
                           'Pollution', 'Dyspnoea']))
     context = {'id': 'test/hc_stable/cancer_3', 'in': dsc}
@@ -1336,7 +1336,7 @@ def test_hc_stable_cancer_3_ok(d_params):  # Cancer, XCSPD col order
 
 def test_hc_stable_cancer_4_ok(d_params):  # Cancer, rename columns
     dsc = TESTDATA_DIR + '/discrete/small/cancer.dsc'
-    data = Pandas(df=BN.read(dsc).generate_cases(10000))
+    data = Pandas(df=read_bn(dsc).generate_cases(10000))
     data.randomise_names(seed=0)
     context = {'id': 'test/hc_stable/cancer_4', 'in': dsc}
     dag, trace = hc(data, params={'stable': True}, context=context)
@@ -1358,7 +1358,7 @@ def test_hc_stable_cancer_4_ok(d_params):  # Cancer, rename columns
 
 def test_hc_stable_cancer_5_ok(d_params):  # Cancer, reorder & rename columns
     dsc = TESTDATA_DIR + '/discrete/small/cancer.dsc'
-    data = Pandas(df=BN.read(dsc).generate_cases(10000))
+    data = Pandas(df=read_bn(dsc).generate_cases(10000))
     data.set_order(tuple(['Dyspnoea', 'Cancer', 'Smoker',
                           'Pollution', 'Xray']))
     data.randomise_names(seed=1)
@@ -1382,7 +1382,7 @@ def test_hc_stable_cancer_5_ok(d_params):  # Cancer, reorder & rename columns
 
 def test_hc_stable_cancer_6_ok(d_params):  # Cancer, random names and order
     dsc = TESTDATA_DIR + '/discrete/small/cancer.dsc'
-    data = Pandas(df=BN.read(dsc).generate_cases(10000))
+    data = Pandas(df=read_bn(dsc).generate_cases(10000))
     data.randomise_order(seed=2)
     data.randomise_names(seed=2)
     context = {'id': 'test/hc_stable/cancer_6', 'in': dsc}

@@ -4,7 +4,7 @@
 import pytest
 from pandas import set_option
 
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 from causaliq_core.utils import values_same
 from analysis.bn import DAGAnalysis, BNAnalysis
 from data import TESTDATA_DIR
@@ -23,7 +23,7 @@ def test_dag_analysis_type_error_1():  # no arguments supplied
 
 
 def test_dag_analysis_type_error_2():  # bad argument types supplied
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     with pytest.raises(TypeError):
         DAGAnalysis(None, bn.dag)
     with pytest.raises(TypeError):
@@ -42,7 +42,7 @@ def test_bn_analysis_type_error_1():  # no arguments supplied
 
 
 def test_bn_analysis_type_error_2():  # bad argument types supplied
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     with pytest.raises(TypeError):
         BNAnalysis(None, bn)
     with pytest.raises(TypeError):
@@ -54,7 +54,7 @@ def test_bn_analysis_type_error_2():  # bad argument types supplied
 
 
 def test_bn_analysis_a_ok():  # node A only
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/a.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/a.dsc')
     analysis = BNAnalysis(bn)
     print('\nNodes:\n{}\nEdges:\n{}'.format(analysis.nodes, analysis.arcs))
     assert len(analysis.nodes) == 1
@@ -74,7 +74,7 @@ def test_bn_analysis_a_ok():  # node A only
 
 
 def test_bn_analysis_ab_ok():  # A->B
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab.dsc')
     analysis = BNAnalysis(bn)
     print('\nNodes:\n{}\nEdges:\n{}'.format(analysis.nodes, analysis.arcs))
     assert len(analysis.nodes) == 2
@@ -96,7 +96,7 @@ def test_bn_analysis_ab_ok():  # A->B
 
 
 def test_bn_analysis_ba_ok():  # A<-B
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ba.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ba.dsc')
     analysis = BNAnalysis(bn)
     print('\nNodes:\n{}\nEdges:\n{}'.format(analysis.nodes, analysis.arcs))
     assert len(analysis.nodes) == 2
@@ -118,7 +118,7 @@ def test_bn_analysis_ba_ok():  # A<-B
 
 
 def test_bn_analysis_a_b_ok():  # A B
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/a_b.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/a_b.dsc')
     analysis = BNAnalysis(bn)
     print('\nNodes:\n{}\nEdges:\n{}'.format(analysis.nodes, analysis.arcs))
     assert len(analysis.nodes) == 2
@@ -138,7 +138,7 @@ def test_bn_analysis_a_b_ok():  # A B
 
 
 def test_bn_analysis_abc_ok():  # A->B->C
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/abc.dsc')
     analysis = BNAnalysis(bn)
     print('\nNodes:\n{}\nEdges:\n{}'.format(analysis.nodes, analysis.arcs))
     assert len(analysis.nodes) == 3
@@ -162,7 +162,7 @@ def test_bn_analysis_abc_ok():  # A->B->C
 
 
 def test_bn_analysis_ab_cb_ok():  # A->B<-C
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab_cb.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab_cb.dsc')
     analysis = BNAnalysis(bn)
     print('\nNodes:\n{}\nEdges:\n{}'.format(analysis.nodes, analysis.arcs))
     assert len(analysis.nodes) == 3
@@ -186,7 +186,7 @@ def test_bn_analysis_ab_cb_ok():  # A->B<-C
 
 
 def test_bn_analysis_ab_cb_unfaithful_ok():  # A->B<-C
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/ab_cb_unfaithful.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/ab_cb_unfaithful.dsc')
     analysis = BNAnalysis(bn)
     print('\nNodes:\n{}\nEdges:\n{}'.format(analysis.nodes, analysis.arcs))
     assert len(analysis.nodes) == 3
@@ -210,7 +210,7 @@ def test_bn_analysis_ab_cb_unfaithful_ok():  # A->B<-C
 
 
 def test_bn_analysis_abc_dual_ok():  # A->B->C<-A
-    bn = BN.read(TESTDATA_DIR + '/discrete/tiny/abc_dual.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/tiny/abc_dual.dsc')
     analysis = BNAnalysis(bn)
     print('\nNodes:\n{}\nEdges:\n{}'.format(analysis.nodes, analysis.arcs))
     assert len(analysis.nodes) == 3
@@ -230,7 +230,7 @@ def test_bn_analysis_abc_dual_ok():  # A->B->C<-A
 
 
 def test_bn_analysis_cancer_ok():  # 5 nodes
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     analysis = BNAnalysis(bn)
     print('\nNodes:\n{}\nEdges:\n{}'.format(analysis.nodes, analysis.arcs))
     assert len(analysis.nodes) == 5
@@ -249,7 +249,7 @@ def test_bn_analysis_cancer_ok():  # 5 nodes
 
 
 def test_bn_analysis_asia_ok():  # 8 nodes
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     analysis = BNAnalysis(bn)
     print('\nNodes:\n{}\nEdges:\n{}'.format(analysis.nodes, analysis.arcs))
     assert len(analysis.nodes) == 8
@@ -272,7 +272,7 @@ def test_bn_analysis_asia_ok():  # 8 nodes
 
 
 def test_bn_analysis_sports_ok():  # 9 nodes
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/sports.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/sports.dsc')
     analysis = BNAnalysis(bn)
     print('\nNodes:\n{}\nEdges:\n{}'.format(analysis.nodes, analysis.arcs))
     assert len(analysis.nodes) == 9
@@ -304,7 +304,7 @@ def test_bn_analysis_sports_ok():  # 9 nodes
 
 
 def test_bn_analysis_sachs_ok():  # 11 nodes
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/sachs.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/sachs.dsc')
     analysis = BNAnalysis(bn)
     print('\nNodes:\n{}\nEdges:\n{}'.format(analysis.nodes, analysis.arcs))
     assert len(analysis.nodes) == 11
@@ -338,7 +338,7 @@ def test_bn_analysis_sachs_ok():  # 11 nodes
 
 
 def test_bn_analysis_child_ok():  # 20 nodes
-    bn = BN.read(TESTDATA_DIR + '/discrete/medium/child.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/medium/child.dsc')
     analysis = BNAnalysis(bn)
     print('\nNodes:\n{}\nEdges:\n{}'.format(analysis.nodes, analysis.arcs))
     assert len(analysis.nodes) == 20
@@ -354,7 +354,7 @@ def test_bn_analysis_child_ok():  # 20 nodes
 
 
 def test_bn_analysis_insurance_ok():  # 27 nodes
-    bn = BN.read(TESTDATA_DIR + '/discrete/medium/insurance.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/medium/insurance.dsc')
     analysis = BNAnalysis(bn)
     print('\nNodes:\n{}\nEdges:\n{}'.format(analysis.nodes, analysis.arcs))
     assert len(analysis.nodes) == 27
@@ -370,7 +370,7 @@ def test_bn_analysis_insurance_ok():  # 27 nodes
 
 
 def test_bn_analysis_property_ok():  # 27 nodes
-    bn = BN.read(TESTDATA_DIR + '/discrete/medium/property.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/medium/property.dsc')
     analysis = BNAnalysis(bn)
     print('\nNodes:\n{}\nEdges:\n{}'.format(analysis.nodes, analysis.arcs))
     assert len(analysis.nodes) == 27
@@ -386,7 +386,7 @@ def test_bn_analysis_property_ok():  # 27 nodes
 
 
 def test_bn_analysis_diarrhoea_ok(show_all):  # 28 nodes
-    bn = BN.read(TESTDATA_DIR + '/discrete/medium/diarrhoea.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/medium/diarrhoea.dsc')
     analysis = BNAnalysis(bn)
     print('\nNodes:\n{}\nEdges:\n{}'.format(analysis.nodes, analysis.arcs))
     assert len(analysis.nodes) == 28
@@ -402,7 +402,7 @@ def test_bn_analysis_diarrhoea_ok(show_all):  # 28 nodes
 
 
 def test_bn_analysis_water_ok(show_all):  # 32 nodes
-    bn = BN.read(TESTDATA_DIR + '/discrete/medium/water.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/medium/water.dsc')
     analysis = BNAnalysis(bn)
     print('\nNodes:\n{}\nEdges:\n{}'.format(analysis.nodes, analysis.arcs))
     assert len(analysis.nodes) == 32
@@ -418,7 +418,7 @@ def test_bn_analysis_water_ok(show_all):  # 32 nodes
 
 
 def test_bn_analysis_mildew_ok():  # 35 nodes
-    bn = BN.read(TESTDATA_DIR + '/discrete/medium/mildew.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/medium/mildew.dsc')
     analysis = BNAnalysis(bn)
     print('\nNodes:\n{}\nEdges:\n{}'.format(analysis.nodes, analysis.arcs))
     assert len(analysis.nodes) == 35
@@ -434,7 +434,7 @@ def test_bn_analysis_mildew_ok():  # 35 nodes
 
 
 def test_bn_analysis_alarm_ok():  # 37 nodes
-    bn = BN.read(TESTDATA_DIR + '/discrete/medium/alarm.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/medium/alarm.dsc')
     analysis = BNAnalysis(bn)
     print('\nNodes:\n{}\nEdges:\n{}'.format(analysis.nodes, analysis.arcs))
     assert len(analysis.nodes) == 37
@@ -450,7 +450,7 @@ def test_bn_analysis_alarm_ok():  # 37 nodes
 
 
 def test_bn_analysis_barley_ok(show_all):  # 48 nodes
-    bn = BN.read(TESTDATA_DIR + '/discrete/medium/barley.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/medium/barley.dsc')
     analysis = BNAnalysis(bn)
     print('\nNodes:\n{}\nEdges:\n{}'.format(analysis.nodes, analysis.arcs))
     assert len(analysis.nodes) == 48
@@ -466,7 +466,7 @@ def test_bn_analysis_barley_ok(show_all):  # 48 nodes
 
 
 def test_bn_analysis_hailfinder_ok(show_all):  # 56 nodes
-    bn = BN.read(TESTDATA_DIR + '/discrete/large/hailfinder.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/large/hailfinder.dsc')
     analysis = BNAnalysis(bn)
     print('\nNodes:\n{}\nEdges:\n{}'.format(analysis.nodes, analysis.arcs))
     assert len(analysis.nodes) == 56
@@ -482,7 +482,7 @@ def test_bn_analysis_hailfinder_ok(show_all):  # 56 nodes
 
 
 def test_bn_analysis_hepar2_ok(show_all):  # 70 nodes
-    bn = BN.read(TESTDATA_DIR + '/discrete/large/hepar2.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/large/hepar2.dsc')
     analysis = BNAnalysis(bn)
     print('\nNodes:\n{}\nEdges:\n{}'.format(analysis.nodes, analysis.arcs))
     assert len(analysis.nodes) == 70
@@ -498,7 +498,7 @@ def test_bn_analysis_hepar2_ok(show_all):  # 70 nodes
 
 
 def test_bn_analysis_win95pts_ok(show_all):  # 76 nodes
-    bn = BN.read(TESTDATA_DIR + '/discrete/large/win95pts.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/large/win95pts.dsc')
     analysis = BNAnalysis(bn)
     print('\nNodes:\n{}\nEdges:\n{}'.format(analysis.nodes, analysis.arcs))
     assert len(analysis.nodes) == 76
@@ -514,7 +514,7 @@ def test_bn_analysis_win95pts_ok(show_all):  # 76 nodes
 
 
 def test_bn_analysis_formed_ok(show_all):  # 88 nodes
-    bn = BN.read(TESTDATA_DIR + '/discrete/large/formed.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/large/formed.dsc')
     analysis = BNAnalysis(bn)
     print('\nNodes:\n{}\nEdges:\n{}'.format(analysis.nodes, analysis.arcs))
     assert len(analysis.nodes) == 88
@@ -530,7 +530,7 @@ def test_bn_analysis_formed_ok(show_all):  # 88 nodes
 
 
 def test_bn_analysis_pathfinder_ok(show_all):  # 109 nodes
-    bn = BN.read(TESTDATA_DIR + '/discrete/verylarge/pathfinder.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/verylarge/pathfinder.dsc')
     analysis = BNAnalysis(bn)
     print('\nNodes:\n{}\nEdges:\n{}'.format(analysis.nodes, analysis.arcs))
     assert len(analysis.nodes) == 109

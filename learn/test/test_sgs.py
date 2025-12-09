@@ -5,7 +5,7 @@ from learn.pc import sgs_skeleton
 from data import TESTDATA_DIR
 from causaliq_core.utils import FileFormatError
 from data.pandas import Pandas
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 
 
 def test_sgs_skeleton_type_error1():  # data not a dataframe or string
@@ -51,7 +51,7 @@ def test_sgs_skeleton_file_format_error():  # binary file for data or bn
 
 
 def test_sgs_skeleton_data_ok1():  # generate data for A->B->C chain
-    bn = BN.read(TESTDATA_DIR + '/dsc/abc.dsc')
+    bn = read_bn(TESTDATA_DIR + '/dsc/abc.dsc')
     data = bn.generate_cases(3)
     dependency_model = sgs_skeleton(data)
     for edge, sepset in dependency_model.items():
@@ -60,7 +60,7 @@ def test_sgs_skeleton_data_ok1():  # generate data for A->B->C chain
 
 
 def test_sgs_skeleton_bn_ok1():  # valid input bn
-    bn = BN.read(TESTDATA_DIR + '/cancer/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/cancer/cancer.dsc')
     print(bn.global_distribution())
     data = Pandas(df=bn.generate_cases(10000))
     bn2 = BN.fit(bn.dag, data)

@@ -7,14 +7,14 @@ from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_learn
 from data import TESTDATA_DIR
 from data.numpy import NumPy
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 import testdata.example_pdags as ex_pdag
 
 
 # Fixture providing 10 categorical rows for A --> B
 @pytest.fixture(scope="module")
 def ab10():
-    bn = BN.read(TESTDATA_DIR + '/dsc/ab.dsc')
+    bn = read_bn(TESTDATA_DIR + '/dsc/ab.dsc')
     return NumPy.from_df(df=bn.generate_cases(10), dstype='categorical',
                          keep_df=False)
 
@@ -78,7 +78,7 @@ def test_bnlearn_gs_value_error_2():
 # Learning A -> B with 1K rows
 @requires_r_and_bnlearn
 def test_bnlearn_gs_ab_cb_1k_ok_1():
-    data = BN.read(TESTDATA_DIR + '/dsc/ab_cb.dsc').generate_cases(1000)
+    data = read_bn(TESTDATA_DIR + '/dsc/ab_cb.dsc').generate_cases(1000)
     data = NumPy.from_df(df=data, dstype='categorical', keep_df=True)
     pdag, _ = bnlearn_learn('gs', data)
     print('\nPDAG learnt by gs from 1K rows of ab_cb:\n{}'.format(pdag))
@@ -88,7 +88,7 @@ def test_bnlearn_gs_ab_cb_1k_ok_1():
 # Learning A -> B with 1K rows, iss = 10
 @requires_r_and_bnlearn
 def test_bnlearn_gs_ab_cb_1k_ok_2():
-    data = BN.read(TESTDATA_DIR + '/dsc/ab_cb.dsc').generate_cases(1000)
+    data = read_bn(TESTDATA_DIR + '/dsc/ab_cb.dsc').generate_cases(1000)
     data = NumPy.from_df(df=data, dstype='categorical', keep_df=True)
     pdag, _ = bnlearn_learn('gs', data, params={'iss': 10})
     print('\nPDAG learnt by gs from 1K rows of ab_cb:\n{}'.format(pdag))
@@ -98,7 +98,7 @@ def test_bnlearn_gs_ab_cb_1k_ok_2():
 # Learning A -> B -> C with 1K rows
 @requires_r_and_bnlearn
 def test_bnlearn_gs_abc_1k_ok():
-    data = BN.read(TESTDATA_DIR +
+    data = read_bn(TESTDATA_DIR +
                    '/discrete/tiny/abc.dsc').generate_cases(1000)
     data = NumPy.from_df(df=data, dstype='categorical', keep_df=True)
     pdag, _ = bnlearn_learn('gs', data)
@@ -109,7 +109,7 @@ def test_bnlearn_gs_abc_1k_ok():
 # Learning A -> B -> C (dual) with 1K rows
 @requires_r_and_bnlearn
 def test_bnlearn_gs_abc_dual_1k_ok():
-    data = BN.read(TESTDATA_DIR +
+    data = read_bn(TESTDATA_DIR +
                    '/discrete/tiny/abc_dual.dsc').generate_cases(1000)
     data = NumPy.from_df(df=data, dstype='categorical', keep_df=True)
     pdag, _ = bnlearn_learn('gs', data)
@@ -121,7 +121,7 @@ def test_bnlearn_gs_abc_dual_1k_ok():
 # Learning 1->2->4, 3->2 with 1K rows
 @requires_r_and_bnlearn
 def test_bnlearn_gs_and4_10_1k_ok():
-    data = BN.read(TESTDATA_DIR +
+    data = read_bn(TESTDATA_DIR +
                    '/discrete/tiny/and4_10.dsc').generate_cases(1000)
     data = NumPy.from_df(df=data, dstype='categorical', keep_df=True)
     pdag, _ = bnlearn_learn('gs', data)

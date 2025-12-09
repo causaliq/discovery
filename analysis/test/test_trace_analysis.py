@@ -8,7 +8,7 @@ from analysis.trace import TraceAnalysis
 from learn.trace import Trace
 from data import TESTDATA_DIR, EXPTS_DIR
 from causaliq_core.utils import dicts_same
-from causaliq_core.bn import BN
+from causaliq_core.bn import BN, read_bn
 from causaliq_core.bn import CPT
 from data.pandas import Pandas
 import testdata.example_dags as ex_dag
@@ -243,7 +243,7 @@ def test_trace_analysis_cancer_ok2():  # Trace & ref from Cancer network, N=500
 
 def test_trace_analysis_cancer_ok3():  # ancer network, N=500, using BN
     trace = Trace.read('HC_N_1/cancer', TESTDATA_DIR + '/experiments')['N500']
-    bn = BN.read(TESTDATA_DIR + '/discrete/small/cancer.dsc')
+    bn = read_bn(TESTDATA_DIR + '/discrete/small/cancer.dsc')
     analysis = TraceAnalysis(trace, bn)
     assert analysis.context == trace.context
     print(DataFrame(analysis.trace))
@@ -315,7 +315,7 @@ def test_trace_analysis_asia_2_ok():  # Asia network, N=40, No MI
 
 def test_trace_analysis_asia_3_ok():  # Asia, N=10K, bn used so get Oracke MI
     trace = Trace.read('HC/STD/asia', TESTDATA_DIR + '/experiments')['N10000']
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     analysis = TraceAnalysis(trace, ref)
     assert analysis.context == trace.context
     print('\n{}'.format(DataFrame(analysis.trace)))
@@ -347,7 +347,7 @@ def test_trace_analysis_asia_3_ok():  # Asia, N=10K, bn used so get Oracke MI
 
 def test_trace_analysis_asia_4_ok():  # Asia, N=100, MI and OMI values
     trace = Trace.read('HC/STD/asia', TESTDATA_DIR + '/experiments')['N100']
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     data = Pandas.read(TESTDATA_DIR + '/experiments/datasets/asia.data.gz',
                        dstype='categorical', N=100).sample
 
@@ -398,7 +398,7 @@ def test_trace_analysis_asia_4_ok():  # Asia, N=100, MI and OMI values
 
 def test_trace_analysis_asia_5_ok():  # Asia, N=1K, MI and OMI values
     trace = Trace.read('HC/STD/asia', TESTDATA_DIR + '/experiments')['N1000']
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/asia.dsc')
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/asia.dsc')
     data = Pandas.read(TESTDATA_DIR + '/experiments/datasets/asia.data.gz',
                        dstype='categorical').sample
 
@@ -451,7 +451,7 @@ def test_trace_analysis_asia_5_ok():  # Asia, N=1K, MI and OMI values
 
 def test_trace_analysis_sports_ok1():  # Sports, N=20, empty graph
     trace = Trace.read('HC/STD/sports', TESTDATA_DIR + '/experiments')['N20']
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/sports.dsc').dag
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/sports.dsc').dag
     analysis = TraceAnalysis(trace, ref)
     assert analysis.context == trace.context
     assert dicts_same(dict1=analysis.summary, strict=False,
@@ -482,7 +482,7 @@ def test_trace_analysis_sports_ok1():  # Sports, N=20, empty graph
 
 def test_trace_analysis_sports_ok2():  # Sports, N=10, single arc
     trace = Trace.read('HC/STD/sports', TESTDATA_DIR + '/experiments')['N10']
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/sports.dsc').dag
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/sports.dsc').dag
     analysis = TraceAnalysis(trace, ref)
     assert analysis.context == trace.context
     assert dicts_same(dict1=analysis.summary, strict=False,
@@ -515,7 +515,7 @@ def test_trace_analysis_sports_ok2():  # Sports, N=10, single arc
 
 def test_trace_analysis_sports_ok3():  # Sports, N=500, 8 arcs
     trace = Trace.read('HC/STD/sports', TESTDATA_DIR + '/experiments')['N500']
-    ref = BN.read(TESTDATA_DIR + '/discrete/small/sports.dsc').dag
+    ref = read_bn(TESTDATA_DIR + '/discrete/small/sports.dsc').dag
     analysis = TraceAnalysis(trace, ref)
     assert analysis.context == trace.context
     assert dicts_same(dict1=analysis.summary, strict=False,
@@ -556,7 +556,7 @@ def test_trace_analysis_mildew_10_ok():  # Mildew, 10 rows
         marginals.
     """
     trace = Trace.read('HC/STD/mildew')['N10']
-    ref = BN.read(EXPTS_DIR + '/bn/mildew.dsc').dag
+    ref = read_bn(EXPTS_DIR + '/bn/mildew.dsc').dag
     data = Pandas.read(EXPTS_DIR + '/datasets/mildew.data.gz', N=10,
                        dstype='categorical').sample
 
