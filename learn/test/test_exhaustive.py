@@ -6,7 +6,8 @@ from learn.exhaustive import exhaustive
 from data import TESTDATA_DIR
 from data.numpy import NumPy
 from causaliq_core.utils import dicts_same
-from causaliq_core.bn import BN, read_bn
+from causaliq_core.bn import BN
+from causaliq_core.bn.io import read_bn
 
 
 def test_exhaustive_type_error_1():

@@ -7,7 +7,8 @@ from pandas import DataFrame
 from data.indep import indep, check_test_params
 from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_indep
-from causaliq_core.bn import BN, read_bn
+from causaliq_core.bn import BN
+from causaliq_core.bn.io import read_bn
 from causaliq_core.utils import dicts_same, values_same
 from data import TESTDATA_DIR
 from causaliq_core.utils import FileFormatError

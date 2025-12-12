@@ -12,7 +12,8 @@ from causaliq_core.graph.io.tetrad import read, write
 from data.pandas import Pandas
 import testdata.example_dags as ex_dag
 import testdata.example_pdags as ex_pdag
-from causaliq_core.bn import BN, read_bn, write_bn
+from causaliq_core.bn import BN
+from causaliq_core.bn.io import read_bn, write_bn
 
 
 @pytest.fixture(scope="function")  # temp file, automatically removed

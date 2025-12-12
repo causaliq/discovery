@@ -7,7 +7,8 @@ import pytest
 
 from data import TESTDATA_DIR
 from causaliq_core.utils import FileFormatError
-from causaliq_core.bn import BN, read_bn, write_bn
+from causaliq_core.bn import BN
+from causaliq_core.bn.io import read_bn, write_bn
 
 
 @pytest.fixture(scope="function")  # temp file, automatically removed

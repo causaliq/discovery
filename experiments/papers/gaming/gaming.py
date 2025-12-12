@@ -13,7 +13,8 @@ from call.bnlearn import bnlearn_learn
 from call.tetrad import tetrad_learn
 from causaliq_core.graph.io.tetrad import write as write_tetrad, read as read_tetrad
 from causaliq_core.graph.io.bayesys import write as write_bayesys
-from causaliq_core.bn import BN, read_bn, write_bn
+from causaliq_core.bn import BN
+from causaliq_core.bn.io import read_bn, write_bn
 from causaliq_core.graph import DAG, is_cpdag, extend_pdag
 from causaliq_core.utils.timing import Timing
 

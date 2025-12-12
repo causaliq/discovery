@@ -6,7 +6,8 @@ from data import TESTDATA_DIR
 from data.pandas import Pandas
 from data.score import bn_score
 from causaliq_core.graph import DAG
-from causaliq_core.bn import BN, read_bn
+from causaliq_core.bn import BN
+from causaliq_core.bn.io import read_bn
 from causaliq_core.utils import values_same, dicts_same
 import testdata.example_dags as dag
 

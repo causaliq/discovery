@@ -14,7 +14,8 @@ from experiments.config import Ordering, SERIES_GROUPS_P, SERIES_P, \
     FIGURE_PARAMS_P, Package, Algorithm
 from causaliq_core.utils.random import Randomise
 from causaliq_core.utils import ln
-from causaliq_core.bn import BN, read_bn
+from causaliq_core.bn import BN
+from causaliq_core.bn.io import read_bn
 from data import EXPTS_DIR
 from learn.knowledge import RuleSet
 

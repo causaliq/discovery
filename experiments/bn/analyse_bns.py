@@ -5,7 +5,8 @@ from pandas import DataFrame
 
 from data import EXPTS_DIR
 from experiments.config import NETWORKS
-from causaliq_core.bn import BN, read_bn
+from causaliq_core.bn import BN
+from causaliq_core.bn.io import read_bn
 from analysis.bn import BNAnalysis
 from experiments.plot import plot_degree_distribution
 

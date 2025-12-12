@@ -4,7 +4,8 @@ from pandas import DataFrame
 
 from causaliq_core.utils import dicts_same
 from data.score import free_params, dag_score, ENTROPY_SCORES, BAYESIAN_SCORES
-from causaliq_core.bn import BN, read_bn
+from causaliq_core.bn import BN
+from causaliq_core.bn.io import read_bn
 from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_score
 import testdata.example_dags as dag

@@ -5,7 +5,8 @@ from learn.pc import sgs_skeleton
 from data import TESTDATA_DIR
 from causaliq_core.utils import FileFormatError
 from data.pandas import Pandas
-from causaliq_core.bn import BN, read_bn
+from causaliq_core.bn import BN
+from causaliq_core.bn.io import read_bn
 
 
 def test_sgs_skeleton_type_error1():  # data not a dataframe or string

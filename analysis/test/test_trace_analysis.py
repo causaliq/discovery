@@ -8,7 +8,8 @@ from analysis.trace import TraceAnalysis
 from learn.trace import Trace
 from data import TESTDATA_DIR, EXPTS_DIR
 from causaliq_core.utils import dicts_same
-from causaliq_core.bn import BN, read_bn
+from causaliq_core.bn import BN
+from causaliq_core.bn.io import read_bn
 from causaliq_core.bn import CPT
 from data.pandas import Pandas
 import testdata.example_dags as ex_dag

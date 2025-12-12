@@ -8,7 +8,8 @@ from os import remove
 from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_import
 from data import TESTDATA_DIR, EXPTS_DIR
-from causaliq_core.bn import BN, read_bn, write_bn
+from causaliq_core.bn import BN
+from causaliq_core.bn.io import read_bn, write_bn
 
 
 # temp file, automatically removed

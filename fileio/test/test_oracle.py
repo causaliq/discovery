@@ -6,7 +6,8 @@ import pytest
 from data import TESTDATA_DIR
 from data import Data
 from data.oracle import Oracle
-from causaliq_core.bn import BN, read_bn
+from causaliq_core.bn import BN
+from causaliq_core.bn.io import read_bn
 
 
 def test_data_type_error_1():  # cannot call constructor directly

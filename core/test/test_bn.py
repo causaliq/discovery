@@ -1,7 +1,8 @@
 
 import pytest
 
-from causaliq_core.bn import BN, read_bn, write_bn
+from causaliq_core.bn import BN
+from causaliq_core.bn.io import read_bn, write_bn
 from causaliq_core.bn import CPT
 from causaliq_core.bn import LinGauss
 from causaliq_core.utils import values_same

@@ -25,7 +25,8 @@ from causaliq_core.graph.io.tetrad import read as read_tetrad, write as write_te
 from call.bnlearn import bnlearn_learn
 from call.tetrad import tetrad_learn
 from causaliq_core.graph import PDAG, NotPDAGError, dag_to_pdag
-from causaliq_core.bn import BN, read_bn, write_bn
+from causaliq_core.bn import BN
+from causaliq_core.bn.io import read_bn, write_bn
 from experiments.common import reference_bn
 
 OUTPUT = EXPTS_DIR + '/papers/llm_cf_bnsl/{}_{}.{}'

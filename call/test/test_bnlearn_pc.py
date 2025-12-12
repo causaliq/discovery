@@ -7,7 +7,8 @@ from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_learn
 from data import TESTDATA_DIR
 from data.numpy import NumPy
-from causaliq_core.bn import BN, read_bn
+from causaliq_core.bn import BN
+from causaliq_core.bn.io import read_bn
 import testdata.example_pdags as ex_pdag
 
 

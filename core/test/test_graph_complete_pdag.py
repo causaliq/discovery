@@ -5,7 +5,8 @@ import pytest
 
 from causaliq_core.graph import pdag_to_cpdag
 from data import TESTDATA_DIR
-from causaliq_core.bn import BN, read_bn
+from causaliq_core.bn import BN
+from causaliq_core.bn.io import read_bn
 from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_cpdag
 import testdata.example_pdags as ex_pdag

@@ -6,7 +6,8 @@ from call.bnlearn import bnlearn_learn
 from call.r import requires_r_and_bnlearn
 from data import TESTDATA_DIR
 from data.numpy import NumPy
-from causaliq_core.bn import BN, read_bn
+from causaliq_core.bn import BN
+from causaliq_core.bn.io import read_bn
 
 
 # Fixture creating 10 categorical rows for A --> B
