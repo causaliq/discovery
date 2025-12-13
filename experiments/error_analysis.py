@@ -5,7 +5,7 @@ from pandas import DataFrame, crosstab
 from math import ceil
 
 from data import EXPTS_DIR
-from data.pandas import Pandas
+from causaliq_data.pandas import Pandas
 from causaliq_core.utils import ln
 from experiments.common import reference_bn
 from learn.trace import Trace

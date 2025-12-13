@@ -5,7 +5,7 @@ from pandas import DataFrame
 
 from data import EXPTS_DIR
 from causaliq_core.graph.io.bayesys import write
-from data.pandas import Pandas
+from causaliq_data.pandas import Pandas
 from analysis.bn import BNAnalysis
 from experiments.plot import plot_degree_distribution
 from experiments.common import reference_bn

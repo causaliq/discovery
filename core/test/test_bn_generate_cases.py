@@ -4,7 +4,7 @@ from random import random
 from os import remove
 
 from data import TESTDATA_DIR
-from data.pandas import Pandas
+from causaliq_data.pandas import Pandas
 from causaliq_core.graph import DAG
 from causaliq_core.bn import BN
 from causaliq_core.bn.io import read_bn

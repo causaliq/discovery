@@ -12,7 +12,7 @@ from scipy.special import gammaln
 
 from causaliq_core.utils import ln
 from causaliq_core.utils.timing import Timing
-from data import Data
+from causaliq_data import Data
 from data.oracle import Oracle
 
 ENTROPY_SCORES = ['loglik', 'bic', 'aic']  # categorical entropy scores

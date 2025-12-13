@@ -46,6 +46,6 @@ def remove_single_valued(bn, data):
     ]
 
     # Create new BN with filtered data using legacy data adapter
-    from data.pandas import Pandas
+    from causaliq_data.pandas import Pandas
     data_adapter = Pandas(df=data)
     return (BN.fit(DAG(nodes, edges), data_adapter), data_adapter.sample, remove)

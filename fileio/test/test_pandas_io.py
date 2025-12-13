@@ -6,7 +6,7 @@ from random import random
 from os import remove
 from pandas import DataFrame
 
-from data.pandas import Pandas
+from causaliq_data.pandas import Pandas
 from data import TESTDATA_DIR, EXPTS_DIR
 from causaliq_core.utils import FileFormatError
 from causaliq_core.utils import dicts_same

@@ -15,7 +15,7 @@ from causaliq_core.graph import DAG
 from causaliq_core.utils import dicts_same
 from causaliq_core.bn import BN
 from causaliq_core.bn.io import read_bn
-from data.pandas import Pandas
+from causaliq_data.pandas import Pandas
 
 TYPES = ['loglik', 'bic', 'aic', 'bde', 'k2', 'bdj', 'bds']  # scores to test
 DEFAULT_PARAMS = {'iss': 1.0, 'prior': 'uniform', 'base': 'e'}

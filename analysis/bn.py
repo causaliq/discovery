@@ -12,7 +12,7 @@ from causaliq_core.bn import BN
 from causaliq_core.bn import CPT
 from core.metrics import kl
 from data.score import node_score
-from data.pandas import Pandas
+from causaliq_data.pandas import Pandas
 from data.oracle import Oracle
 
 

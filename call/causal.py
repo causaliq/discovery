@@ -24,7 +24,7 @@ from causallearn.utils.PDAG2DAG import pdag2dag
 from causallearn.utils.DAG2CPDAG import dag2cpdag
 
 from learn.trace import CONTEXT_FIELDS, Trace, Activity, Detail
-from data.pandas import Pandas
+from causaliq_data.pandas import Pandas
 from data.numpy import NumPy
 from causaliq_core.graph import DAG, PDAG, extend_pdag
 from data.score import dag_score

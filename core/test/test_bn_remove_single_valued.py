@@ -10,7 +10,7 @@ from causaliq_core.bn.io import read_bn
 from causaliq_core.graph import DAG
 from data.preprocess import remove_single_valued
 from data import TESTDATA_DIR
-from data.pandas import Pandas
+from causaliq_data.pandas import Pandas
 import testdata.example_dags as ex_dag
 
 

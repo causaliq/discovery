@@ -10,8 +10,8 @@ from time import time
 
 from learn.common import TreeStats
 from learn.hc_worker import HCWorker, Prefer
-from data import Data
-from data.pandas import Pandas
+from causaliq_data import Data
+from causaliq_data.pandas import Pandas
 from data.numpy import NumPy
 from causaliq_core.graph import DAG, SDG
 from data.score import check_score_params, SCORE_PARAMS

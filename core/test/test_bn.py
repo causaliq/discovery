@@ -9,7 +9,7 @@ from causaliq_core.utils import values_same
 import testdata.example_dags as dag
 import testdata.example_bns as bn
 from data import TESTDATA_DIR, EXPTS_DIR
-from data.pandas import Pandas
+from causaliq_data.pandas import Pandas
 
 
 @pytest.fixture(scope="module")  # simple Data object

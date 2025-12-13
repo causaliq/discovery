@@ -6,7 +6,7 @@ import numpy as np
 from pandas import DataFrame
 
 from causaliq_core.bn import LinGauss
-from data.pandas import Pandas
+from causaliq_data.pandas import Pandas
 from causaliq_core.utils import values_same
 
 

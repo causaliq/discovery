@@ -12,7 +12,7 @@ from causaliq_core.bn.io import read_bn
 from causaliq_core.utils import dicts_same, values_same
 from data import TESTDATA_DIR
 from causaliq_core.utils import FileFormatError
-from data.pandas import Pandas
+from causaliq_data.pandas import Pandas
 from causaliq_core.graph.io.bayesys import read as read_dag
 
 TYPES = ['x2', 'mi']

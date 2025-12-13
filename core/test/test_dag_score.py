@@ -10,7 +10,7 @@ from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_score
 import testdata.example_dags as dag
 from data import TESTDATA_DIR
-from data.pandas import Pandas
+from causaliq_data.pandas import Pandas
 from data.numpy import NumPy
 from data.oracle import Oracle
 

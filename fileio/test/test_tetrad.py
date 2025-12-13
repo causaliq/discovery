@@ -9,7 +9,7 @@ from causaliq_core.graph import EdgeType
 from data import TESTDATA_DIR
 from causaliq_core.utils import FileFormatError
 from causaliq_core.graph.io.tetrad import read, write
-from data.pandas import Pandas
+from causaliq_data.pandas import Pandas
 import testdata.example_dags as ex_dag
 import testdata.example_pdags as ex_pdag
 from causaliq_core.bn import BN

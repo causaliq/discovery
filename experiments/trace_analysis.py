@@ -5,7 +5,7 @@ from pandas import DataFrame, set_option
 from itertools import zip_longest, chain
 
 from data import EXPTS_DIR
-from data.pandas import Pandas
+from causaliq_data.pandas import Pandas
 from experiments.common import reference_bn, NETWORKS_GRID_DESIGN, \
     SERIES_GROUPS, FIGURE_PARAMS
 from learn.trace import Trace

@@ -3,7 +3,7 @@ import pytest
 from pandas import DataFrame
 
 from data import TESTDATA_DIR
-from data.pandas import Pandas
+from causaliq_data.pandas import Pandas
 from data.score import bn_score
 from causaliq_core.graph import DAG
 from causaliq_core.bn import BN

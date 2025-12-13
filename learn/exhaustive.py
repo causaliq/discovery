@@ -4,7 +4,7 @@
 from pandas import DataFrame, concat
 from itertools import combinations
 
-from data import Data
+from causaliq_data import Data
 from data.oracle import Oracle
 from data.score import dag_score
 from causaliq_core.graph import DAG, NotDAGError

@@ -8,12 +8,13 @@ from numpy.random import default_rng
 from pandas import read_csv, factorize, DataFrame, Categorical
 from pandas.errors import EmptyDataError
 from gzip import BadGzipFile
+from typing import Optional, Dict
 
 from causaliq_core.utils.timing import Timing
 from causaliq_core.utils import is_valid_path, FileFormatError
-from data import DatasetType
-from data.pandas import Pandas
-from data import Data
+from causaliq_data import DatasetType
+from causaliq_data.pandas import Pandas
+from causaliq_data import Data
 
 MAX_CATEGORY = 100  # maximum number of different values in category
 
@@ -269,6 +270,13 @@ class NumPy(Data):
             sorted_idx = lexsort(self.sample[:, ::-1].T)
             self._sample = self.sample[sorted_idx].astype(float64)
 
+    def _update_sample(
+        self,
+        old_N: Optional[int] = None,
+        old_ext_to_orig: Optional[Dict] = None,
+    ) -> None:
+        pass
+ 
     def randomise_names(self, seed=None):
         """
             Randomises the node names that the learning algorithm uses

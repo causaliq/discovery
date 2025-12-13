@@ -11,7 +11,7 @@ from causaliq_core.graph import DAG, extend_pdag
 from data.score import dag_score
 from data.score import SCORE_PARAMS
 from data import EXPTS_DIR
-from data.pandas import Pandas
+from causaliq_data.pandas import Pandas
 from data.numpy import NumPy
 from learn.hc import hc
 from learn.trace import Trace, Activity, Detail

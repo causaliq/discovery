@@ -12,7 +12,7 @@ from causaliq_core.bn import CPT, NodeValueCombinations
 from causaliq_core.bn import LinGauss
 from causaliq_core.bn.io import dsc
 from causaliq_core.bn.io import xdsl
-from data.pandas import Pandas
+from causaliq_data.pandas import Pandas
 
 
 class BN():

@@ -2,7 +2,8 @@
 
 from numpy import float64
 
-from data import Data, VariableType
+from causaliq_data import Data, VariableType
+from typing import Optional, Dict
 
 
 class Oracle(Data):
@@ -91,6 +92,14 @@ class Oracle(Data):
             :raises TypeError: always raised as not implemented for Oracle
         """
         raise TypeError('Oracle.values() not implemented')
+
+
+    def _update_sample(
+        self,
+        old_N: Optional[int] = None,
+        old_ext_to_orig: Optional[Dict] = None,
+    ) -> None:
+        pass
 
     def randomise_names(self, seed):
         """

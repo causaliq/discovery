@@ -6,7 +6,7 @@ from numpy import ndarray
 from pandas import DataFrame, crosstab
 
 from data import TESTDATA_DIR, EXPTS_DIR
-from data.pandas import Pandas
+from causaliq_data.pandas import Pandas
 from causaliq_core.utils.timing import Timing
 
 

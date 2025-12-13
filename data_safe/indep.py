@@ -6,7 +6,7 @@ from pandas import DataFrame, crosstab
 from scipy import stats
 from numpy import log
 
-from data.pandas import Pandas
+from causaliq_data.pandas import Pandas
 from causaliq_core.bn import BN
 
 TESTS = ['mi', 'x2']

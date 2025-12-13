@@ -4,7 +4,7 @@ import pytest
 from learn.pc import sgs_skeleton
 from data import TESTDATA_DIR
 from causaliq_core.utils import FileFormatError
-from data.pandas import Pandas
+from causaliq_data.pandas import Pandas
 from causaliq_core.bn import BN
 from causaliq_core.bn.io import read_bn
 

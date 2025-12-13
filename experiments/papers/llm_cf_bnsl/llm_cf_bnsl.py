@@ -16,7 +16,7 @@ from os import listdir
 from glob import glob
 
 from data import EXPTS_DIR
-from data.pandas import Pandas
+from causaliq_data.pandas import Pandas
 from core.metrics import pdag_compare
 from causaliq_core.graph.io.bayesys import write as write_bayesys, read as read_bayesys
 from knowledge.bayesys import read_constraints

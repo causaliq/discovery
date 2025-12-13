@@ -2,7 +2,7 @@
 
 from numpy import float64
 
-from data import Data, VariableType
+from causaliq_data import Data, VariableType
 
 
 class Oracle(Data):
