@@ -6,7 +6,7 @@ from pandas import DataFrame
 
 from data import TESTDATA_DIR
 from causaliq_data.pandas import Pandas
-from data.numpy import NumPy
+from causaliq_data import NumPy
 from causaliq_core.bn import BN
 from causaliq_core.bn.io import read_bn
 from learn.hc import hc, set_stable_order, Stability

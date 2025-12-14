@@ -9,7 +9,7 @@ from random import random
 
 from data import TESTDATA_DIR
 from causaliq_core.utils import FileFormatError
-from data.numpy import NumPy
+from causaliq_data import NumPy
 
 AB_3 = TESTDATA_DIR + '/simple/ab_3.csv'
 PQ_3 = TESTDATA_DIR + '/simple/pq_3.csv'

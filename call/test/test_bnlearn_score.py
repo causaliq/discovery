@@ -10,7 +10,7 @@ from call.r import requires_r_and_bnlearn
 import testdata.example_dags as dag
 from data import TESTDATA_DIR
 from data.score import dag_score
-from data.numpy import NumPy
+from causaliq_data import NumPy
 from causaliq_core.graph import DAG
 from causaliq_core.utils import dicts_same, values_same
 from causaliq_core.bn import BN

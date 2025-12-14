@@ -12,7 +12,7 @@ from learn.common import TreeStats
 from learn.hc_worker import HCWorker, Prefer
 from causaliq_data import Data
 from causaliq_data.pandas import Pandas
-from data.numpy import NumPy
+from causaliq_data import NumPy
 from causaliq_core.graph import DAG, SDG
 from data.score import check_score_params, SCORE_PARAMS
 from causaliq_core.utils import values_same

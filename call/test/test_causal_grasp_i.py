@@ -5,7 +5,7 @@ import pytest
 
 from call.causal import requires_causal_learn, causal_learn
 from data import TESTDATA_DIR
-from data.numpy import NumPy
+from causaliq_data import NumPy
 from causaliq_core.graph import EdgeType, PDAG
 from causaliq_core.utils import values_same
 from learn.trace import Trace

@@ -4,7 +4,7 @@
 import pytest
 
 from data import EXPTS_DIR
-from data.numpy import NumPy
+from causaliq_data import NumPy
 from causaliq_data.pandas import Pandas
 from causaliq_core.utils.timing import Timing
 from learn.hc import hc

@@ -12,7 +12,7 @@ from data.score import dag_score
 from data.score import SCORE_PARAMS
 from data import EXPTS_DIR
 from causaliq_data.pandas import Pandas
-from data.numpy import NumPy
+from causaliq_data import NumPy
 from learn.hc import hc
 from learn.trace import Trace, Activity, Detail
 from learn.knowledge import Knowledge, RuleSet

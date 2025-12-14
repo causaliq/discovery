@@ -11,7 +11,7 @@ from call.bnlearn import bnlearn_score
 import testdata.example_dags as dag
 from data import TESTDATA_DIR
 from causaliq_data.pandas import Pandas
-from data.numpy import NumPy
+from causaliq_data import NumPy
 from data.oracle import Oracle
 
 ENTROPY_PARAMS = {'base': 'e', 'k': 1.0}

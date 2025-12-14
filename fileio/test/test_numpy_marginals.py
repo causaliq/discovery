@@ -7,7 +7,7 @@ from pandas import DataFrame, crosstab
 
 from data import TESTDATA_DIR, EXPTS_DIR
 from causaliq_data.pandas import Pandas
-from data.numpy import NumPy
+from causaliq_data import NumPy
 from causaliq_core.utils.timing import Timing
 
 

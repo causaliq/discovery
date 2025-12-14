@@ -8,7 +8,7 @@ from learn.knowledge import Knowledge, Rule, RuleSet, \
 from learn.trace import Activity
 from learn.dagchange import DAGChange, BestDAGChanges
 from data import TESTDATA_DIR
-from data.numpy import NumPy
+from causaliq_data import NumPy
 from causaliq_core.bn import BN
 from causaliq_core.bn.io import read_bn
 from causaliq_core.utils.random import init_stable_random

@@ -7,7 +7,7 @@ from time import localtime, asctime
 
 from causaliq_core.utils.random import Randomise
 from data import EXPTS_DIR
-from data.numpy import NumPy
+from causaliq_data import NumPy
 from data.oracle import Oracle
 from data.score import dag_score
 from call.r import initialise_r_environment

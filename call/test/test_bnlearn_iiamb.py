@@ -5,7 +5,7 @@ import pytest
 from causaliq_core.graph import EdgeType
 from call.bnlearn import bnlearn_learn
 from data import TESTDATA_DIR
-from data.numpy import NumPy
+from causaliq_data import NumPy
 from causaliq_core.bn import BN
 from causaliq_core.bn.io import read_bn
 import testdata.example_pdags as ex_pdag

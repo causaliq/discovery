@@ -5,7 +5,7 @@ from pandas import DataFrame
 
 from data import EXPTS_DIR
 from causaliq_data.pandas import Pandas
-from data.numpy import NumPy
+from causaliq_data import NumPy
 from core.metrics import pdag_compare
 from causaliq_core.graph.io.bayesys import read
 from learn.hc import hc

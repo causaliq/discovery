@@ -7,7 +7,7 @@ from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_learn
 from data import TESTDATA_DIR
 from knowledge.bayesys import read_constraints
-from data.numpy import NumPy
+from causaliq_data import NumPy
 from causaliq_core.graph import DAG, EdgeType
 from causaliq_core.bn import BN
 from causaliq_core.bn.io import read_bn
