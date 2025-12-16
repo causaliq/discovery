@@ -5,7 +5,7 @@ import pytest
 
 from data import TESTDATA_DIR
 from causaliq_data import Data
-from data.oracle import Oracle
+from causaliq_data import Oracle
 from causaliq_core.bn import BN
 from causaliq_core.bn.io import read_bn
 

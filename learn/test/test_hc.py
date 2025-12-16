@@ -5,7 +5,7 @@ import pytest
 from pandas import DataFrame, set_option
 
 from data import TESTDATA_DIR
-from data.oracle import Oracle
+from causaliq_data import Oracle
 from causaliq_data.pandas import Pandas
 from data.preprocess import remove_single_valued
 from causaliq_core.bn import BN

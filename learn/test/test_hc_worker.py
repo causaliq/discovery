@@ -9,7 +9,7 @@ from causaliq_core.bn.io import read_bn
 from causaliq_core.utils import values_same
 from data import TESTDATA_DIR
 from causaliq_data.pandas import Pandas
-from data.oracle import Oracle
+from causaliq_data import Oracle
 from learn.knowledge import Knowledge
 from learn.knowledge_rule import RuleSet
 

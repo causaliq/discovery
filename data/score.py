@@ -13,7 +13,7 @@ from scipy.special import gammaln
 from causaliq_core.utils import ln
 from causaliq_core.utils.timing import Timing
 from causaliq_data import Data
-from data.oracle import Oracle
+from causaliq_data import Oracle
 
 ENTROPY_SCORES = ['loglik', 'bic', 'aic']  # categorical entropy scores
 BAYESIAN_SCORES = ['bde', 'k2', 'bdj', 'bds']  # categorical Bayesian

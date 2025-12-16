@@ -9,7 +9,7 @@ from causaliq_core.bn.io import read_bn
 from causaliq_core.utils import values_same
 from data import TESTDATA_DIR, EXPTS_DIR
 from causaliq_data.pandas import Pandas
-from data.oracle import Oracle
+from causaliq_data import Oracle
 
 
 # test function which solves log x / x = c

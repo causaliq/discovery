@@ -13,7 +13,7 @@ from causaliq_core.bn import CPT
 from core.metrics import kl
 from data.score import node_score
 from causaliq_data.pandas import Pandas
-from data.oracle import Oracle
+from causaliq_data import Oracle
 
 
 BN_PROPERTIES = {  # Properties of analysed BN
