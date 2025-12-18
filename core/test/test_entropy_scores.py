@@ -5,7 +5,7 @@ import pytest
 from numpy import array
 
 from causaliq_core.utils import dicts_same
-from data.score import entropy_scores
+from causaliq_data.score import entropy_scores
 
 
 def test_metrics_entropy_scores_type_error_1():  # bad argument types

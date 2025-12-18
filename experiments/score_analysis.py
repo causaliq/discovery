@@ -10,7 +10,7 @@ from experiments.common import NETWORKS_GRID_DESIGN, reference_bn, series_props
 from experiments.plot import relplot
 from learn.trace import Trace
 from analysis.trace import TraceAnalysis
-from data.score import node_score
+from causaliq_data.score import node_score
 from causaliq_core.graph import DAG
 from causaliq_core.bn import BN
 from causaliq_core.bn import CPT

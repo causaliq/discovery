@@ -6,7 +6,7 @@ from itertools import combinations
 
 from causaliq_data import Data
 from causaliq_data import Oracle
-from data.score import dag_score
+from causaliq_data.score import dag_score
 from causaliq_core.graph import DAG, NotDAGError
 
 

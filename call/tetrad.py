@@ -8,8 +8,8 @@ from re import compile
 from datetime import datetime
 
 from causaliq_core.graph import DAG, PDAG, SDG, extend_pdag
-from data.score import dag_score
-from data.score import SCORE_PARAMS
+from causaliq_data.score import dag_score
+from causaliq_data.score import SCORE_PARAMS
 from learn.trace import Trace, Activity, Detail, CONTEXT_FIELDS
 from call.cmd import dispatch_cmd
 from causaliq_data.pandas import Pandas

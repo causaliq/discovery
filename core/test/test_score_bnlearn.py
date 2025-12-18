@@ -8,7 +8,7 @@ from os import remove
 
 from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_score
-from data.score import dag_score
+from causaliq_data.score import dag_score
 import testdata.example_dags as dag
 from data import TESTDATA_DIR
 from causaliq_core.graph import DAG

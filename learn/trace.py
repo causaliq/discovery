@@ -90,7 +90,7 @@ from causaliq_core.utils import environment
 from causaliq_core.utils import EnumWithAttrs
 from causaliq_core.utils import values_same
 from causaliq_core.graph import DAG, SDG, extend_pdag
-from data.score import dag_score
+from causaliq_data.score import dag_score
 from learn.common import TreeStats
 from data import EXPTS_DIR
 from causaliq_core.utils import is_valid_path

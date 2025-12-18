@@ -8,8 +8,8 @@ from experiments.run_analysis import run_analysis
 from experiments.summary_analysis import summary_analysis
 from experiments.plot import relplot
 from causaliq_core.graph import DAG, extend_pdag
-from data.score import dag_score
-from data.score import SCORE_PARAMS
+from causaliq_data.score import dag_score
+from causaliq_data.score import SCORE_PARAMS
 from data import EXPTS_DIR
 from causaliq_data.pandas import Pandas
 from causaliq_data import NumPy

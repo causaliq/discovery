@@ -27,7 +27,7 @@ from learn.trace import CONTEXT_FIELDS, Trace, Activity, Detail
 from causaliq_data.pandas import Pandas
 from causaliq_data import NumPy
 from causaliq_core.graph import DAG, PDAG, extend_pdag
-from data.score import dag_score
+from causaliq_data.score import dag_score
 from causaliq_core.utils.timing import run_with_timeout, TimeoutError
 
 CAUSAL_ALGORITHMS = {

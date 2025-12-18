@@ -3,7 +3,7 @@ import pytest
 from numpy import array
 
 from causaliq_core.utils import values_same
-from data.score import bayesian_score
+from causaliq_data.score import bayesian_score
 
 
 def check(counts, q_i, type, expected, iss=1):

@@ -9,7 +9,7 @@ from causaliq_core.utils.random import Randomise
 from data import EXPTS_DIR
 from causaliq_data import NumPy
 from causaliq_data import Oracle
-from data.score import dag_score
+from causaliq_data.score import dag_score
 from call.r import initialise_r_environment
 from call.bnlearn import bnlearn_learn
 from call.tetrad import tetrad_learn
