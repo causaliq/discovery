@@ -8,7 +8,7 @@ from pandas import DataFrame
 from causaliq_core.bn import BN
 from causaliq_core.bn.io import read_bn
 from causaliq_core.graph import DAG
-from data.preprocess import remove_single_valued
+from causaliq_data.preprocess import remove_single_valued
 from data import TESTDATA_DIR
 from causaliq_data.pandas import Pandas
 import testdata.example_dags as ex_dag

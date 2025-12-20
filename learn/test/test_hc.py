@@ -7,7 +7,7 @@ from pandas import DataFrame, set_option
 from data import TESTDATA_DIR
 from causaliq_data import Oracle
 from causaliq_data.pandas import Pandas
-from data.preprocess import remove_single_valued
+from causaliq_data.preprocess import remove_single_valued
 from causaliq_core.bn import BN
 from causaliq_core.bn.io import read_bn
 from learn.hc import hc
