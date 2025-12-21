@@ -15,7 +15,7 @@ from causaliq_core.graph import DAG
 from causaliq_core.bn import BN
 from causaliq_core.bn import CPT
 from core.metrics import kl
-from data.indep import indep
+from causaliq_data.indep import indep
 
 
 def _get_scores_for_figure(nodes, Ns, ref_parents, params, data):

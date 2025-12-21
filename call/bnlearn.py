@@ -13,8 +13,8 @@ from causaliq_core.graph import DAG, EdgeType, PDAG
 from causaliq_core.bn import BN
 from causaliq_core.bn import LinGauss
 from causaliq_data.score import SCORES, SCORE_PARAMS, check_score_params
-from data.indep import TESTS, TEST_PARAMS, check_test_params
-from data.indep import check_indep_args, MIN_P_VALUE
+from causaliq_data.indep import TESTS, TEST_PARAMS, check_test_params
+from causaliq_data.indep import check_indep_args, MIN_P_VALUE
 from causaliq_core.utils import is_valid_path
 from causaliq_data.pandas import Pandas
 from causaliq_data import NumPy

@@ -7,7 +7,7 @@ from itertools import combinations
 from causaliq_data.pandas import Pandas
 from causaliq_core.bn import BN
 from causaliq_core.bn.io import read_bn
-from data.indep import indep
+from causaliq_data.indep import indep
 
 
 def _check_ci_args(data, bn, N):

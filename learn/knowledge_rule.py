@@ -4,7 +4,7 @@
 from causaliq_core.utils import ln
 from causaliq_core.utils import EnumWithAttrs
 from causaliq_core.utils import values_same
-from data.indep import indep
+from causaliq_data.indep import indep
 from causaliq_data.score import node_score
 from learn.trace import Activity
 

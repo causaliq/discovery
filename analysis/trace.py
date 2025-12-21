@@ -9,7 +9,7 @@ from causaliq_core.graph import DAG, dag_to_pdag, is_cpdag, pdag_to_cpdag
 from causaliq_core.bn import BN
 from causaliq_core.bn.io import read_bn
 from core.metrics import pdag_compare
-from data.indep import indep
+from causaliq_data.indep import indep
 from data import EXPTS_DIR
 from learn.trace import Trace, Activity
 
