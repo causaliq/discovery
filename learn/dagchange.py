@@ -1,7 +1,7 @@
 
 # Encapsulates changes to a DAG made during structure learning
 
-from learn.trace import Activity
+from causaliq_analysis.graph import GraphAction
 
 
 class DAGChange():
@@ -21,7 +21,7 @@ class DAGChange():
         :raises TypeError: if initialiser has bad arg types
     """
     def __init__(self, activity, arc=None, delta=None, counts=None):
-        if (not isinstance(activity, Activity) or
+        if (not isinstance(activity, GraphAction) or
                 (arc is not None and not isinstance(arc, tuple)) or
                 (delta is not None and not isinstance(delta, float)) or
                 (counts is not None and not isinstance(counts, dict))):
@@ -46,7 +46,7 @@ class DAGChange():
             :returns str: textual description of change
         """
         return ('{}, score={}'.format(self.activity, self.delta)
-                if self.activity in [Activity.INIT, Activity.STOP] else
+                if self.activity in [GraphAction.INIT, GraphAction.STOP] else
                 '{} {}, score={}, count={}'.format(self.activity, self.arc,
                                                    self.delta, self.counts))
 
@@ -77,7 +77,7 @@ class BestDAGChanges():
 
         :raises TypeError: if bad arg types
     """
-    def __init__(self, top=DAGChange(Activity.STOP), second=None):
+    def __init__(self, top=DAGChange(GraphAction.STOP), second=None):
         if ((top is not None and not isinstance(top, DAGChange)) or
                 (second is not None and not isinstance(second, DAGChange))):
             raise TypeError('BestDAGChanges() bad arg type')

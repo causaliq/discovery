@@ -3,7 +3,7 @@
 
 from copy import deepcopy
 
-from learn.trace import Activity
+from causaliq_analysis.graph import GraphAction
 from learn.dagchange import DAGChange
 
 
@@ -70,11 +70,11 @@ class TabuList():
         _parents = deepcopy(parents)
         frm = proposed.arc[0]
         to = proposed.arc[1]
-        if proposed.activity == Activity.ADD:
+        if proposed.activity == GraphAction.ADD:
             _parents[to] = _parents[to] | {frm}
-        elif proposed.activity == Activity.DEL:
+        elif proposed.activity == GraphAction.DEL:
             _parents[to].discard(frm)
-        elif proposed.activity == Activity.REV:
+        elif proposed.activity == GraphAction.REV:
             _parents[frm] = _parents[frm] | {to}
             _parents[to].discard(frm)
 

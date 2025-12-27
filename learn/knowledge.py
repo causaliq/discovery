@@ -4,7 +4,7 @@
 from copy import deepcopy
 
 from causaliq_core.utils.random import stable_random, init_stable_random
-from learn.trace import Activity
+from causaliq_analysis.graph import GraphAction
 from learn.dagchange import BestDAGChanges, DAGChange
 from learn.knowledge_rule import Rule, RuleSet, KnowledgeOutcome, \
     KnowledgeEvent
@@ -237,9 +237,9 @@ class Knowledge():
         arc = best.top.arc
         opp_arc = (best.top.arc[1], best.top.arc[0])
 
-        if ((activity == Activity.ADD and know_arc == arc)
-                or (activity == Activity.DEL and know_arc is None)
-                or (activity == Activity.REV and know_arc == opp_arc)):
+        if ((activity == GraphAction.ADD and know_arc == arc)
+                or (activity == GraphAction.DEL and know_arc is None)
+                or (activity == GraphAction.REV and know_arc == opp_arc)):
 
             # knowledge agrees with proposed change so return NO_OP which
             # means the change will go ahead
@@ -265,16 +265,16 @@ class Knowledge():
             new_best = BestDAGChanges(best.top, best.second)
             print('   --- Aborting {} of {}'
                   .format(best.top.activity, best.top. arc))
-            new_best.top.activity = Activity.NONE  # signal no activity
-            if know_arc is None and activity == Activity.ADD:
+            new_best.top.activity = GraphAction.NONE  # signal no activity
+            if know_arc is None and activity == GraphAction.ADD:
                 outcome = KnowledgeOutcome.EXT_ADD
-            elif know_arc is None and activity == Activity.REV:
+            elif know_arc is None and activity == GraphAction.REV:
                 outcome = KnowledgeOutcome.EXT_REV
-            elif activity == Activity.ADD:
+            elif activity == GraphAction.ADD:
                 outcome = KnowledgeOutcome.STOP_ADD
-            elif activity == Activity.DEL:
+            elif activity == GraphAction.DEL:
                 outcome = KnowledgeOutcome.STOP_DEL
-            elif activity == Activity.REV:
+            elif activity == GraphAction.REV:
                 outcome = KnowledgeOutcome.STOP_REV
             else:
                 raise RuntimeError('new_best() called with bad activity')
@@ -298,7 +298,7 @@ class Knowledge():
         orig_arc = best.top.arc
 
         if (trigger is not None and not
-                (self.partial is True and best.top.activity == Activity.DEL)):
+                (self.partial is True and best.top.activity == GraphAction.DEL)):
 
             if trigger == Rule.EQUIV_SEQ:
 
@@ -314,7 +314,7 @@ class Knowledge():
                 else:
                     correct = None
                     if self.pause is True:
-                        new_top = DAGChange(Activity.PAUSE, best.top.arc,
+                        new_top = DAGChange(GraphAction.PAUSE, best.top.arc,
                                             best.top.delta, best.top.counts)
                         best = BestDAGChanges(new_top, best.second)
 
@@ -372,7 +372,7 @@ class Knowledge():
 
         self.event = None
         self.event_delta = None
-        if (best.top.activity != Activity.NONE and best.top.delta is not None
+        if (best.top.activity != GraphAction.NONE and best.top.delta is not None
             and (self.max_abs_delta is None
                  or abs(best.top.delta) > self.max_abs_delta)):
             self.max_abs_delta = abs(best.top.delta)
@@ -395,32 +395,32 @@ class Knowledge():
         opp = (arc[1], arc[0])
         rule = None
 
-        if activity == Activity.ADD and arc in self.stop:
+        if activity == GraphAction.ADD and arc in self.stop:
             outcome = KnowledgeOutcome.STOP_ADD
             correct = self.stop[arc][0]
             rule = Rule.STOP_ARC if self.stop[arc][1] else Rule.ACT_CACHE
 
-        elif activity == Activity.ADD and opp in self.reqd:
+        elif activity == GraphAction.ADD and opp in self.reqd:
             outcome = KnowledgeOutcome.STOP_ADD
             correct = self.reqd[opp][0]
             rule = Rule.REQD_ARC if self.reqd[opp][1] else Rule.ACT_CACHE
 
-        elif activity == Activity.DEL and arc in self.reqd:
+        elif activity == GraphAction.DEL and arc in self.reqd:
             outcome = KnowledgeOutcome.STOP_DEL
             correct = self.reqd[arc][0]
             rule = Rule.REQD_ARC if self.reqd[arc][1] else Rule.ACT_CACHE
 
-        elif activity == Activity.DEL and opp in self.reqd:
+        elif activity == GraphAction.DEL and opp in self.reqd:
             outcome = KnowledgeOutcome.STOP_DEL
             correct = self.reqd[opp][0]
             rule = Rule.REQD_ARC if self.reqd[opp][1] else Rule.ACT_CACHE
 
-        elif activity == Activity.REV and arc in self.reqd:
+        elif activity == GraphAction.REV and arc in self.reqd:
             outcome = KnowledgeOutcome.STOP_REV
             correct = self.reqd[arc][0]
             rule = Rule.REQD_ARC if self.reqd[arc][1] else Rule.ACT_CACHE
 
-        elif activity == Activity.REV and opp in self.stop:
+        elif activity == GraphAction.REV and opp in self.stop:
             outcome = KnowledgeOutcome.STOP_REV
             correct = self.stop[opp][0]
             rule = Rule.STOP_ARC if self.stop[opp][1] else Rule.ACT_CACHE
@@ -432,7 +432,7 @@ class Knowledge():
         if rule is not None:
             event = KnowledgeEvent(rule, correct, outcome, arc)
             # print('   --- blocking: {} {} {:.1f} with rule {}'.format
-            #       (change.activity.value, arc, change.delta, event))
+            #       (change.GraphAction.value, arc, change.delta, event))
             if (trace_event is True and
                     (self.event is None or (change.delta > self.event_delta))):
                 self.event = event

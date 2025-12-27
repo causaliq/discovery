@@ -23,7 +23,9 @@ from causallearn.score.LocalScoreFunction import local_score_BDeu, \
 from causallearn.utils.PDAG2DAG import pdag2dag
 from causallearn.utils.DAG2CPDAG import dag2cpdag
 
-from learn.trace import CONTEXT_FIELDS, Trace, Activity, Detail
+from learn.trace import CONTEXT_FIELDS, Trace
+from causaliq_analysis.graph import GraphAction
+from causaliq_analysis.graph import GraphActionDetail
 from causaliq_data.pandas import Pandas
 from causaliq_data import NumPy
 from causaliq_core.graph import DAG, PDAG, extend_pdag
@@ -150,8 +152,8 @@ def _generate_trace(algorithm: str, graph: GeneralGraph, elapsed: float,
     context.update({'algorithm': algorithm.upper(), 'params': params, ''
                     'N': data.N, 'external': 'causal-learn', 'dataset': True})
     trace = Trace(context)
-    trace.add(Activity.INIT, {Detail.DELTA: empty_score})
-    trace.add(Activity.STOP, {Detail.DELTA: learned_score})
+    trace.add(GraphAction.INIT, {GraphActionDetail.DELTA: empty_score})
+    trace.add(GraphAction.STOP, {GraphActionDetail.DELTA: learned_score})
     trace.trace['time'][-1] = elapsed
     trace.result = pdag
 

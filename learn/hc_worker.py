@@ -11,7 +11,8 @@ from causaliq_core.graph import DAG
 from causaliq_data.pandas import Pandas
 from learn.trace import Trace
 from learn.tabulist import TabuList
-from learn.trace import Activity, Detail
+from causaliq_analysis.graph import GraphAction
+from causaliq_analysis.graph import GraphActionDetail
 from learn.dagchange import DAGChange, BestDAGChanges
 from learn.knowledge import Knowledge
 
@@ -95,7 +96,7 @@ class HCWorker():
         if self.knowledge is not False and self.knowledge.initial is not None:
             for arc in self.knowledge.initial.edges:
                 self.score += self.deltas[arc][0][0]
-                self._apply_change_to_dag(DAGChange(Activity.ADD, arc, 0.0,
+                self._apply_change_to_dag(DAGChange(GraphAction.ADD, arc, 0.0,
                                           {}))
             print('\nInitial parents: {}\n'.format(self.parents))
 
@@ -123,7 +124,7 @@ class HCWorker():
         self.best = BestDAGChanges(None, None)
 
         while (self.best.top is None or self.best.top.activity
-                not in {Activity.STOP, Activity.PAUSE}):
+                not in {GraphAction.STOP, GraphAction.PAUSE}):
 
             self.best = BestDAGChanges()  # initialise best change
             self.iter += 1
@@ -145,7 +146,7 @@ class HCWorker():
             # Having identified best change, update total score with its delta,
             # and if the delta is non-positive, then increment num_noinc
 
-            if (self.best.top.activity not in {Activity.NONE, Activity.PAUSE}
+            if (self.best.top.activity not in {GraphAction.NONE, GraphAction.PAUSE}
                     and self.best.top.delta is not None):
                 self.score += self.best.top.delta  # increment DAG score
                 if self.best.top.delta <= 0.0:
@@ -160,10 +161,10 @@ class HCWorker():
             if ((self.params and 'maxiter' in self.params
                  and self.iter > self.params['maxiter'])
                     or self.num_noinc > self.params['noinc']):
-                self.best.top = DAGChange(Activity.STOP, None, 0.0, {})
+                self.best.top = DAGChange(GraphAction.STOP, None, 0.0, {})
 
-            if self.best.top.activity not in {Activity.STOP, Activity.NONE,
-                                              Activity.PAUSE}:
+            if self.best.top.activity not in {GraphAction.STOP, GraphAction.NONE,
+                                              GraphAction.PAUSE}:
 
                 # Apply the change to the DAG updating the parents and deltas
                 # to take account of the change, and add DAG to Tabu list
@@ -200,16 +201,16 @@ class HCWorker():
                            'delta {:.3f} and total score {:.3f}\n')
                           .format(self.iter, asctime(localtime()),
                                   self.best.top.activity.value,
-                                  self. best.top.arc,
+                                  self.best.top.arc,
                                   self.best.top.delta / self.data.N,
                                   self.score / self.data.N))
 
-            elif self.best.top.activity == Activity.STOP:
+            elif self.best.top.activity == GraphAction.STOP:
                 self.parents = deepcopy(self.best_parents)
                 self.score = self.best_parents_score
 
             self.score2 = round(self.score, 10)
-            if self.best.top.activity == Activity.PAUSE:
+            if self.best.top.activity == GraphAction.PAUSE:
                 self.iter -= 1
                 self.paused = True
             elif self.trace is not None:
@@ -304,7 +305,7 @@ class HCWorker():
             # arc doesn't exist so can only be add arc - check if it is an
             # improvement over current second best and is possible.
 
-            top = DAGChange(Activity.ADD, arc, delta[0][0], delta[0][1])
+            top = DAGChange(GraphAction.ADD, arc, delta[0][0], delta[0][1])
             if self._is_better(top, best.second, self.params['prefer']):
                 top = self._change_permitted(top)
             else:
@@ -314,7 +315,7 @@ class HCWorker():
 
             # check if delete is an improvement and is possible
 
-            delete = DAGChange(Activity.DEL, arc, delta[0][0], delta[0][1])
+            delete = DAGChange(GraphAction.DEL, arc, delta[0][0], delta[0][1])
             if self._is_better(delete, best.second, self.params['prefer']):
                 delete = self._change_permitted(delete)
             else:
@@ -322,7 +323,7 @@ class HCWorker():
 
             # ... and check if reverse is an improvement and is possble
 
-            reverse = DAGChange(Activity.REV, arc, delta[1][0], delta[1][1])
+            reverse = DAGChange(GraphAction.REV, arc, delta[1][0], delta[1][1])
             if self._is_better(reverse, best.second, self.params['prefer']):
                 reverse = self._change_permitted(reverse)
             else:
@@ -352,7 +353,7 @@ class HCWorker():
                 # proposed is better than current top and is not prohibited by
                 # tabulist (if defined)
 
-                best.second = (best.top if best.top.activity != Activity.STOP
+                best.second = (best.top if best.top.activity != GraphAction.STOP
                                else best.second)
                 if (second is not None
                     and (best.second is None
@@ -361,7 +362,7 @@ class HCWorker():
                 best.top = top
 
             elif (self._is_better(top, best.second, self.params['prefer'])
-                  and top.activity != Activity.STOP):
+                  and top.activity != GraphAction.STOP):
 
                 # top is not better than current best, so now see if it is
                 # better than current second best - if so update that
@@ -388,8 +389,8 @@ class HCWorker():
 
         # Check Add or Reverse don't create a cycle
 
-        if activity in [Activity.ADD, Activity.REV]:
-            new_arc = arc if activity == Activity.ADD else (arc[1], arc[0])
+        if activity in [GraphAction.ADD, GraphAction.REV]:
+            new_arc = arc if activity == GraphAction.ADD else (arc[1], arc[0])
             if DAG.partial_order(self.parents, new_arc=new_arc) is None:
                 return None
 
@@ -438,8 +439,8 @@ class HCWorker():
         # the reverse logic if disconnected arcs are preferred.
 
         if (prefer in [Prefer.CONN, Prefer.UNCO]
-            and proposed.activity == Activity.ADD
-            and current.activity == Activity.ADD
+            and proposed.activity == GraphAction.ADD
+            and current.activity == GraphAction.ADD
             and ((prefer == Prefer.CONN
                   and _connected(current.arc)
                   and not _connected(proposed.arc)) or
@@ -482,11 +483,11 @@ class HCWorker():
         # delta values are used at this point - they will be updated to their
         # correct values in the subsequent _update_deltas calls
 
-        if activity == Activity.ADD:
+        if activity == GraphAction.ADD:
             self.parents[to] = self.parents[to] | {frm}
             self.deltas[(frm, to)] = [(0.0, {}), (0.0, {})]
             self.deltas[(to, frm)] = []
-        elif activity == Activity.DEL:
+        elif activity == GraphAction.DEL:
             self.parents[to] = self.parents[to] - {frm}
             self.deltas[(frm, to)] = [(0.0, {})]
             self.deltas[(to, frm)] = [(0.0, {})]
@@ -508,12 +509,12 @@ class HCWorker():
         #   Deltas of arcs incident to the "frm" arc must also be recomputed in
         #   deletion and reversal changes
 
-        if activity != Activity.ADD:
+        if activity != GraphAction.ADD:
             self._update_deltas(frm, True)
             self._update_deltas(frm, False)
 
         # print('Made change: {} {}->{} giving new score: {}\n'
-        #       .format(activity.value.strip(), frm, to, self.score))
+        #       .format(GraphAction.value.strip(), frm, to, self.score))
 
     def _update_deltas(self, target, inbound):
         """
@@ -684,8 +685,8 @@ class HCWorker():
             self.trace = Trace(context)
 
             blocked = None if self.tabulist is None else []
-            self.trace.add(Activity.INIT, {Detail.DELTA: self.score,
-                                           Detail.BLOCKED: blocked})
+            self.trace.add(GraphAction.INIT, {GraphActionDetail.DELTA: self.score,
+                                           GraphActionDetail.BLOCKED: blocked})
 
     def _add_trace_entry(self, know_event):
         """
@@ -697,22 +698,22 @@ class HCWorker():
         def _rounded_count(key):
             return round(self.best.top.counts[key], 1)
 
-        details = {Detail.DELTA: (self.score
-                                  if self.best.top.activity == Activity.STOP
+        details = {GraphActionDetail.DELTA: (self.score
+                                  if self.best.top.activity == GraphAction.STOP
                                   else self.best.top.delta),
-                   Detail.ARC: self.best.top.arc}
+                   GraphActionDetail.ARC: self.best.top.arc}
 
         if self.best.second is not None:
-            details.update({Detail.ACTIVITY_2: self.best.second.activity.value,
-                            Detail.ARC_2: self.best.second.arc,
-                            Detail.DELTA_2: self.best.second.delta})
+            details.update({GraphActionDetail.ACTIVITY_2: self.best.second.activity.value,
+                            GraphActionDetail.ARC_2: self.best.second.arc,
+                            GraphActionDetail.DELTA_2: self.best.second.delta})
 
         if self.best.top.counts is not None and 'min' in self.best.top.counts:
-            details.update({Detail.MIN_N: _rounded_count('min'),
-                            Detail.MEAN_N: _rounded_count('mean'),
-                            Detail.MAX_N: _rounded_count('max'),
-                            Detail.LT5: _rounded_count('lt5'),
-                            Detail.FPA: _rounded_count('fpa')})
+            details.update({GraphActionDetail.MIN_N: _rounded_count('min'),
+                            GraphActionDetail.MEAN_N: _rounded_count('mean'),
+                            GraphActionDetail.MAX_N: _rounded_count('max'),
+                            GraphActionDetail.LT5: _rounded_count('lt5'),
+                            GraphActionDetail.FPA: _rounded_count('fpa')})
 
         # Obtain details of any changes blocked by a tabulist in this iteration
         # (this has effect of clearing the list of blocked changes too).
@@ -722,15 +723,15 @@ class HCWorker():
         # This matches the blocks reported by bnlearn's implementation of tabu.
 
         blocked = ([e for e in self.tabulist.blocked() if e[2] > 0 or
-                    (details[Detail.DELTA] <= 0.0 and self.num_noinc <=
+                    (details[GraphActionDetail.DELTA] <= 0.0 and self.num_noinc <=
                      len(self.tabulist.tabu))]
                    if self.tabulist is not None else None)
-        details.update({Detail.BLOCKED: blocked})
+        details.update({GraphActionDetail.BLOCKED: blocked})
 
         know_event = (None if know_event is None else
                       (know_event.rule.value, know_event.correct,
                        know_event.outcome.value, know_event.arc))
-        details.update({Detail.KNOWLEDGE: know_event})
+        details.update({GraphActionDetail.KNOWLEDGE: know_event})
 
         self.trace.add(self.best.top.activity, details)
 

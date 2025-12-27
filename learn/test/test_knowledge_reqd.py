@@ -5,7 +5,7 @@ import pytest
 
 from learn.knowledge import Knowledge, Rule, RuleSet, \
     KnowledgeOutcome, KnowledgeEvent
-from learn.trace import Activity
+from causaliq_analysis.graph import GraphAction
 from learn.dagchange import DAGChange, BestDAGChanges
 from data import TESTDATA_DIR
 from causaliq_core.bn import BN
@@ -182,7 +182,7 @@ def test_reqd1_2_ok(reqd1, abc1):  # stop del of specified arc
 
     # check blocked is OK
 
-    result = reqd1.blocked(DAGChange(Activity.DEL, ('B', 'C'), 1.0, {}))
+    result = reqd1.blocked(DAGChange(GraphAction.DEL, ('B', 'C'), 1.0, {}))
     expected = KnowledgeEvent(Rule.REQD_ARC, False, KnowledgeOutcome.STOP_DEL,
                               ('B', 'C'))
     assert reqd1.event == expected
@@ -212,7 +212,7 @@ def test_reqd1_3_ok(reqd1, abc1):  # stop add of opposite of specified arc
 
     # check blocked is OK
 
-    result = reqd1.blocked(DAGChange(Activity.ADD, ('C', 'B'), 1.0, {}))
+    result = reqd1.blocked(DAGChange(GraphAction.ADD, ('C', 'B'), 1.0, {}))
     expected = KnowledgeEvent(Rule.REQD_ARC, False, KnowledgeOutcome.STOP_ADD,
                               ('C', 'B'))
     assert reqd1.event == expected
@@ -233,7 +233,7 @@ def test_reqd1_3_ok(reqd1, abc1):  # stop add of opposite of specified arc
 
 
 def test_reqd1_4_ok(reqd1):  # stops del of opposite arc (reverse needed)
-    result = reqd1.blocked(DAGChange(Activity.DEL, ('C', 'B'), 1.0, {}))
+    result = reqd1.blocked(DAGChange(GraphAction.DEL, ('C', 'B'), 1.0, {}))
     expected = KnowledgeEvent(Rule.REQD_ARC, False, KnowledgeOutcome.STOP_DEL,
                               ('C', 'B'))
     assert reqd1.event == expected
@@ -242,21 +242,21 @@ def test_reqd1_4_ok(reqd1):  # stops del of opposite arc (reverse needed)
 
 
 def test_reqd1_5_ok(reqd1):  # doesn't stop add of arc
-    result = reqd1.blocked(DAGChange(Activity.ADD, ('B', 'C'), 1.0, {}))
+    result = reqd1.blocked(DAGChange(GraphAction.ADD, ('B', 'C'), 1.0, {}))
     assert reqd1.event is None
     assert reqd1.event_delta is None
     assert result is None
 
 
 def test_reqd1_6_ok(reqd1):  # doesn't stop reverse of opposite arc
-    result = reqd1.blocked(DAGChange(Activity.REV, ('C', 'B'), 1.0, {}))
+    result = reqd1.blocked(DAGChange(GraphAction.REV, ('C', 'B'), 1.0, {}))
     assert reqd1.event is None
     assert reqd1.event_delta is None
     assert result is None
 
 
 def test_reqd1_7_ok(reqd1):  # blocks reverse of arc
-    result = reqd1.blocked(DAGChange(Activity.REV, ('B', 'C'), 1.0, {}))
+    result = reqd1.blocked(DAGChange(GraphAction.REV, ('B', 'C'), 1.0, {}))
     expected = KnowledgeEvent(Rule.REQD_ARC, False, KnowledgeOutcome.STOP_REV,
                               ('B', 'C'))
     assert reqd1.event == expected
@@ -265,7 +265,7 @@ def test_reqd1_7_ok(reqd1):  # blocks reverse of arc
 
 
 def test_reqd1_8_ok(reqd1):  # blocks del arc then reverse of arc
-    result = reqd1.blocked(DAGChange(Activity.DEL, ('B', 'C'), 2.0, {}))
+    result = reqd1.blocked(DAGChange(GraphAction.DEL, ('B', 'C'), 2.0, {}))
     expected = KnowledgeEvent(Rule.REQD_ARC, False, KnowledgeOutcome.STOP_DEL,
                               ('B', 'C'))
     assert reqd1.event == expected
@@ -274,14 +274,14 @@ def test_reqd1_8_ok(reqd1):  # blocks del arc then reverse of arc
 
     # reverse of opposite arc not blocked
 
-    result = reqd1.blocked(DAGChange(Activity.REV, ('C', 'B'), 2.0, {}))
+    result = reqd1.blocked(DAGChange(GraphAction.REV, ('C', 'B'), 2.0, {}))
     assert reqd1.event == expected
     assert reqd1.event_delta == 2.0
     assert result is None
 
     # reverse of arc blocked (but doesn't overwrite biggest block)
 
-    result = reqd1.blocked(DAGChange(Activity.REV, ('B', 'C'), 1.0, {}))
+    result = reqd1.blocked(DAGChange(GraphAction.REV, ('B', 'C'), 1.0, {}))
     expected2 = KnowledgeEvent(Rule.REQD_ARC, False, KnowledgeOutcome.STOP_REV,
                                ('B', 'C'))
     assert reqd1.event == expected
@@ -290,14 +290,14 @@ def test_reqd1_8_ok(reqd1):  # blocks del arc then reverse of arc
 
     # reverse of arc blocked (and overwrites biggest block)
 
-    result = reqd1.blocked(DAGChange(Activity.REV, ('B', 'C'), 2.001, {}))
+    result = reqd1.blocked(DAGChange(GraphAction.REV, ('B', 'C'), 2.001, {}))
     assert reqd1.event == expected2
     assert reqd1.event_delta == 2.001
     assert result == expected2
 
 
 def test_reqd1_9_ok(reqd1):  # blocks del arc then add of reverse arc
-    result = reqd1.blocked(DAGChange(Activity.DEL, ('B', 'C'), 2.0, {}))
+    result = reqd1.blocked(DAGChange(GraphAction.DEL, ('B', 'C'), 2.0, {}))
     expected = KnowledgeEvent(Rule.REQD_ARC, False, KnowledgeOutcome.STOP_DEL,
                               ('B', 'C'))
     assert reqd1.event == expected
@@ -306,14 +306,14 @@ def test_reqd1_9_ok(reqd1):  # blocks del arc then add of reverse arc
 
     # reverse of opposite arc not blocked
 
-    result = reqd1.blocked(DAGChange(Activity.REV, ('C', 'B'), 2.0, {}))
+    result = reqd1.blocked(DAGChange(GraphAction.REV, ('C', 'B'), 2.0, {}))
     assert reqd1.event == expected
     assert reqd1.event_delta == 2.0
     assert result is None
 
     # add of opposite arc blocked (but doesn't overwrite biggest block)
 
-    result = reqd1.blocked(DAGChange(Activity.ADD, ('C', 'B'), 1.0, {}))
+    result = reqd1.blocked(DAGChange(GraphAction.ADD, ('C', 'B'), 1.0, {}))
     expected2 = KnowledgeEvent(Rule.REQD_ARC, False, KnowledgeOutcome.STOP_ADD,
                                ('C', 'B'))
     assert reqd1.event == expected
@@ -322,7 +322,7 @@ def test_reqd1_9_ok(reqd1):  # blocks del arc then add of reverse arc
 
     # reverse of arc blocked (and overwrites biggest block)
 
-    result = reqd1.blocked(DAGChange(Activity.REV, ('B', 'C'), 2.001, {}))
+    result = reqd1.blocked(DAGChange(GraphAction.REV, ('B', 'C'), 2.001, {}))
     expected3 = KnowledgeEvent(Rule.REQD_ARC, False, KnowledgeOutcome.STOP_REV,
                                ('B', 'C'))
     assert reqd1.event == expected3

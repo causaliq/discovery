@@ -13,6 +13,8 @@ from io import BytesIO
 import gzip
 
 from causaliq_core import SOFTWARE_VERSION
+from causaliq_analysis.graph import GraphActionDetail
+from causaliq_analysis.graph import GraphAction
 
 
 class CompatibilityUnpickler(pickle.Unpickler):
@@ -108,57 +110,6 @@ ID_ANTIPATTERN2 = compile(r'^[\/|\ |\_|\.|\-].*')
 ID_ANTIPATTERN3 = compile(r'.*[\/|\ |\_|\.|\-]$')
 
 
-class Detail(Enum):  # details that can be provided on a Trace entry
-    ARC = ('arc', tuple)  # Arc that was changed
-    DELTA = ('delta/score', float)  # Delta as result of arc changed
-    ACTIVITY_2 = ('activity_2', str)  # Arc change with second highest delta
-    ARC_2 = ('arc_2', tuple)  # Arc changed in second highest delta
-    DELTA_2 = ('delta_2', float)  # second highest delta
-    MIN_N = ('min_N', float)  # minimum count in contingency tables' cells
-    MEAN_N = ('mean_N', float)  # mean count in contingency tables' cells
-    MAX_N = ('max_N', float)  # max count in contingency tables' cells
-    LT5 = ('lt5', float)  # number of cells with count <5 in contingency tables
-    FPA = ('free_params', float)  # number of free params in contingency tables
-    KNOWLEDGE = ('knowledge', tuple)  # Knowledge used in iteration
-    BLOCKED = ('blocked', list)  # list of blocked changes
-# for PC delete in p-value or use score? some of MIN_N to FPA still relevant?
-# need new field for conditioning set
-# could arc and arc2 to defined v-structure
-
-
-class Activity(EnumWithAttrs):
-    """
-        Defines set of Activities than can recorded in trace
-
-        :ivar str value: short string code for activity
-        :ivar str label: human-readable label for activity
-        :ivar set mandatory: mandatory items for activity
-        :ivar set priority: priority order for this activity
-    """
-    INIT = 'init', 'initialise', {Detail.DELTA}, 0
-    ADD = 'add', 'add arc', {Detail.ARC, Detail.DELTA}, 3
-    DEL = 'delete', 'delete arc', {Detail.ARC, Detail.DELTA}, 2
-    REV = 'reverse', 'reverse arc', {Detail.ARC, Detail.DELTA}, 1
-    STOP = 'stop', 'stop search', {Detail.DELTA}, 4
-    PAUSE = 'pause', 'pause search', {Detail.DELTA}, 6
-    NONE = 'none', 'no change', {Detail.ARC, Detail.DELTA}, 5
-
-    # ignore the first param since it's already set by __new__
-    def __init__(self, _: str, label: str, mandatory: set, priority: int):
-        self._label_ = label
-        self._mandatory_ = mandatory
-        self._priority_ = priority
-
-    # this makes sure that mandatory is read-only
-    @property
-    def mandatory(self):
-        return self._mandatory_
-
-    # this makes sure that priority is read-only
-    @property
-    def priority(self):
-        return self._priority_
-
 # for PC delete used for removing arc, v-struct needed for v-struct,
 # and orientate for arc orientation
 
@@ -219,7 +170,7 @@ class Trace():
 
         self.context = context
         self.trace = {'time': [], 'activity': []}
-        self.trace.update({d.value[0]: [] for d in Detail})
+        self.trace.update({d.value[0]: [] for d in GraphActionDetail})
         self.start = time()
         self.result = None
         self.treestats = None
@@ -286,16 +237,16 @@ class Trace():
         """
             Add an entry to the structure learning trace
 
-            :param Activity activity: action e.g. initialisation, add arc
+            :param GraphAction activity: action e.g. initialisation, add arc
             :param dict details: supplementary details relevant to activity
 
             :raises TypeError: if arguments have invalid types
 
             :return Trace: returns trace after entry added
         """
-        if not isinstance(activity, Activity) \
+        if not isinstance(activity, GraphAction) \
                 or not isinstance(details, dict) or not len(details) \
-                or not all(isinstance(k, Detail) for k in details.keys()) \
+                or not all(isinstance(k, GraphActionDetail) for k in details.keys()) \
                 or not all([isinstance(v, k.value[1]) or v is None
                             for k, v in details.items()]):
 
@@ -306,7 +257,7 @@ class Trace():
 
         self.trace['activity'].append(activity.value)
         self.trace['time'].append(time() - self.start)
-        for d in Detail:
+        for d in GraphActionDetail:
             self.trace[d.value[0]].append(details[d] if d in details else None)
         return self
 
@@ -445,7 +396,7 @@ class Trace():
 
     def set_result(self, result):
         """
-            Sets the result of the learning activity.
+            Sets the result of the learning GraphAction.
 
             :param SDG result: graph result from learning activity
 
@@ -461,7 +412,7 @@ class Trace():
 
     def set_treestats(self, treestats):
         """
-            Sets the statistics of a tree learning activity.
+            Sets the statistics of a tree learning GraphAction.
 
             :param TreeStats treestats: statistics from tree learning activity
 
@@ -578,9 +529,9 @@ class Trace():
             :returns bool
         """
         def _sorted(blocked):
-            result = [b for b in blocked if b[0] == Activity.ADD.value]
-            result.extend([b for b in blocked if b[0] == Activity.DEL.value])
-            result.extend([b for b in blocked if b[0] == Activity.REV.value])
+            result = [b for b in blocked if b[0] == GraphAction.ADD.value]
+            result.extend([b for b in blocked if b[0] == GraphAction.DEL.value])
+            result.extend([b for b in blocked if b[0] == GraphAction.REV.value])
             return result
 
         same = None

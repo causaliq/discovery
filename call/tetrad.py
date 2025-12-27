@@ -10,7 +10,9 @@ from datetime import datetime
 from causaliq_core.graph import DAG, PDAG, SDG, extend_pdag
 from causaliq_data.score import dag_score
 from causaliq_data.score import SCORE_PARAMS
-from learn.trace import Trace, Activity, Detail, CONTEXT_FIELDS
+from learn.trace import Trace, CONTEXT_FIELDS
+from causaliq_analysis.graph import GraphAction
+from causaliq_analysis.graph import GraphActionDetail
 from call.cmd import dispatch_cmd
 from causaliq_data.pandas import Pandas
 from causaliq_data import NumPy
@@ -273,8 +275,8 @@ def tetrad_learn(algorithm, data, context=None, params=None):
             # of and learnt initial graph
 
             score_i, score_g = graph_scores(graph, data, params, context)
-            trace.add(Activity.INIT, {Detail.DELTA: score_i})
-            trace.add(Activity.STOP, {Detail.DELTA: score_g})
+            trace.add(GraphAction.INIT, {GraphActionDetail.DELTA: score_i})
+            trace.add(GraphAction.STOP, {GraphActionDetail.DELTA: score_g})
             trace.trace['time'][-1] = elapsed
             trace.result = graph
         else:

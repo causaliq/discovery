@@ -4,7 +4,7 @@
 import pytest
 
 from learn.knowledge import Rule, RuleSet
-from learn.trace import Activity
+from causaliq_analysis.graph import GraphAction
 
 
 # Test the Rule class

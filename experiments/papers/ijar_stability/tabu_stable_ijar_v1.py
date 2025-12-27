@@ -14,7 +14,9 @@ from data import EXPTS_DIR
 from causaliq_data.pandas import Pandas
 from causaliq_data import NumPy
 from learn.hc import hc
-from learn.trace import Trace, Activity, Detail
+from learn.trace import Trace
+from causaliq_analysis.graph import GraphAction
+from causaliq_analysis.graph import GraphActionDetail
 from learn.knowledge import Knowledge, RuleSet
 
 
@@ -312,8 +314,8 @@ def values_ijar_stab_baselines():
             context = {'id': id, 'in': _in, 'algorithm': 'DAG_SCORE',
                        'N': data.N, 'params': params, 'dataset': True}
             trace = Trace(context.copy())
-            trace.add(Activity.INIT, {Detail.DELTA: score_e})
-            trace.add(Activity.STOP, {Detail.DELTA: score_e})
+            trace.add(GraphAction.INIT, {GraphActionDetail.DELTA: score_e})
+            trace.add(GraphAction.STOP, {GraphActionDetail.DELTA: score_e})
             trace.result = empty
             trace.save()
             print('{:>8} rows, emp: {:.3e}'.format(N, score_e))
@@ -324,8 +326,8 @@ def values_ijar_stab_baselines():
             context.update({'id':
                             'HC/SCORE/REF/{}/N{}_0'.format(network, N)})
             trace = Trace(context.copy())
-            trace.add(Activity.INIT, {Detail.DELTA: score_e})
-            trace.add(Activity.STOP, {Detail.DELTA: score_r})
+            trace.add(GraphAction.INIT, {GraphActionDetail.DELTA: score_e})
+            trace.add(GraphAction.STOP, {GraphActionDetail.DELTA: score_r})
             trace.result = ref
             trace.save()
             print('{:>8} rows, ref: {:.3e}'.format(N, score_r))

@@ -5,7 +5,7 @@ import pytest
 
 from learn.knowledge import Knowledge, Rule, RuleSet, \
     KnowledgeOutcome, KnowledgeEvent
-from learn.trace import Activity
+from causaliq_analysis.graph import GraphAction
 from learn.dagchange import DAGChange, BestDAGChanges
 from data import TESTDATA_DIR
 from causaliq_core.bn import BN
@@ -286,7 +286,7 @@ def test_stop_ok_1(stop1):  # stop add of specified arc
 
     # check blocked is OK
 
-    result = stop1.blocked(DAGChange(Activity.ADD, ('B', 'C'), 1.0, {}))
+    result = stop1.blocked(DAGChange(GraphAction.ADD, ('B', 'C'), 1.0, {}))
     expected = KnowledgeEvent(Rule.STOP_ARC, True, KnowledgeOutcome.STOP_ADD,
                               ('B', 'C'))
     assert stop1.event == expected
@@ -309,28 +309,28 @@ def test_stop_ok_1(stop1):  # stop add of specified arc
 
 
 def test_stop_ok_2(stop1):  # doesn't stop add of opposite arc
-    result = stop1.blocked(DAGChange(Activity.ADD, ('C', 'B'), 1.0, {}))
+    result = stop1.blocked(DAGChange(GraphAction.ADD, ('C', 'B'), 1.0, {}))
     assert stop1.event is None
     assert stop1.event_delta is None
     assert result is None
 
 
 def test_stop_ok_3(stop1):  # doesn't stop delete of arc
-    result = stop1.blocked(DAGChange(Activity.DEL, ('B', 'C'), 1.0, {}))
+    result = stop1.blocked(DAGChange(GraphAction.DEL, ('B', 'C'), 1.0, {}))
     assert stop1.event is None
     assert stop1.event_delta is None
     assert result is None
 
 
 def test_stop_ok_4(stop1):  # doesn't stop reverse of arc
-    result = stop1.blocked(DAGChange(Activity.REV, ('B', 'C'), 1.0, {}))
+    result = stop1.blocked(DAGChange(GraphAction.REV, ('B', 'C'), 1.0, {}))
     assert stop1.event is None
     assert stop1.event_delta is None
     assert result is None
 
 
 def test_stop_ok_5(stop1):  # blocks reverse of opposite arc
-    result = stop1.blocked(DAGChange(Activity.REV, ('C', 'B'), 1.0, {}))
+    result = stop1.blocked(DAGChange(GraphAction.REV, ('C', 'B'), 1.0, {}))
     expected = KnowledgeEvent(Rule.STOP_ARC, True, KnowledgeOutcome.STOP_REV,
                               ('C', 'B'))
     assert stop1.event == expected
@@ -339,7 +339,7 @@ def test_stop_ok_5(stop1):  # blocks reverse of opposite arc
 
 
 def test_stop_ok_6(stop1):  # blocks add arc then reverse of opposite arc
-    result = stop1.blocked(DAGChange(Activity.ADD, ('B', 'C'), 2.0, {}))
+    result = stop1.blocked(DAGChange(GraphAction.ADD, ('B', 'C'), 2.0, {}))
     expected = KnowledgeEvent(Rule.STOP_ARC, True, KnowledgeOutcome.STOP_ADD,
                               ('B', 'C'))
     print(result)
@@ -350,14 +350,14 @@ def test_stop_ok_6(stop1):  # blocks add arc then reverse of opposite arc
 
     # reverse of arc not blocked
 
-    result = stop1.blocked(DAGChange(Activity.ADD, ('C', 'B'), 2.0, {}))
+    result = stop1.blocked(DAGChange(GraphAction.ADD, ('C', 'B'), 2.0, {}))
     assert stop1.event == expected
     assert stop1.event_delta == 2.0
     assert result is None
 
     # reverse of opposite arc blocked (but doesn't overwrite biggest block)
 
-    result = stop1.blocked(DAGChange(Activity.REV, ('C', 'B'), 1.0, {}))
+    result = stop1.blocked(DAGChange(GraphAction.REV, ('C', 'B'), 1.0, {}))
     expected2 = KnowledgeEvent(Rule.STOP_ARC, True, KnowledgeOutcome.STOP_REV,
                                ('C', 'B'))
     assert stop1.event == expected
@@ -366,7 +366,7 @@ def test_stop_ok_6(stop1):  # blocks add arc then reverse of opposite arc
 
     # reverse of opposite arc blocked (and overwrites biggest block)
 
-    result = stop1.blocked(DAGChange(Activity.REV, ('C', 'B'), 3.0, {}))
+    result = stop1.blocked(DAGChange(GraphAction.REV, ('C', 'B'), 3.0, {}))
     assert stop1.event == expected2
     assert stop1.event_delta == 3.0
     assert result == expected2

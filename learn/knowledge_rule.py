@@ -6,7 +6,7 @@ from causaliq_core.utils import EnumWithAttrs
 from causaliq_core.utils import values_same
 from causaliq_data.indep import indep
 from causaliq_data.score import node_score
-from learn.trace import Activity
+from causaliq_analysis.graph import GraphAction
 
 
 class KnowledgeOutcome(EnumWithAttrs):
@@ -102,8 +102,8 @@ class Rule(EnumWithAttrs):
             :returns Rule/None: Rule.EQUIV_ADD if rule applies else None
         """
         return (self if
-                best.activity == Activity.ADD
-                and second.activity == Activity.ADD
+                best.activity == GraphAction.ADD
+                and second.activity == GraphAction.ADD
                 and best.arc == (second.arc[1], second.arc[0])
                 and values_same(best.delta, second.delta, sf) else None)
 
@@ -118,7 +118,7 @@ class Rule(EnumWithAttrs):
 
             :returns Rule/None: Rule.MI_CHECK if rule applies else None
         """
-        if (best.activity != Activity.ADD
+        if (best.activity != GraphAction.ADD
                 or values_same(best.delta, second.delta, sf)):
             return None
 
@@ -156,18 +156,18 @@ class Rule(EnumWithAttrs):
 
         # may trigger for add, delete or reverse
 
-        if activity not in {Activity.ADD, Activity.DEL, Activity.REV}:
+        if activity not in {GraphAction.ADD, GraphAction.DEL, GraphAction.REV}:
             return None
 
         # determine nodes whose parents change with this activity
 
         changed = {}
         frm, to = arc
-        if activity == Activity.ADD:
+        if activity == GraphAction.ADD:
             changed[to] = list(parents[to] | {frm})
-        elif activity == Activity.DEL:
+        elif activity == GraphAction.DEL:
             changed[to] = list(parents[to] - {frm})
-        elif activity == Activity.REV:
+        elif activity == GraphAction.REV:
             changed[to] = list(parents[to] - {frm})
             changed[frm] = list(parents[frm] | {to})
 
@@ -248,7 +248,7 @@ class Rule(EnumWithAttrs):
         """
         # print('\n*** POS_DELTA: {}'.format(delta))
         return (Rule.POS_DELTA
-                if activity in {Activity.ADD, Activity.DEL, Activity.REV}
+                if activity in {GraphAction.ADD, GraphAction.DEL, GraphAction.REV}
                 and delta is not None and delta > 0.0 else None)
 
 

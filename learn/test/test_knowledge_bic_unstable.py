@@ -5,7 +5,7 @@ import pytest
 
 from learn.knowledge import Knowledge, Rule, RuleSet, \
     KnowledgeOutcome
-from learn.trace import Activity
+from causaliq_analysis.graph import GraphAction
 from learn.dagchange import DAGChange, BestDAGChanges
 from data import TESTDATA_DIR
 from causaliq_data import NumPy
@@ -410,8 +410,8 @@ def test_bic_unstable_asia_1_ok():  # BIC_UNSTABLE Knowledge, 0.2 expertise
 
 def test_hc_best_abc_1_ok(know_abc_1, abc1):  # allow add of true arc
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.ADD, ('A', 'B'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('B', 'C'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None)
     abc1[0].set_N(8)
     know_abc_1.threshold = 0.01  # lower threshold so bic_unstable rule 'fires'
     new_best, event = know_abc_1.hc_best(best=best, sf=6, data=abc1[0],
@@ -428,15 +428,15 @@ def test_hc_best_abc_1_ok(know_abc_1, abc1):  # allow add of true arc
 
 def test_hc_best_abc_2_ok(know_abc_1, abc1):  # stop add of misorientated arc
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.ADD, ('B', 'A'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('B', 'C'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('B', 'A'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None)
     abc1[0].set_N(4)
     new_best, event = know_abc_1.hc_best(best=best, sf=6, data=abc1[0],
                                          parents=abc1[1])
 
     # Algo trying to add B --> A, but expert correctly says should be A --> B
 
-    assert BestDAGChanges(DAGChange(Activity.NONE, ('B', 'A'), 4.0, None),
+    assert BestDAGChanges(DAGChange(GraphAction.NONE, ('B', 'A'), 4.0, None),
                           best.second) == new_best
     assert event.rule == Rule.BIC_UNSTABLE
     assert event.correct is True
@@ -449,15 +449,15 @@ def test_hc_best_abc_2_ok(know_abc_1, abc1):  # stop add of misorientated arc
 
 def test_hc_best_abc_3_ok(know_abc_1, abc1):  # stop add of extra edge
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.ADD, ('A', 'C'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('B', 'C'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('A', 'C'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None)
     abc1[0].set_N(7)
     new_best, event = know_abc_1.hc_best(best=best, sf=6, data=abc1[0],
                                          parents=abc1[1])
 
     # Algo trying to add A --> C but expert correctly says doesn't exist
 
-    assert BestDAGChanges(DAGChange(Activity.NONE, ('A', 'C'), 4.0, None),
+    assert BestDAGChanges(DAGChange(GraphAction.NONE, ('A', 'C'), 4.0, None),
                           best.second) == new_best
     assert event.rule == Rule.BIC_UNSTABLE
     assert event.correct is True
@@ -471,8 +471,8 @@ def test_hc_best_abc_3_ok(know_abc_1, abc1):  # stop add of extra edge
 
 def test_hc_best_abc_4_ok(know_abc_1, abc1):  # allow delete non-existing arc
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.DEL, ('A', 'C'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('B', 'C'), 4.0, None)
+    best.top = DAGChange(GraphAction.DEL, ('A', 'C'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None)
     abc1[0].set_N(7)
     new_best, event = know_abc_1.hc_best(best=best, sf=6, data=abc1[0],
                                          parents=abc1[1])
@@ -492,15 +492,15 @@ def test_hc_best_abc_4_ok(know_abc_1, abc1):  # allow delete non-existing arc
 
 def test_hc_best_abc_5_ok(know_abc_1, abc1):  # delete correct arc
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.DEL, ('B', 'C'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('A', 'C'), 4.0, None)
+    best.top = DAGChange(GraphAction.DEL, ('B', 'C'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('A', 'C'), 4.0, None)
     abc1[0].set_N(7)
     new_best, event = know_abc_1.hc_best(best=best, sf=6, data=abc1[0],
                                          parents=abc1[1])
 
     # Algo trying to delete true arc B --> C
 
-    assert BestDAGChanges(DAGChange(Activity.NONE, ('B', 'C'), 4.0, None),
+    assert BestDAGChanges(DAGChange(GraphAction.NONE, ('B', 'C'), 4.0, None),
                           best.second) == new_best
     assert event.rule == Rule.BIC_UNSTABLE
     assert event.correct is True
@@ -513,15 +513,15 @@ def test_hc_best_abc_5_ok(know_abc_1, abc1):  # delete correct arc
 
 def test_hc_best_abc_6_ok(know_abc_1, abc1):  # delete misorientated arc
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.DEL, ('B', 'A'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('B', 'C'), 4.0, None)
+    best.top = DAGChange(GraphAction.DEL, ('B', 'A'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None)
     abc1[0].set_N(7)
     new_best, event = know_abc_1.hc_best(best=best, sf=6, data=abc1[0],
                                          parents=abc1[1])
 
     # Algo trying to add A --> C but expert correctly says doesn't exist
 
-    assert BestDAGChanges(DAGChange(Activity.NONE, ('B', 'A'), 4.0, None),
+    assert BestDAGChanges(DAGChange(GraphAction.NONE, ('B', 'A'), 4.0, None),
                           best.second) == new_best
     assert event.rule == Rule.BIC_UNSTABLE
     assert event.correct is True
@@ -534,15 +534,15 @@ def test_hc_best_abc_6_ok(know_abc_1, abc1):  # delete misorientated arc
 
 def test_hc_best_abc_7_ok(know_abc_1, abc1):  # reverse correct arc
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.REV, ('A', 'B'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('B', 'C'), 4.0, None)
+    best.top = DAGChange(GraphAction.REV, ('A', 'B'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None)
     abc1[0].set_N(7)
     new_best, event = know_abc_1.hc_best(best=best, sf=6, data=abc1[0],
                                          parents=abc1[1])
 
     # Algo trying to reverse A --> B
 
-    assert BestDAGChanges(DAGChange(Activity.NONE, ('A', 'B'), 4.0, None),
+    assert BestDAGChanges(DAGChange(GraphAction.NONE, ('A', 'B'), 4.0, None),
                           best.second) == new_best
     assert event.rule == Rule.BIC_UNSTABLE
     assert event.correct is True
@@ -555,8 +555,8 @@ def test_hc_best_abc_7_ok(know_abc_1, abc1):  # reverse correct arc
 
 def test_hc_best_abc_8_ok(know_abc_1, abc1):  # reverse misorientated arc
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.REV, ('B', 'A'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('B', 'C'), 4.0, None)
+    best.top = DAGChange(GraphAction.REV, ('B', 'A'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None)
     abc1[0].set_N(7)
     new_best, event = know_abc_1.hc_best(best=best, sf=6, data=abc1[0],
                                          parents=abc1[1])
@@ -575,15 +575,15 @@ def test_hc_best_abc_8_ok(know_abc_1, abc1):  # reverse misorientated arc
 
 def test_hc_best_abc_9_ok(know_abc_1, abc1):  # reverse non-existent edge
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.REV, ('A', 'C'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('B', 'C'), 4.0, None)
+    best.top = DAGChange(GraphAction.REV, ('A', 'C'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None)
     abc1[0].set_N(7)
     new_best, event = know_abc_1.hc_best(best=best, sf=6, data=abc1[0],
                                          parents=abc1[1])
 
     # Algo trying to reverse B --> A
 
-    assert BestDAGChanges(DAGChange(Activity.NONE, ('A', 'C'), 4.0, None),
+    assert BestDAGChanges(DAGChange(GraphAction.NONE, ('A', 'C'), 4.0, None),
                           best.second) == new_best
     assert event.rule == Rule.BIC_UNSTABLE
     assert event.correct is True
@@ -597,8 +597,8 @@ def test_hc_best_abc_9_ok(know_abc_1, abc1):  # reverse non-existent edge
 
 def test_hc_best_abc_10_ok(know_abc_1, abc1):  # 10 rows not unbalanced
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.ADD, ('A', 'B'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('B', 'C'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None)
     new_best, event = know_abc_1.hc_best(best=best, sf=6, data=abc1[0],
                                          parents=abc1[1])
     assert best == new_best
@@ -618,8 +618,8 @@ def test_hc_best_part_1_ok(asia1):  # add of true arc
     know = asia1['know']
 
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.ADD, ('asia', 'tub'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('tub', 'asia'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('asia', 'tub'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('tub', 'asia'), 4.0, None)
     new_best, event = know.hc_best(best, 6, asia1['data'], asia1['parents'])
 
     # Perfect partial expert says proposed add is OK so get NO_OP
@@ -640,14 +640,14 @@ def test_hc_best_part_2_ok(asia1):  # add of misorientated arc
     know = asia1['know']
 
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.ADD, ('bronc', 'smoke'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('smoke', 'bronc'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('bronc', 'smoke'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('smoke', 'bronc'), 4.0, None)
     new_best, event = know.hc_best(best, 6, asia1['data'], asia1['parents'])
 
     # Perfect partial expert says misorientated arc wrong so STOP_ADD
 
     assert new_best == \
-        BestDAGChanges(DAGChange(Activity.NONE, ('bronc', 'smoke'), 4.0, None),
+        BestDAGChanges(DAGChange(GraphAction.NONE, ('bronc', 'smoke'), 4.0, None),
                        best.second)
     assert event.rule == Rule.BIC_UNSTABLE
     assert event.correct is True
@@ -664,8 +664,8 @@ def test_hc_best_part_3_ok(asia1):  # add of non-existent arcs
     know = asia1['know']
 
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.ADD, ('asia', 'smoke'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('smoke', 'asia'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('asia', 'smoke'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('smoke', 'asia'), 4.0, None)
     new_best, event = know.hc_best(best, 6, asia1['data'], asia1['parents'])
 
     # Partial expert cannot return "non-existent" so randomly chooses
@@ -684,8 +684,8 @@ def test_hc_best_part_3_ok(asia1):  # add of non-existent arcs
     # lung --> tub, which is again NO_OP
 
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.ADD, ('tub', 'lung'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('lung', 'tub'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('tub', 'lung'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('lung', 'tub'), 4.0, None)
     new_best, event = know.hc_best(best, 6, asia1['data'], asia1['parents'])
     assert new_best == best
     assert event.rule == Rule.BIC_UNSTABLE
@@ -701,10 +701,10 @@ def test_hc_best_part_3_ok(asia1):  # add of non-existent arcs
     # bronc--> either as correct which causes STOP_ADD
 
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.ADD, ('xray', 'smoke'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('smoke', 'xray'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('xray', 'smoke'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('smoke', 'xray'), 4.0, None)
     new_best, event = know.hc_best(best, 6, asia1['data'], asia1['parents'])
-    assert BestDAGChanges(DAGChange(Activity.NONE, ('xray', 'smoke'),
+    assert BestDAGChanges(DAGChange(GraphAction.NONE, ('xray', 'smoke'),
                                     4.0, None), best.second) == new_best
     assert event.rule == Rule.BIC_UNSTABLE
     assert event.correct is False
@@ -723,8 +723,8 @@ def test_hc_best_part_4_ok(asia1):  # delete of true arc ignored
     know = asia1['know']
 
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.DEL, ('asia', 'tub'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('smoke', 'asia'), 4.0, None)
+    best.top = DAGChange(GraphAction.DEL, ('asia', 'tub'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('smoke', 'asia'), 4.0, None)
     new_best, event = know.hc_best(best, 6, asia1['data'], asia1['parents'])
 
     # Partial expert cannot return "non-existent" so randomly chooses
@@ -740,8 +740,8 @@ def test_hc_best_part_5_ok(asia1):  # delete of misorientated arc ignored
     know = asia1['know']
 
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.DEL, ('tub', 'asia'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('smoke', 'asia'), 4.0, None)
+    best.top = DAGChange(GraphAction.DEL, ('tub', 'asia'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('smoke', 'asia'), 4.0, None)
     new_best, event = know.hc_best(best, 6, asia1['data'], asia1['parents'])
 
     # Partial expert cannot return "non-existent" so randomly chooses
@@ -757,8 +757,8 @@ def test_hc_best_part_6_ok(asia1):  # delete of non-existent arc ignored
     know = asia1['know']
 
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.DEL, ('bronc', 'either'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('smoke', 'asia'), 4.0, None)
+    best.top = DAGChange(GraphAction.DEL, ('bronc', 'either'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('smoke', 'asia'), 4.0, None)
     new_best, event = know.hc_best(best, 6, asia1['data'], asia1['parents'])
 
     # Partial expert cannot return "non-existent" so randomly chooses
@@ -774,13 +774,13 @@ def test_hc_best_part_7_ok(asia1):  # reverse of true arc
     know = asia1['know']
 
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.REV, ('smoke', 'bronc'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('tub', 'asia'), 4.0, None)
+    best.top = DAGChange(GraphAction.REV, ('smoke', 'bronc'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('tub', 'asia'), 4.0, None)
     new_best, event = know.hc_best(best, 6, asia1['data'], asia1['parents'])
 
     # Perfect partial expert says proposed rev is wrong STOP_REV
 
-    assert BestDAGChanges(DAGChange(Activity.NONE, ('smoke', 'bronc'),
+    assert BestDAGChanges(DAGChange(GraphAction.NONE, ('smoke', 'bronc'),
                                     4.0, None), best.second) == new_best
     assert event.rule == Rule.BIC_UNSTABLE
     assert event.correct is True
@@ -797,8 +797,8 @@ def test_hc_best_part_8_ok(asia1):  # reverse of misorientated arc
     know = asia1['know']
 
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.REV, ('bronc', 'smoke'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('tub', 'asia'), 4.0, None)
+    best.top = DAGChange(GraphAction.REV, ('bronc', 'smoke'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('tub', 'asia'), 4.0, None)
     new_best, event = know.hc_best(best, 6, asia1['data'], asia1['parents'])
 
     # Perfect partial expert says proposed rev is OK so get NO_OP
@@ -819,14 +819,14 @@ def test_hc_best_part_9_ok(asia1):  # reverse of non-existent arcs
     know = asia1['know']
 
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.REV, ('asia', 'smoke'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('tub', 'bronc'), 4.0, None)
+    best.top = DAGChange(GraphAction.REV, ('asia', 'smoke'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('tub', 'bronc'), 4.0, None)
     new_best, event = know.hc_best(best, 6, asia1['data'], asia1['parents'])
 
     # Partial expert cannot return "non-existent" so randomly chooses
     # asia --> smoke, which is STOP_REV
 
-    assert BestDAGChanges(DAGChange(Activity.NONE, ('asia', 'smoke'),
+    assert BestDAGChanges(DAGChange(GraphAction.NONE, ('asia', 'smoke'),
                                     4.0, None), best.second) == new_best
     assert event.rule == Rule.BIC_UNSTABLE
     assert event.correct is False
@@ -840,10 +840,10 @@ def test_hc_best_part_9_ok(asia1):  # reverse of non-existent arcs
     # tub --> lung, which is again STOP_REV
 
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.REV, ('tub', 'lung'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('tub', 'bronc'), 4.0, None)
+    best.top = DAGChange(GraphAction.REV, ('tub', 'lung'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('tub', 'bronc'), 4.0, None)
     new_best, event = know.hc_best(best, 6, asia1['data'], asia1['parents'])
-    assert BestDAGChanges(DAGChange(Activity.NONE, ('tub', 'lung'),
+    assert BestDAGChanges(DAGChange(GraphAction.NONE, ('tub', 'lung'),
                                     4.0, None), best.second) == new_best
     assert event.rule == Rule.BIC_UNSTABLE
     assert event.correct is False
@@ -858,8 +858,8 @@ def test_hc_best_part_9_ok(asia1):  # reverse of non-existent arcs
     # smoke --> xray as correct which causes NO_OP
 
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.REV, ('xray', 'smoke'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('tub', 'asia'), 4.0, None)
+    best.top = DAGChange(GraphAction.REV, ('xray', 'smoke'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('tub', 'asia'), 4.0, None)
     new_best, event = know.hc_best(best, 6, asia1['data'], asia1['parents'])
     assert best == new_best
     assert event.rule == Rule.BIC_UNSTABLE

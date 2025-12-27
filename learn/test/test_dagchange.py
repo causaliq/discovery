@@ -4,7 +4,7 @@
 import pytest
 
 from learn.dagchange import DAGChange, BestDAGChanges
-from learn.trace import Activity
+from causaliq_analysis.graph import GraphAction
 
 
 # Check DAGChange initialiser
@@ -28,8 +28,8 @@ def test_dag_change_type_error_2():  # initialiser bad activity type
 
 
 def test_dag_change_init_ok_1():  # initialiser with single arg
-    change = DAGChange(Activity.STOP)
-    assert change.activity == Activity.STOP
+    change = DAGChange(GraphAction.STOP)
+    assert change.activity == GraphAction.STOP
     assert change.arc is None
     assert change.delta is None
     assert change.counts is None
@@ -37,8 +37,8 @@ def test_dag_change_init_ok_1():  # initialiser with single arg
 
 
 def test_dag_change_init_ok_2():  # initialiser with full args
-    change = DAGChange(Activity.ADD, ('A', 'B'), 1.1, {'lt5': 0.0})
-    assert change.activity == Activity.ADD
+    change = DAGChange(GraphAction.ADD, ('A', 'B'), 1.1, {'lt5': 0.0})
+    assert change.activity == GraphAction.ADD
     assert change.arc == ('A', 'B')
     assert change.delta == 1.1
     assert change.counts == {'lt5': 0.0}
@@ -48,32 +48,32 @@ def test_dag_change_init_ok_2():  # initialiser with full args
 # Check DAGChange equality
 
 def test_dag_change_eq_ok_1():  # equality with same instance
-    change = DAGChange(Activity.REV, ('A', 'B'), -0.2, {'lt5': 0.0})
+    change = DAGChange(GraphAction.REV, ('A', 'B'), -0.2, {'lt5': 0.0})
     assert change == change
 
 
 def test_dag_change_eq_ok_2():  # equality with same instance
-    change = DAGChange(Activity.STOP, None, None, None)
+    change = DAGChange(GraphAction.STOP, None, None, None)
     assert change == change
 
 
 def test_dag_change_eq_ok_3():  # equality with diff instance
-    change1 = DAGChange(Activity.REV, ('A', 'B'), -0.2, {'lt5': 0.0})
-    change2 = DAGChange(Activity.REV, ('A', 'B'), -0.2, {'lt5': 0.0})
+    change1 = DAGChange(GraphAction.REV, ('A', 'B'), -0.2, {'lt5': 0.0})
+    change2 = DAGChange(GraphAction.REV, ('A', 'B'), -0.2, {'lt5': 0.0})
     assert change1 == change2
 
 
 def test_dag_change_eq_ok_4():  # equality with diff instance
-    change1 = DAGChange(Activity.STOP)
-    change2 = DAGChange(Activity.STOP)
+    change1 = DAGChange(GraphAction.STOP)
+    change2 = DAGChange(GraphAction.STOP)
     assert change1 == change2
 
 
 # Check DAGChange inequality
 
 def test_dag_change_ne_ok_1():  # equality with diff instance
-    change1 = DAGChange(Activity.REV, ('A', 'B'), -0.2, {'lt5': 0.0})
-    change2 = DAGChange(Activity.STOP)
+    change1 = DAGChange(GraphAction.REV, ('A', 'B'), -0.2, {'lt5': 0.0})
+    change2 = DAGChange(GraphAction.STOP)
     assert change1 != change2
 
 
@@ -91,7 +91,7 @@ def test_best_changes_type_error_1():  # initialiser bad top type
 
 
 def test_best_changes_type_error_2():  # initialiser bad top type
-    change = DAGChange(Activity.REV, ('A', 'B'), -0.2, {'lt5': 0.0})
+    change = DAGChange(GraphAction.REV, ('A', 'B'), -0.2, {'lt5': 0.0})
     with pytest.raises(TypeError):
         BestDAGChanges(17, change)
     with pytest.raises(TypeError):
@@ -103,7 +103,7 @@ def test_best_changes_type_error_2():  # initialiser bad top type
 
 
 def test_best_changes_type_error_3():  # initialiser bad second type
-    change = DAGChange(Activity.REV, ('A', 'B'), -0.2, {'lt5': 0.0})
+    change = DAGChange(GraphAction.REV, ('A', 'B'), -0.2, {'lt5': 0.0})
     with pytest.raises(TypeError):
         BestDAGChanges(change, 17)
     with pytest.raises(TypeError):
@@ -135,27 +135,27 @@ def test_best_changes_init_ok_1():  # init OK with two Nones
 
 def test_best_changes_init_ok_2():  # init with defaults
     best = BestDAGChanges()
-    assert best.top == DAGChange(Activity.STOP)
+    assert best.top == DAGChange(GraphAction.STOP)
     assert best.second is None
 
 
 def test_best_changes_init_ok_3():  # init with top default
-    change = DAGChange(Activity.REV, ('A', 'B'), -0.2, {'lt5': 0.0})
+    change = DAGChange(GraphAction.REV, ('A', 'B'), -0.2, {'lt5': 0.0})
     best = BestDAGChanges(second=change)
-    assert best.top == DAGChange(Activity.STOP)
+    assert best.top == DAGChange(GraphAction.STOP)
     assert best.second == change
 
 
 def test_best_changes_init_ok_4():  # init with second default
-    change = DAGChange(Activity.REV, ('A', 'B'), -0.2, {'lt5': 0.0})
+    change = DAGChange(GraphAction.REV, ('A', 'B'), -0.2, {'lt5': 0.0})
     best = BestDAGChanges(change)
     assert best.top == change
     assert best.second is None
 
 
 def test_best_changes_init_ok_5():  # init with specific args
-    change1 = DAGChange(Activity.ADD, ('A', 'B'), 1.1, {'lt5': 0.0})
-    change2 = DAGChange(Activity.REV, ('A', 'B'), -0.2, {'lt5': 0.0})
+    change1 = DAGChange(GraphAction.ADD, ('A', 'B'), 1.1, {'lt5': 0.0})
+    change2 = DAGChange(GraphAction.REV, ('A', 'B'), -0.2, {'lt5': 0.0})
     best = BestDAGChanges(change1, change2)
     assert best.top == change1
     assert best.second == change2
@@ -164,7 +164,7 @@ def test_best_changes_init_ok_5():  # init with specific args
 # Check BestDAGChanges eq OK
 
 def test_best_changes_eq_ok_1():  # eq with same specific
-    change = DAGChange(Activity.ADD, ('A', 'B'), 1.1, {'lt5': 0.0})
+    change = DAGChange(GraphAction.ADD, ('A', 'B'), 1.1, {'lt5': 0.0})
     assert BestDAGChanges(change) == BestDAGChanges(change)
 
 
@@ -175,17 +175,17 @@ def test_best_changes_eq_ok_2():  # eq with defaults
 # Check BestDAGChanges ne OK
 
 def test_best_changes_ne_ok_1():  # eq with same specific
-    change = DAGChange(Activity.ADD, ('A', 'B'), 1.1, {'lt5': 0.0})
+    change = DAGChange(GraphAction.ADD, ('A', 'B'), 1.1, {'lt5': 0.0})
     assert BestDAGChanges(change) != BestDAGChanges()
 
 
 def test_best_changes_ne_ok_2():  # ne with defaults
-    change1 = DAGChange(Activity.ADD, ('A', 'B'), 1.1, {'lt5': 0.0})
-    change2 = DAGChange(Activity.REV, ('A', 'B'), -0.2, {'lt5': 0.0})
+    change1 = DAGChange(GraphAction.ADD, ('A', 'B'), 1.1, {'lt5': 0.0})
+    change2 = DAGChange(GraphAction.REV, ('A', 'B'), -0.2, {'lt5': 0.0})
     assert BestDAGChanges(change1) != BestDAGChanges(change1, change2)
 
 
 def test_best_changes_ne_ok_3():  # ne with defaults
-    change1 = DAGChange(Activity.ADD, ('A', 'B'), 1.1, {'lt5': 0.0})
-    change2 = DAGChange(Activity.REV, ('A', 'B'), -0.2, {'lt5': 0.0})
+    change1 = DAGChange(GraphAction.ADD, ('A', 'B'), 1.1, {'lt5': 0.0})
+    change2 = DAGChange(GraphAction.REV, ('A', 'B'), -0.2, {'lt5': 0.0})
     assert BestDAGChanges(second=change1) != BestDAGChanges(change1, change2)

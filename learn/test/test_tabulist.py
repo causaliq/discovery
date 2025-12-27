@@ -4,14 +4,16 @@
 import pytest
 
 from learn.tabulist import TabuList
-from learn.trace import Activity, Trace, Detail
+from learn.trace import Trace
+from causaliq_analysis.graph import GraphAction
+from causaliq_analysis.graph import GraphActionDetail
 from learn.dagchange import DAGChange
 
 
 @pytest.fixture  # an initialised Trace object for testing
 def _trace():
     _trace = Trace({'id': 'TabuList module testing'})
-    _trace.add(Activity.INIT, {Detail.DELTA: 31.2})
+    _trace.add(GraphAction.INIT, {GraphActionDetail.DELTA: 31.2})
     return _trace
 
 
@@ -178,7 +180,7 @@ def test_tabulist_hit_type_error_1():  # no arguments
 
 def test_tabulist_hit_type_error_2():  # missing parents arg
     tabulist = TabuList(10)
-    proposed = DAGChange(Activity.ADD, ('A', 'B'), 1.0, {})
+    proposed = DAGChange(GraphAction.ADD, ('A', 'B'), 1.0, {})
     with pytest.raises(TypeError):
         tabulist.hit(proposed=proposed)
 
@@ -192,7 +194,7 @@ def test_tabulist_hit_type_error_3():  # missing proposed arg
 
 def test_tabulist_hit_type_error_4():  # parents not a dict
     tabulist = TabuList(10)
-    proposed = DAGChange(Activity.ADD, ('A', 'B'), 1.0, {})
+    proposed = DAGChange(GraphAction.ADD, ('A', 'B'), 1.0, {})
     with pytest.raises(TypeError):
         tabulist.hit(12, proposed)
     with pytest.raises(TypeError):
@@ -203,7 +205,7 @@ def test_tabulist_hit_type_error_4():  # parents not a dict
 
 def test_tabulist_hit_type_error_5():  # arg dict values not all sets
     tabulist = TabuList(10)
-    proposed = DAGChange(Activity.ADD, ('A', 'B'), 1.0, {})
+    proposed = DAGChange(GraphAction.ADD, ('A', 'B'), 1.0, {})
     with pytest.raises(TypeError):
         tabulist.hit({'A': 1}, proposed)
     with pytest.raises(TypeError):
@@ -234,28 +236,28 @@ def test_tabulist_hit_ok_1():  # hits on empty length 1 list always false
     assert tabulist.ptr == 0
 
     parents = {'A': set(), 'B': set()}
-    proposed = DAGChange(Activity.ADD, ('A', 'B'), 1.0, {})
+    proposed = DAGChange(GraphAction.ADD, ('A', 'B'), 1.0, {})
     assert tabulist.hit(parents, proposed) is None
     assert parents == {'A': set(), 'B': set()}
-    assert proposed.activity == Activity.ADD
+    assert proposed.activity == GraphAction.ADD
     assert proposed.arc == ('A', 'B')
     assert proposed.delta == 1.0
     assert proposed.counts == {}
 
     parents = {'A': set(), 'B': set('A')}
-    proposed = DAGChange(Activity.DEL, ('A', 'B'), 1.0, {})
+    proposed = DAGChange(GraphAction.DEL, ('A', 'B'), 1.0, {})
     assert tabulist.hit(parents, proposed) is None
     assert parents == {'A': set(), 'B': set('A')}
-    assert proposed.activity == Activity.DEL
+    assert proposed.activity == GraphAction.DEL
     assert proposed.arc == ('A', 'B')
     assert proposed.delta == 1.0
     assert proposed.counts == {}
 
     parents = {'A': set(), 'B': set('A')}
-    proposed = DAGChange(Activity.REV, ('A', 'B'), 1.0, {})
+    proposed = DAGChange(GraphAction.REV, ('A', 'B'), 1.0, {})
     assert tabulist.hit(parents, proposed) is None
     assert parents == {'A': set(), 'B': set('A')}
-    assert proposed.activity == Activity.REV
+    assert proposed.activity == GraphAction.REV
     assert proposed.arc == ('A', 'B')
     assert proposed.delta == 1.0
     assert proposed.counts == {}
@@ -269,28 +271,28 @@ def test_tabulist_hit_ok_2():  # hits on empty length 2 list always false
     assert tabulist.ptr == 0
 
     parents = {'A': set(), 'B': set(), 'C': set()}
-    proposed = DAGChange(Activity.ADD, ('A', 'B'), 1.0, {})
+    proposed = DAGChange(GraphAction.ADD, ('A', 'B'), 1.0, {})
     assert tabulist.hit(parents, proposed) is None
     assert parents == {'A': set(), 'B': set(), 'C': set()}
-    assert proposed.activity == Activity.ADD
+    assert proposed.activity == GraphAction.ADD
     assert proposed.arc == ('A', 'B')
     assert proposed.delta == 1.0
     assert proposed.counts == {}
 
     parents = {'A': set(), 'B': set('A'), 'C': set()}
-    proposed = DAGChange(Activity.DEL, ('A', 'B'), 1.0, {})
+    proposed = DAGChange(GraphAction.DEL, ('A', 'B'), 1.0, {})
     assert tabulist.hit(parents, proposed) is None
     assert parents == {'A': set(), 'B': set('A'), 'C': set()}
-    assert proposed.activity == Activity.DEL
+    assert proposed.activity == GraphAction.DEL
     assert proposed.arc == ('A', 'B')
     assert proposed.delta == 1.0
     assert proposed.counts == {}
 
     parents = {'A': set(), 'B': set('C'), 'C': set()}
-    proposed = DAGChange(Activity.REV, ('B', 'C'), 1.0, {})
+    proposed = DAGChange(GraphAction.REV, ('B', 'C'), 1.0, {})
     assert tabulist.hit(parents, proposed) is None
     assert parents == {'A': set(), 'B': set('C'), 'C': set()}
-    assert proposed.activity == Activity.REV
+    assert proposed.activity == GraphAction.REV
     assert proposed.arc == ('B', 'C')
     assert proposed.delta == 1.0
     assert proposed.counts == {}
@@ -307,18 +309,18 @@ def test_tabulist_hit_ok_3():  # length 1 list contains empty DAG
     assert tabulist.ptr == 0
 
     parents = {'A': set(), 'B': set('')}  # A  B
-    proposed = DAGChange(Activity.ADD, ('A', 'B'), 1.0, {})  # add A -- > B
+    proposed = DAGChange(GraphAction.ADD, ('A', 'B'), 1.0, {})  # add A -- > B
     assert tabulist.hit(parents, proposed) is None  # misses empty DAG
 
     parents = {'A': set(), 'B': set('A')}  # A --> B
-    proposed = DAGChange(Activity.DEL, ('A', 'B'), 1.0, {})  # delete A -- > B
+    proposed = DAGChange(GraphAction.DEL, ('A', 'B'), 1.0, {})  # delete A -- > B
     assert tabulist.hit(parents, proposed) == 1  # hits element 1
 
     parents = {'A': set(), 'B': set('A')}  # A --> B
-    proposed = DAGChange(Activity.REV, ('A', 'B'), 1.0, {})  # reverse A --> B
+    proposed = DAGChange(GraphAction.REV, ('A', 'B'), 1.0, {})  # reverse A --> B
     assert tabulist.hit(parents, proposed) is None  # misses empty DAG
 
-    assert tabulist.blocked() == [(Activity.DEL.value, ('A', 'B'), 1.0,
+    assert tabulist.blocked() == [(GraphAction.DEL.value, ('A', 'B'), 1.0,
                                   {'elem': 1})]
 
 
@@ -331,24 +333,24 @@ def test_tabulist_hit_ok_4():  # length 1 list contains A <-- B
     assert tabulist.ptr == 0
 
     parents = {'A': set(), 'B': set('')}  # A  B
-    proposed = DAGChange(Activity.ADD, ('A', 'B'), 1.0, {})  # add A --> B
+    proposed = DAGChange(GraphAction.ADD, ('A', 'B'), 1.0, {})  # add A --> B
     assert tabulist.hit(parents, proposed) is None  # misses A <-- B
 
     parents = {'A': set(), 'B': set('')}  # A  B
-    proposed = DAGChange(Activity.ADD, ('B', 'A'), 1.0, {})  # add A <-- B
+    proposed = DAGChange(GraphAction.ADD, ('B', 'A'), 1.0, {})  # add A <-- B
     assert tabulist.hit(parents, proposed) == 1  # hits element 1
 
     parents = {'A': set(), 'B': set('A')}  # A --> B
-    proposed = DAGChange(Activity.DEL, ('A', 'B'), 1.0, {})  # delete A -- > B
+    proposed = DAGChange(GraphAction.DEL, ('A', 'B'), 1.0, {})  # delete A -- > B
     assert tabulist.hit(parents, proposed) is None  # misses A <-- B
 
     parents = {'A': set(), 'B': set('A')}  # A --> B
-    proposed = DAGChange(Activity.REV, ('A', 'B'), 1.0, {})  # reverse A --> B
+    proposed = DAGChange(GraphAction.REV, ('A', 'B'), 1.0, {})  # reverse A --> B
     assert tabulist.hit(parents, proposed) == 1  # hits element 1
 
-    assert tabulist.blocked() == [(Activity.ADD.value, ('B', 'A'), 1.0,
+    assert tabulist.blocked() == [(GraphAction.ADD.value, ('B', 'A'), 1.0,
                                    {'elem': 1}),
-                                  (Activity.REV.value, ('A', 'B'), 1.0,
+                                  (GraphAction.REV.value, ('A', 'B'), 1.0,
                                    {'elem': 1})]
 
 
@@ -361,18 +363,18 @@ def test_tabulist_hit_ok_5():  # length 2 list contain empty DAG only
     assert tabulist.ptr == 1
 
     parents = {'A': set(), 'B': set(), 'C': set()}  # A  B  C
-    proposed = DAGChange(Activity.ADD, ('B', 'C'), 1.0, {})  # add B --> C
+    proposed = DAGChange(GraphAction.ADD, ('B', 'C'), 1.0, {})  # add B --> C
     assert tabulist.hit(parents, proposed) is None  # misses A  B  C
 
     parents = {'A': set('C'), 'B': set(), 'C': set()}  # C --> A  B
-    proposed = DAGChange(Activity.DEL, ('C', 'A'), 1.0, {})  # delete C --> A
+    proposed = DAGChange(GraphAction.DEL, ('C', 'A'), 1.0, {})  # delete C --> A
     assert tabulist.hit(parents, proposed) == 1  # hits element 1
 
     parents = {'A': set(), 'B': set('C'), 'C': set()}  # A  B <-- C
-    proposed = DAGChange(Activity.REV, ('C', 'B'), 1.0, {})  # reverse C --> B
+    proposed = DAGChange(GraphAction.REV, ('C', 'B'), 1.0, {})  # reverse C --> B
     assert tabulist.hit(parents, proposed) is None  # misses A  B  C
 
-    assert tabulist.blocked() == [(Activity.DEL.value, ('C', 'A'), 1.0,
+    assert tabulist.blocked() == [(GraphAction.DEL.value, ('C', 'A'), 1.0,
                                   {'elem': 1})]
 
 
@@ -389,44 +391,44 @@ def test_tabulist_hit_ok_6():  # length 2 list contains empty & B --> C
     assert tabulist.ptr == 0
 
     parents = {'A': set(), 'B': set(), 'C': set()}  # A  B  C
-    proposed = DAGChange(Activity.ADD, ('C', 'B'), 1.0, {})  # add C --> B
+    proposed = DAGChange(GraphAction.ADD, ('C', 'B'), 1.0, {})  # add C --> B
     assert tabulist.hit(parents, proposed) is None  # miss
 
     parents = {'A': set(), 'B': set(), 'C': set()}  # A  B  C
-    proposed = DAGChange(Activity.ADD, ('B', 'C'), 1.0, {})  # add C --> B
+    proposed = DAGChange(GraphAction.ADD, ('B', 'C'), 1.0, {})  # add C --> B
     assert tabulist.hit(parents, proposed) == 2  # hit element 2
 
     parents = {'A': set(), 'B': set(), 'C': set()}  # A  B  C
-    proposed = DAGChange(Activity.ADD, ('A', 'B'), 1.0, {})  # add A --> B
+    proposed = DAGChange(GraphAction.ADD, ('A', 'B'), 1.0, {})  # add A --> B
     assert tabulist.hit(parents, proposed) is None  # miss
 
     parents = {'A': set(), 'B': set('A'), 'C': set('B')}  # A -> B -> C
-    proposed = DAGChange(Activity.DEL, ('A', 'B'), 1.0, {})  # delete A --> B
+    proposed = DAGChange(GraphAction.DEL, ('A', 'B'), 1.0, {})  # delete A --> B
     assert tabulist.hit(parents, proposed) == 2  # hit element 2
 
     parents = {'A': set(), 'B': set('A'), 'C': set('B')}  # A -> B -> C
-    proposed = DAGChange(Activity.DEL, ('B', 'C'), 1.0, {})  # delete B --> C
+    proposed = DAGChange(GraphAction.DEL, ('B', 'C'), 1.0, {})  # delete B --> C
     assert tabulist.hit(parents, proposed) is None  # miss
 
     parents = {'A': set(), 'B': set(), 'C': set('B')}  # A  B -> C
-    proposed = DAGChange(Activity.REV, ('B', 'C'), 1.0, {})  # reverse B --> C
+    proposed = DAGChange(GraphAction.REV, ('B', 'C'), 1.0, {})  # reverse B --> C
     assert tabulist.hit(parents, proposed) is None  # miss
 
     parents = {'A': set(), 'B': set('C'), 'C': set()}  # A  B <- C
-    proposed = DAGChange(Activity.REV, ('C', 'B'), 1.0, {})  # reverse B <- C
+    proposed = DAGChange(GraphAction.REV, ('C', 'B'), 1.0, {})  # reverse B <- C
     assert tabulist.hit(parents, proposed) == 2  # hits element 2
 
     parents = {'A': set(), 'B': set(), 'C': set('B')}  # A  B -> C
-    proposed = DAGChange(Activity.DEL, ('B', 'C'), 1.0, {})  # reverse B -> C
+    proposed = DAGChange(GraphAction.DEL, ('B', 'C'), 1.0, {})  # reverse B -> C
     assert tabulist.hit(parents, proposed) == 1  # hits element 1
 
-    assert tabulist.blocked() == [(Activity.ADD.value, ('B', 'C'), 1.0,
+    assert tabulist.blocked() == [(GraphAction.ADD.value, ('B', 'C'), 1.0,
                                    {'elem': 2}),
-                                  (Activity.DEL.value, ('A', 'B'), 1.0,
+                                  (GraphAction.DEL.value, ('A', 'B'), 1.0,
                                    {'elem': 2}),
-                                  (Activity.REV.value, ('C', 'B'), 1.0,
+                                  (GraphAction.REV.value, ('C', 'B'), 1.0,
                                    {'elem': 2}),
-                                  (Activity.DEL.value, ('B', 'C'), 1.0,
+                                  (GraphAction.DEL.value, ('B', 'C'), 1.0,
                                    {'elem': 1})]
 
 
@@ -447,59 +449,59 @@ def test_tabulist_hit_ok_7():  # length 2 list A -> B <- C and A  B <- C
     assert tabulist.ptr == 1
 
     parents = {'A': set(), 'B': set(), 'C': set()}  # A  B  C
-    proposed = DAGChange(Activity.ADD, ('C', 'B'), 1.0, {})  # add C --> B
+    proposed = DAGChange(GraphAction.ADD, ('C', 'B'), 1.0, {})  # add C --> B
     assert tabulist.hit(parents, proposed) == 2  # hit element 2
 
     parents = {'A': set(), 'B': {'A'}, 'C': set()}  # A -> B  C
-    proposed = DAGChange(Activity.ADD, ('C', 'B'), 1.0, {})  # add C -> B
+    proposed = DAGChange(GraphAction.ADD, ('C', 'B'), 1.0, {})  # add C -> B
     assert tabulist.hit(parents, proposed) == 1  # hit element 1
 
     parents = {'A': set(), 'B': {'C'}, 'C': set()}  # A  B <- C
-    proposed = DAGChange(Activity.ADD, ('A', 'B'), 1.0, {})  # add C -> B
+    proposed = DAGChange(GraphAction.ADD, ('A', 'B'), 1.0, {})  # add C -> B
     assert tabulist.hit(parents, proposed) == 1  # hit element 1
 
     parents = {'A': set(), 'B': {'A', 'C'}, 'C': set()}  # A -> B <- C
-    proposed = DAGChange(Activity.ADD, ('A', 'C'), 1.0, {})  # add A -> C
+    proposed = DAGChange(GraphAction.ADD, ('A', 'C'), 1.0, {})  # add A -> C
     assert tabulist.hit(parents, proposed) is None  # miss
 
     parents = {'A': set(), 'B': {'A', 'C'}, 'C': set()}  # A -> B <- C
-    proposed = DAGChange(Activity.DEL, ('A', 'B'), 1.0, {})  # delete A -> B
+    proposed = DAGChange(GraphAction.DEL, ('A', 'B'), 1.0, {})  # delete A -> B
     assert tabulist.hit(parents, proposed) == 2  # hit element 2
 
     parents = {'A': set(), 'B': {'A', 'C'}, 'C': set()}  # A -> B <- C
-    proposed = DAGChange(Activity.DEL, ('C', 'B'), 1.0, {})  # delete B <- C
+    proposed = DAGChange(GraphAction.DEL, ('C', 'B'), 1.0, {})  # delete B <- C
     assert tabulist.hit(parents, proposed) is None  # miss
 
     parents = {'A': {'C'}, 'B': {'A', 'C'}, 'C': set()}  # C -> A -> B <- C
-    proposed = DAGChange(Activity.DEL, ('C', 'A'), 1.0, {})  # delete A <- C
+    proposed = DAGChange(GraphAction.DEL, ('C', 'A'), 1.0, {})  # delete A <- C
     assert tabulist.hit(parents, proposed) == 1  # hit element 1
 
     parents = {'A': set(), 'B': {'A', 'C'}, 'C': set()}  # A -> B <- C
-    proposed = DAGChange(Activity.REV, ('A', 'B'), 1.0, {})  # reverse A -> B
+    proposed = DAGChange(GraphAction.REV, ('A', 'B'), 1.0, {})  # reverse A -> B
     assert tabulist.hit(parents, proposed) is None  # miss
 
     parents = {'A': set(), 'B': {'A', 'C'}, 'C': set()}  # A -> B <- C
-    proposed = DAGChange(Activity.REV, ('C', 'B'), 1.0, {})  # reverse B -> C
+    proposed = DAGChange(GraphAction.REV, ('C', 'B'), 1.0, {})  # reverse B -> C
     assert tabulist.hit(parents, proposed) is None  # miss
 
     parents = {'A': set(), 'B': {'A'}, 'C': {'B'}}  # A -> B -> C
-    proposed = DAGChange(Activity.REV, ('B', 'C'), 1.0, {})  # reverse B -> C
+    proposed = DAGChange(GraphAction.REV, ('B', 'C'), 1.0, {})  # reverse B -> C
     assert tabulist.hit(parents, proposed) == 1  # hit element 1
 
     parents = {'A': {'B'}, 'B': {'C'}, 'C': set()}  # A <- B <- C
-    proposed = DAGChange(Activity.REV, ('B', 'A'), 1.0, {})  # reverse A -> B
+    proposed = DAGChange(GraphAction.REV, ('B', 'A'), 1.0, {})  # reverse A -> B
     assert tabulist.hit(parents, proposed) == 1  # hit element 1
 
     parents = {'A': set(), 'B': set(), 'C': {'B'}}  # A  B -> C
-    proposed = DAGChange(Activity.REV, ('B', 'C'), 1.0, {})  # reverse B -> C
+    proposed = DAGChange(GraphAction.REV, ('B', 'C'), 1.0, {})  # reverse B -> C
     assert tabulist.hit(parents, proposed) == 2  # hit element 2
 
-    assert ([(Activity.ADD.value, ('C', 'B'), 1.0, {'elem': 2}),
-             (Activity.ADD.value, ('C', 'B'), 1.0, {'elem': 1}),
-             (Activity.ADD.value, ('A', 'B'), 1.0, {'elem': 1}),
-             (Activity.DEL.value, ('A', 'B'), 1.0, {'elem': 2}),
-             (Activity.DEL.value, ('C', 'A'), 1.0, {'elem': 1}),
-             (Activity.REV.value, ('B', 'C'), 1.0, {'elem': 1}),
-             (Activity.REV.value, ('B', 'A'), 1.0, {'elem': 1}),
-             (Activity.REV.value, ('B', 'C'), 1.0, {'elem': 2})]
+    assert ([(GraphAction.ADD.value, ('C', 'B'), 1.0, {'elem': 2}),
+             (GraphAction.ADD.value, ('C', 'B'), 1.0, {'elem': 1}),
+             (GraphAction.ADD.value, ('A', 'B'), 1.0, {'elem': 1}),
+             (GraphAction.DEL.value, ('A', 'B'), 1.0, {'elem': 2}),
+             (GraphAction.DEL.value, ('C', 'A'), 1.0, {'elem': 1}),
+             (GraphAction.REV.value, ('B', 'C'), 1.0, {'elem': 1}),
+             (GraphAction.REV.value, ('B', 'A'), 1.0, {'elem': 1}),
+             (GraphAction.REV.value, ('B', 'C'), 1.0, {'elem': 2})]
             == tabulist.blocked())

@@ -11,7 +11,8 @@ from causaliq_core.bn.io import read_bn
 from causaliq_analysis.metrics import pdag_compare
 from causaliq_data.indep import indep
 from data import EXPTS_DIR
-from learn.trace import Trace, Activity
+from learn.trace import Trace
+from causaliq_analysis.graph import GraphAction
 
 
 class ArcStatus(Enum):  # Arc status compared to reference graph after change
@@ -124,7 +125,7 @@ class TraceAnalysis():
                 margin.append(None)
                 omi.append(None)
                 mi.append(None)
-                if t['activity'][i] == Activity.STOP.value:
+                if t['activity'][i] == GraphAction.STOP.value:
                     self.summary.update({'time': round(t['time'][i]
                                                        + pretime, 1)})
                     self.summary.update({'score': round(t['delta/score'][i]
@@ -277,7 +278,7 @@ class TraceAnalysis():
     def _arc_status(self, activity, arc, ref_parents, ref_pdag):
         """
             Determine status of an arc (e.g. whether correct, extra or
-            reversed etc. compared to reference graph) following an activity.
+            reversed etc. compared to reference graph) following an GraphAction.
 
             :param Activity activity: arc addition, deletion or reversal
             :param tuple arc: arc changed (node1, node2)
@@ -291,13 +292,13 @@ class TraceAnalysis():
 
         #   Identify arc frm --> to involved after change made
 
-        to = arc[1] if activity != Activity.REV.value else arc[0]
-        frm = arc[0] if activity != Activity.REV.value else arc[1]
+        to = arc[1] if activity != GraphAction.REV.value else arc[0]
+        frm = arc[0] if activity != GraphAction.REV.value else arc[1]
 
-        if activity == Activity.NONE.value:
+        if activity == GraphAction.NONE.value:
             status = None
 
-        elif activity == Activity.DEL.value:
+        elif activity == GraphAction.DEL.value:
             status = ArcStatus.MISSING if frm in ref_parents[to] \
                 or to in ref_parents[frm] else ArcStatus.ABSENT
 

@@ -5,7 +5,7 @@ import pytest
 
 from learn.knowledge import Knowledge, Rule, RuleSet, \
     KnowledgeOutcome
-from learn.trace import Activity
+from causaliq_analysis.graph import GraphAction
 from learn.dagchange import DAGChange, BestDAGChanges
 from data import TESTDATA_DIR
 from causaliq_core.bn import BN
@@ -108,8 +108,8 @@ def test_hc_best_abc_1_ok(abc):  # doesn't trigger EQUIV_SEQ: not opposites
     knowledge = Knowledge(rules=RuleSet.EQUIV_SEQ,
                           params={'sequence': (True,)})
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.ADD, ('A', 'B'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('B', 'C'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
     assert best == new_best
     assert event is None
@@ -124,8 +124,8 @@ def test_hc_best_abc_2_ok(abc):  # doesn't trigger EQUIV_SEQ: diff scores
     knowledge = Knowledge(rules=RuleSet.EQUIV_SEQ,
                           params={'sequence': (True,)})
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.ADD, ('A', 'B'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('B', 'A'), 4.01, None)
+    best.top = DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('B', 'A'), 4.01, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
     assert best == new_best
     assert event is None
@@ -140,8 +140,8 @@ def test_hc_best_abc_3_ok(abc):  # doesn't trigger EQUIV_SEQ: not adds
     knowledge = Knowledge(rules=RuleSet.EQUIV_SEQ,
                           params={'sequence': (True,)})
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.REV, ('A', 'B'), 4.0, None)
-    best.second = DAGChange(Activity.DEL, ('B', 'A'), 4.0, None)
+    best.top = DAGChange(GraphAction.REV, ('A', 'B'), 4.0, None)
+    best.second = DAGChange(GraphAction.DEL, ('B', 'A'), 4.0, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
     assert best == new_best
     assert event is None
@@ -159,8 +159,8 @@ def test_hc_best_abc_4_ok(abc):  # EQUIV_SEQ: (False,)
 
     # Sequence element #1 is False so get NO_OP event
 
-    best.top = DAGChange(Activity.ADD, ('A', 'B'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('B', 'A'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('B', 'A'), 4.0, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
     assert best == new_best
     assert event.rule == Rule.EQUIV_SEQ
@@ -174,8 +174,8 @@ def test_hc_best_abc_4_ok(abc):  # EQUIV_SEQ: (False,)
 
     # Beyond sequence so no event
 
-    best.top = DAGChange(Activity.ADD, ('B', 'C'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('C', 'B'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('C', 'B'), 4.0, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
     assert best == new_best
     assert event.rule == Rule.EQUIV_SEQ
@@ -195,8 +195,8 @@ def test_hc_best_abc_5_ok(abc):  # EQUIV_SEQ: (True,)
 
     # Sequence element #1 is False so get NO_OP event
 
-    best.top = DAGChange(Activity.ADD, ('A', 'B'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('B', 'A'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('B', 'A'), 4.0, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
     assert new_best == BestDAGChanges(best.second, best.top)
     assert event.rule == Rule.EQUIV_SEQ
@@ -210,8 +210,8 @@ def test_hc_best_abc_5_ok(abc):  # EQUIV_SEQ: (True,)
 
     # Beyond sequence so no event
 
-    best.top = DAGChange(Activity.ADD, ('B', 'C'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('C', 'B'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('C', 'B'), 4.0, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
     assert best == new_best
     assert event.rule == Rule.EQUIV_SEQ
@@ -231,8 +231,8 @@ def test_hc_best_abc_6_ok(abc):  # EQUIV_SEQ: (False,)
 
     # Sequence element #1 is False so get NO_OP event
 
-    best.top = DAGChange(Activity.ADD, ('A', 'B'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('B', 'A'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('B', 'A'), 4.0, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
     assert new_best == best
     assert event.rule == Rule.EQUIV_SEQ
@@ -246,8 +246,8 @@ def test_hc_best_abc_6_ok(abc):  # EQUIV_SEQ: (False,)
 
     # Beyond sequence so no event
 
-    best.top = DAGChange(Activity.ADD, ('B', 'C'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('C', 'B'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('C', 'B'), 4.0, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
     assert best == new_best
     assert event.rule == Rule.EQUIV_SEQ
@@ -267,8 +267,8 @@ def test_hc_best_abc_7_ok(abc):  # EQUIV_SEQ: (False, False)
 
     # Sequence element #1 is False so get NO_OP event
 
-    best.top = DAGChange(Activity.ADD, ('A', 'B'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('B', 'A'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('B', 'A'), 4.0, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
     assert new_best == best
     assert event.rule == Rule.EQUIV_SEQ
@@ -282,8 +282,8 @@ def test_hc_best_abc_7_ok(abc):  # EQUIV_SEQ: (False, False)
 
     # Sequence element #2 is False so get NO_OP event
 
-    best.top = DAGChange(Activity.ADD, ('B', 'C'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('C', 'B'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('C', 'B'), 4.0, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
     assert new_best == best
     assert event.rule == Rule.EQUIV_SEQ
@@ -297,8 +297,8 @@ def test_hc_best_abc_7_ok(abc):  # EQUIV_SEQ: (False, False)
 
     # Beyond sequence so no event
 
-    best.top = DAGChange(Activity.ADD, ('B', 'C'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('C', 'B'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('C', 'B'), 4.0, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
     assert best == new_best
     assert event.rule == Rule.EQUIV_SEQ
@@ -318,8 +318,8 @@ def test_hc_best_abc_8_ok(abc):  # EQUIV_SEQ: (False, True)
 
     # Sequence element #1 is False so get NO_OP event
 
-    best.top = DAGChange(Activity.ADD, ('A', 'B'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('B', 'A'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('B', 'A'), 4.0, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
     assert new_best == best
     assert event.rule == Rule.EQUIV_SEQ
@@ -333,8 +333,8 @@ def test_hc_best_abc_8_ok(abc):  # EQUIV_SEQ: (False, True)
 
     # Not an equiv_add change so no event
 
-    best.top = DAGChange(Activity.ADD, ('A', 'C'), 4.2, None)
-    best.second = DAGChange(Activity.ADD, ('C', 'A'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('A', 'C'), 4.2, None)
+    best.second = DAGChange(GraphAction.ADD, ('C', 'A'), 4.0, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
     assert new_best == best
     assert event is None
@@ -345,8 +345,8 @@ def test_hc_best_abc_8_ok(abc):  # EQUIV_SEQ: (False, True)
 
     # Sequence element #2 is True so get SWAP_BEST event
 
-    best.top = DAGChange(Activity.ADD, ('B', 'C'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('C', 'B'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('C', 'B'), 4.0, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
     assert new_best == BestDAGChanges(best.second, best.top)
     assert event.rule == Rule.EQUIV_SEQ
@@ -360,8 +360,8 @@ def test_hc_best_abc_8_ok(abc):  # EQUIV_SEQ: (False, True)
 
     # Beyond sequence so no event
 
-    best.top = DAGChange(Activity.ADD, ('B', 'C'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('C', 'B'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('C', 'B'), 4.0, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
     assert best == new_best
     assert event.rule == Rule.EQUIV_SEQ
@@ -381,8 +381,8 @@ def test_hc_best_abc_9_ok(abc):  # EQUIV_SEQ: (True, False)
 
     # Sequence element #1 is True so get SWAP_BEST event
 
-    best.top = DAGChange(Activity.ADD, ('A', 'B'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('B', 'A'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('B', 'A'), 4.0, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
     assert new_best == BestDAGChanges(best.second, best.top)
     assert event.rule == Rule.EQUIV_SEQ
@@ -396,8 +396,8 @@ def test_hc_best_abc_9_ok(abc):  # EQUIV_SEQ: (True, False)
 
     # Not an equiv_add change so no event
 
-    best.top = DAGChange(Activity.ADD, ('A', 'C'), 4.2, None)
-    best.second = DAGChange(Activity.ADD, ('C', 'A'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('A', 'C'), 4.2, None)
+    best.second = DAGChange(GraphAction.ADD, ('C', 'A'), 4.0, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
     assert new_best == best
     assert event is None
@@ -408,8 +408,8 @@ def test_hc_best_abc_9_ok(abc):  # EQUIV_SEQ: (True, False)
 
     # Sequence element #2 is True so get SWAP_BEST event
 
-    best.top = DAGChange(Activity.ADD, ('B', 'C'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('C', 'B'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('C', 'B'), 4.0, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
     assert new_best == best
     assert event.rule == Rule.EQUIV_SEQ
@@ -423,8 +423,8 @@ def test_hc_best_abc_9_ok(abc):  # EQUIV_SEQ: (True, False)
 
     # Beyond sequence so no event
 
-    best.top = DAGChange(Activity.ADD, ('B', 'C'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('C', 'B'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('C', 'B'), 4.0, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
     assert best == new_best
     assert event.rule == Rule.EQUIV_SEQ
@@ -444,8 +444,8 @@ def test_hc_best_abc_10_ok(abc):  # EQUIV_SEQ: (True, True)
 
     # Sequence element #1 is True so get SWAP_BEST event
 
-    best.top = DAGChange(Activity.ADD, ('A', 'B'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('B', 'A'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('B', 'A'), 4.0, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
     assert new_best == BestDAGChanges(best.second, best.top)
     assert event.rule == Rule.EQUIV_SEQ
@@ -459,8 +459,8 @@ def test_hc_best_abc_10_ok(abc):  # EQUIV_SEQ: (True, True)
 
     # Not an equiv_add change so no event
 
-    best.top = DAGChange(Activity.ADD, ('A', 'C'), 4.2, None)
-    best.second = DAGChange(Activity.ADD, ('C', 'A'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('A', 'C'), 4.2, None)
+    best.second = DAGChange(GraphAction.ADD, ('C', 'A'), 4.0, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
     assert new_best == best
     assert event is None
@@ -471,8 +471,8 @@ def test_hc_best_abc_10_ok(abc):  # EQUIV_SEQ: (True, True)
 
     # Sequence element #2 is True so get SWAP_BEST event
 
-    best.top = DAGChange(Activity.ADD, ('B', 'C'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('C', 'B'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('C', 'B'), 4.0, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
     assert new_best == BestDAGChanges(best.second, best.top)
     assert event.rule == Rule.EQUIV_SEQ
@@ -486,8 +486,8 @@ def test_hc_best_abc_10_ok(abc):  # EQUIV_SEQ: (True, True)
 
     # Beyond sequence so no event
 
-    best.top = DAGChange(Activity.ADD, ('B', 'C'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('C', 'B'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('C', 'B'), 4.0, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
     assert best == new_best
     assert event.rule == Rule.EQUIV_SEQ
@@ -507,8 +507,8 @@ def test_hc_best_abc_11_ok(abc):  # EQUIV_SEQ: (True,) then pause
 
     # Sequence element #1 is False so get NO_OP event
 
-    best.top = DAGChange(Activity.ADD, ('A', 'B'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('B', 'A'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('B', 'A'), 4.0, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
     assert new_best == BestDAGChanges(best.second, best.top)
     assert event.rule == Rule.EQUIV_SEQ
@@ -522,10 +522,10 @@ def test_hc_best_abc_11_ok(abc):  # EQUIV_SEQ: (True,) then pause
 
     # Beyond sequence so no event, but PAUSE status set
 
-    best.top = DAGChange(Activity.ADD, ('B', 'C'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('C', 'B'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('C', 'B'), 4.0, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
-    assert new_best.top == DAGChange(Activity.PAUSE, best.top.arc,
+    assert new_best.top == DAGChange(GraphAction.PAUSE, best.top.arc,
                                      best.top.delta, best.top.counts)
     assert new_best.second == best.second
     assert event.rule == Rule.EQUIV_SEQ
@@ -545,8 +545,8 @@ def test_hc_best_abc_13_ok(abc):  # EQUIV_SEQ: (True, True), then pause
 
     # Sequence element #1 is True so get SWAP_BEST event
 
-    best.top = DAGChange(Activity.ADD, ('A', 'B'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('B', 'A'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('B', 'A'), 4.0, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
     assert new_best == BestDAGChanges(best.second, best.top)
     assert event.rule == Rule.EQUIV_SEQ
@@ -560,8 +560,8 @@ def test_hc_best_abc_13_ok(abc):  # EQUIV_SEQ: (True, True), then pause
 
     # Not an equiv_add change so no event
 
-    best.top = DAGChange(Activity.ADD, ('A', 'C'), 4.2, None)
-    best.second = DAGChange(Activity.ADD, ('C', 'A'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('A', 'C'), 4.2, None)
+    best.second = DAGChange(GraphAction.ADD, ('C', 'A'), 4.0, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
     assert new_best == best
     assert event is None
@@ -572,8 +572,8 @@ def test_hc_best_abc_13_ok(abc):  # EQUIV_SEQ: (True, True), then pause
 
     # Sequence element #2 is True so get SWAP_BEST event
 
-    best.top = DAGChange(Activity.ADD, ('B', 'C'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('C', 'B'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('C', 'B'), 4.0, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
     assert new_best == BestDAGChanges(best.second, best.top)
     assert event.rule == Rule.EQUIV_SEQ
@@ -587,10 +587,10 @@ def test_hc_best_abc_13_ok(abc):  # EQUIV_SEQ: (True, True), then pause
 
     # Beyond sequence so no event, but PAUSE set
 
-    best.top = DAGChange(Activity.ADD, ('B', 'C'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('C', 'B'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('C', 'B'), 4.0, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
-    assert new_best.top == DAGChange(Activity.PAUSE, best.top.arc,
+    assert new_best.top == DAGChange(GraphAction.PAUSE, best.top.arc,
                                      best.top.delta, best.top.counts)
     assert new_best.second == best.second
     assert event.rule == Rule.EQUIV_SEQ
@@ -660,8 +660,8 @@ def test_set_sequence_2_ok(abc):  # EQUIV_SEQ: (True,), pause. restart
 
     # Sequence element #1 is True so get SWAP_BEST event
 
-    best.top = DAGChange(Activity.ADD, ('A', 'B'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('B', 'A'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('B', 'A'), 4.0, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
     assert new_best == BestDAGChanges(best.second, best.top)
     assert event.rule == Rule.EQUIV_SEQ
@@ -675,10 +675,10 @@ def test_set_sequence_2_ok(abc):  # EQUIV_SEQ: (True,), pause. restart
 
     # Beyond sequence so no event, but PAUSE set
 
-    best.top = DAGChange(Activity.ADD, ('B', 'C'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('C', 'B'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('C', 'B'), 4.0, None)
     new_best, event = knowledge.hc_best(best, 6, abc['da'], abc['pa'])
-    assert new_best.top == DAGChange(Activity.PAUSE, best.top.arc,
+    assert new_best.top == DAGChange(GraphAction.PAUSE, best.top.arc,
                                      best.top.delta, best.top.counts)
     assert new_best.second == best.second
     assert event.rule == Rule.EQUIV_SEQ

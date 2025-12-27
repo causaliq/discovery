@@ -7,7 +7,9 @@ from os.path import exists
 from os import remove, rmdir
 
 from causaliq_core import SOFTWARE_VERSION
-from learn.trace import Trace, Activity, Detail
+from learn.trace import Trace
+from causaliq_analysis.graph import GraphAction
+from causaliq_analysis.graph import GraphActionDetail
 from causaliq_core.utils.random import Randomise
 from data import TESTDATA_DIR
 import testdata.example_dags as ex_dag
@@ -279,45 +281,45 @@ def test_trace_add_type_error1():   # add bad Activity Type
 def test_trace_add_type_error2():   # add bad details type
     trace = Trace()
     with pytest.raises(TypeError):
-        trace.add(Activity.INIT, 37)
+        trace.add(GraphAction.INIT, 37)
 
 
 def test_trace_add_type_error3():   # add empty details dict
     trace = Trace()
     with pytest.raises(TypeError):
-        trace.add(Activity.INIT, {})
+        trace.add(GraphAction.INIT, {})
 
 
 def test_trace_add_type_error4():   # bad details key type
     trace = Trace()
     with pytest.raises(TypeError):
-        trace.add(Activity.INIT, {'Score': 23.1})
+        trace.add(GraphAction.INIT, {'Score': 23.1})
 
 
 def test_trace_add_type_error5():   # wrong type for Detail item
     trace = Trace()
     with pytest.raises(TypeError):
-        trace.add(Activity.INIT, {Detail.DELTA: 'wrong type'})
+        trace.add(GraphAction.INIT, {GraphActionDetail.DELTA: 'wrong type'})
 
 
 def test_trace_add_attribute_error1():   # unknown Attribute type
     trace = Trace()
     with pytest.raises(AttributeError):
-        trace.add(Activity.INIT, {Detail.SCORE: +00.09})
+        trace.add(GraphAction.INIT, {GraphActionDetail.SCORE: +00.09})
 
 
 def test_trace_value_error_1():   # mandatory details not provided
     trace = Trace()
     with pytest.raises(ValueError):
-        trace.add(Activity.INIT, {Detail.ARC: ('A', 'B')})
+        trace.add(GraphAction.INIT, {GraphActionDetail.ARC: ('A', 'B')})
     with pytest.raises(ValueError):
-        trace.add(Activity.ADD, {Detail.DELTA: 21.0})
+        trace.add(GraphAction.ADD, {GraphActionDetail.DELTA: 21.0})
 
 
 def test_trace_ok_1():   # correct trace calls
     trace = Trace()
     sleep(0.02)
-    trace.add(Activity.INIT, {Detail.DELTA: 31.2})
+    trace.add(GraphAction.INIT, {GraphActionDetail.DELTA: 31.2})
     print("\n\n{}".format(trace.get()))
     trace = trace.get().drop(labels='time', axis=1).to_dict('records')
     assert trace[0] == {'activity': 'init', 'arc': None, 'delta/score': 31.2,
@@ -328,11 +330,11 @@ def test_trace_ok_1():   # correct trace calls
 
 
 def test_trace_ok_2():   # correct trace calls usng chaining
-    trace = Trace().add(Activity.INIT, {Detail.DELTA: -200.8}) \
-        .add(Activity.ADD, {Detail.ARC: ('A', 'B'), Detail.DELTA: 41.4}) \
-        .add(Activity.DEL, {Detail.ARC: ('B', 'C'), Detail.DELTA: 22.7}) \
-        .add(Activity.REV, {Detail.ARC: ('A', 'B'), Detail.DELTA: 39.9}) \
-        .add(Activity.STOP, {Detail.DELTA: -100.8})
+    trace = Trace().add(GraphAction.INIT, {GraphActionDetail.DELTA: -200.8}) \
+        .add(GraphAction.ADD, {GraphActionDetail.ARC: ('A', 'B'), GraphActionDetail.DELTA: 41.4}) \
+        .add(GraphAction.DEL, {GraphActionDetail.ARC: ('B', 'C'), GraphActionDetail.DELTA: 22.7}) \
+        .add(GraphAction.REV, {GraphActionDetail.ARC: ('A', 'B'), GraphActionDetail.DELTA: 39.9}) \
+        .add(GraphAction.STOP, {GraphActionDetail.DELTA: -100.8})
     print("\n\n{}".format(trace.get()))
     trace = trace.get().drop(labels='time', axis=1).to_dict('records')
     assert trace[0] == {'activity': 'init', 'arc': None, 'delta/score': -200.8,
@@ -363,15 +365,15 @@ def test_trace_ok_2():   # correct trace calls usng chaining
 
 
 def test_trace_ok_3():   # correct trace calls usng chaining including blocked
-    trace = Trace().add(Activity.INIT, {Detail.DELTA: -200.8}) \
-        .add(Activity.ADD, {Detail.ARC: ('A', 'B'), Detail.DELTA: 41.4,
-                            Detail.BLOCKED: []}) \
-        .add(Activity.DEL, {Detail.ARC: ('B', 'C'), Detail.DELTA: 22.7,
-                            Detail.BLOCKED: []}) \
-        .add(Activity.REV, {Detail.ARC: ('A', 'B'), Detail.DELTA: 39.9,
-                            Detail.BLOCKED: [(Activity.ADD, ('B', 'A'),
+    trace = Trace().add(GraphAction.INIT, {GraphActionDetail.DELTA: -200.8}) \
+        .add(GraphAction.ADD, {GraphActionDetail.ARC: ('A', 'B'), GraphActionDetail.DELTA: 41.4,
+                            GraphActionDetail.BLOCKED: []}) \
+        .add(GraphAction.DEL, {GraphActionDetail.ARC: ('B', 'C'), GraphActionDetail.DELTA: 22.7,
+                            GraphActionDetail.BLOCKED: []}) \
+        .add(GraphAction.REV, {GraphActionDetail.ARC: ('A', 'B'), GraphActionDetail.DELTA: 39.9,
+                            GraphActionDetail.BLOCKED: [(GraphAction.ADD, ('B', 'A'),
                                               3.0, {})]}) \
-        .add(Activity.STOP, {Detail.DELTA: -100.8})
+        .add(GraphAction.STOP, {GraphActionDetail.DELTA: -100.8})
     print("\n\n{}".format(trace.get()))
     trace = trace.get().drop(labels='time', axis=1).to_dict('records')
     assert trace[0] == {'activity': 'init', 'arc': None, 'delta/score': -200.8,
@@ -393,7 +395,7 @@ def test_trace_ok_3():   # correct trace calls usng chaining including blocked
                         'delta/score': 39.9, 'activity_2': None, 'arc_2': None,
                         'delta_2': None, 'min_N': None, 'mean_N': None,
                         'max_N': None, 'free_params': None, 'lt5': None,
-                        'knowledge': None, 'blocked': [(Activity.ADD,
+                        'knowledge': None, 'blocked': [(GraphAction.ADD,
                                                         ('B', 'A'),
                                                         3.0, {})]}
     assert trace[4] == {'activity': 'stop', 'arc': None, 'delta/score': -100.8,
@@ -409,12 +411,12 @@ def test_trace_set_result_type_error():  # bad result type
 
 
 def test_trace_set_result_ok():  # set Trace result
-    trace = Trace().add(Activity.INIT, {Detail.DELTA: 0.0}) \
-                   .add(Activity.ADD, {Detail.ARC: ('A', 'B'),
-                                       Detail.DELTA: 31.3,
-                                       Detail.ACTIVITY_2: 'add',
-                                       Detail.ARC_2: ('B', 'C'),
-                                       Detail.DELTA_2: 10.77}) \
+    trace = Trace().add(GraphAction.INIT, {GraphActionDetail.DELTA: 0.0}) \
+                   .add(GraphAction.ADD, {GraphActionDetail.ARC: ('A', 'B'),
+                                       GraphActionDetail.DELTA: 31.3,
+                                       GraphActionDetail.ACTIVITY_2: 'add',
+                                       GraphActionDetail.ARC_2: ('B', 'C'),
+                                       GraphActionDetail.DELTA_2: 10.77}) \
                    .set_result(ex_dag.ab())
     ex_dag.ab(trace.result)
 

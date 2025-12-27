@@ -18,7 +18,9 @@ from causaliq_data.indep import check_indep_args, MIN_P_VALUE
 from causaliq_core.utils import is_valid_path
 from causaliq_data.pandas import Pandas
 from causaliq_data import NumPy
-from learn.trace import Trace, Activity, Detail, CONTEXT_FIELDS
+from learn.trace import Trace, CONTEXT_FIELDS
+from causaliq_analysis.graph import GraphAction
+from causaliq_analysis.graph import GraphActionDetail
 from learn.knowledge import Knowledge
 from learn.knowledge_rule import Rule
 
@@ -299,7 +301,7 @@ def _get_hc_trace(stdout, algorithm, context, params, N, dag, elapsed):
     context.update({'algorithm': algorithm.upper(), 'params': params, 'N': N,
                     'external': 'BNLEARN', 'dataset': True})
     trace = Trace(context)
-    activity = Activity.INIT
+    activity = GraphAction.INIT
 
     algo = None  # algorithm being run
     arc = None
@@ -313,10 +315,10 @@ def _get_hc_trace(stdout, algorithm, context, params, N, dag, elapsed):
         score_match = score_pattern.match(line)  # current score of DAG
         if score_match is not None:
             score = float(score_match.group(1))
-            if activity == Activity.INIT:
+            if activity == GraphAction.INIT:
                 best_score = score
-                trace.add(activity, {Detail.DELTA: score,
-                                     Detail.BLOCKED: blocked})
+                trace.add(activity, {GraphActionDetail.DELTA: score,
+                                     GraphActionDetail.BLOCKED: blocked})
             elif score >= best_score:
                 best_score = score
 
@@ -331,9 +333,9 @@ def _get_hc_trace(stdout, algorithm, context, params, N, dag, elapsed):
             # This change is blocked because it would create a DAG currently
             # in Tabu list.
 
-            activity = (Activity.ADD if block_match.group(1) == 'add' else
-                        (Activity.DEL if block_match.group(1) == 'remov' else
-                         Activity.REV))
+            activity = (GraphAction.ADD if block_match.group(1) == 'add' else
+                        (GraphAction.DEL if block_match.group(1) == 'remov' else
+                         GraphAction.REV))
             change = (activity.value, (delta[0], delta[1]), delta[2],
                       {'elem': int(block_match.group(2))})
             if change not in blocked:
@@ -362,25 +364,25 @@ def _get_hc_trace(stdout, algorithm, context, params, N, dag, elapsed):
                 raise RuntimeError('bnlearn(hc): no delta for {}'
                                    .format(best))
             if best_match.group(1) == 'adding':
-                activity = Activity.ADD
+                activity = GraphAction.ADD
             elif best_match.group(1) == 'removing':
-                activity = Activity.DEL
+                activity = GraphAction.DEL
             else:
-                activity = Activity.REV
+                activity = GraphAction.REV
 
             iter += 1
             # print('Change at iter {} is {} of {}, score {} and blocked {}\n'
             #       .format(iter, activity,
             #               (best_match.group(2), best_match.group(3)),
             #               deltas[best], blocked))
-            trace.add(activity, {Detail.DELTA: deltas[best],
-                                 Detail.ARC: (best_match.group(2),
+            trace.add(activity, {GraphActionDetail.DELTA: deltas[best],
+                                 GraphActionDetail.ARC: (best_match.group(2),
                                               best_match.group(3)),
-                                 Detail.BLOCKED: blocked})
+                                 GraphActionDetail.BLOCKED: blocked})
             blocked = None if blocked is None else []
 
-    trace.add(Activity.STOP, {Detail.DELTA: best_score,
-                              Detail.BLOCKED: blocked})
+    trace.add(GraphAction.STOP, {GraphActionDetail.DELTA: best_score,
+                              GraphActionDetail.BLOCKED: blocked})
 
     trace.trace['time'] = [None] * len(trace.trace['time'])
     trace.trace['time'][-1] = elapsed
@@ -414,7 +416,7 @@ def _get_pc_trace(stdout, algorithm, context, params, N, pdag, elapsed):
                     'params': params if params is not None else {}, 'N': N,
                     'external': 'BNLEARN', 'dataset': True})
     # print(context)
-    trace = Trace(context).add(Activity.INIT, {Detail.DELTA: -1.0})
+    trace = Trace(context).add(GraphAction.INIT, {GraphActionDetail.DELTA: -1.0})
 
     for line in stdout:
         break
@@ -432,7 +434,7 @@ def _get_pc_trace(stdout, algorithm, context, params, N, pdag, elapsed):
                   .format(vstruct.group(1), vstruct.group(2),
                           vstruct.group(3)))
 
-    trace.add(Activity.STOP, {Detail.DELTA: -1.0})
+    trace.add(GraphAction.STOP, {GraphActionDetail.DELTA: -1.0})
     trace.trace['time'] = [None] * len(trace.trace['time'])
     trace.trace['time'][-1] = elapsed
     trace.result = pdag

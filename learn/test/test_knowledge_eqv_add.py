@@ -5,7 +5,7 @@ import pytest
 
 from learn.knowledge import Knowledge, Rule, RuleSet, \
     KnowledgeOutcome
-from learn.trace import Activity
+from causaliq_analysis.graph import GraphAction
 from learn.dagchange import DAGChange, BestDAGChanges
 from data import TESTDATA_DIR
 from causaliq_core.bn import BN
@@ -490,8 +490,8 @@ def test_knowledge_asia_2_ok():  # EQUIV_ADD Knowledge, 0.2 expertise
 
 def test_hc_best_abc_1_ok(know_abc_1, abc1):  # arcs not rev of each other
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.ADD, ('A', 'B'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('B', 'C'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None)
     new_best, event = know_abc_1.hc_best(best, 6, abc1[0], abc1[1])
     assert best == new_best
     assert event is None
@@ -503,8 +503,8 @@ def test_hc_best_abc_1_ok(know_abc_1, abc1):  # arcs not rev of each other
 
 def test_hc_best_abc_2_ok(know_abc_1, abc1):  # scores not same - no swop
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.ADD, ('A', 'B'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('B', 'A'), 5.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('B', 'A'), 5.0, None)
     new_best, event = know_abc_1.hc_best(best, 6, abc1[0], abc1[1])
     assert best == new_best
     assert event is None
@@ -519,8 +519,8 @@ def test_hc_best_abc_3_ok(know_abc_1, abc1):  # not both adds - no swop
     init_stable_random()
 
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.DEL, ('A', 'B'), 4.0, None)
-    best.second = DAGChange(Activity.REV, ('B', 'A'), 4.0, None)
+    best.top = DAGChange(GraphAction.DEL, ('A', 'B'), 4.0, None)
+    best.second = DAGChange(GraphAction.REV, ('B', 'A'), 4.0, None)
     new_best, event = know_abc_1.hc_best(best, 6, abc1[0], abc1[1])
     assert best == new_best
     assert event is None
@@ -535,8 +535,8 @@ def test_hc_best_abc_4_ok(know_abc_1, abc1):  # equiv_add but best OK => no_op
     init_stable_random()
 
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.ADD, ('A', 'B'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('B', 'A'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('B', 'A'), 4.0, None)
     new_best, event = know_abc_1.hc_best(best, 6, abc1[0], abc1[1])
     assert best == new_best
     assert event.rule == Rule.EQUIV_ADD
@@ -553,8 +553,8 @@ def test_hc_best_abc_5_ok(know_abc_1, abc1):  # equiv_add, 2nd correct => swop
     init_stable_random()
 
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.ADD, ('B', 'A'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('A', 'B'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('B', 'A'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None)
     new_best, event = know_abc_1.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best.top == best.second
     assert new_best.second == best.top
@@ -573,8 +573,8 @@ def test_hc_best_abc_6_ok(know_abc_1, abc1):  # limit exceeded
 
     # first request doesn't do anything since change was already correct
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('A', 'B'), 4.0, None),
-                          DAGChange(Activity.ADD, ('B', 'A'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('B', 'A'), 4.0, None))
     new_best, event = know_abc_1.hc_best(best, 6, abc1[0], abc1[1])
     assert best == new_best
     assert event.rule == Rule.EQUIV_ADD
@@ -585,8 +585,8 @@ def test_hc_best_abc_6_ok(know_abc_1, abc1):  # limit exceeded
 
     # second change would have resulted in a swap, but request limit reached
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('C', 'B'), 4.0, None),
-                          DAGChange(Activity.ADD, ('B', 'C'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('C', 'B'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None))
     new_best, event = know_abc_1.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == best
     assert event.rule == Rule.EQUIV_ADD
@@ -604,8 +604,8 @@ def test_hc_best_abc_7_ok(know_abc_2, abc1):  # first request ignored
 
     # first request ignored because of ignore = 1
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('B', 'A'), 4.0, None),
-                          DAGChange(Activity.ADD, ('A', 'B'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('B', 'A'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None))
     new_best, event = know_abc_2.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == best
     assert know_abc_2.count == 1
@@ -620,8 +620,8 @@ def test_hc_best_abc_7_ok(know_abc_2, abc1):  # first request ignored
 
     # second change results in a swap
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('C', 'B'), 4.0, None),
-                          DAGChange(Activity.ADD, ('B', 'C'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('C', 'B'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None))
     new_best, event = know_abc_2.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == BestDAGChanges(best.second, best.top)
     assert know_abc_2.count == 2
@@ -635,8 +635,8 @@ def test_hc_best_abc_7_ok(know_abc_2, abc1):  # first request ignored
 
     # third request accepted, but results in no change
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('A', 'B'), 4.0, None),
-                          DAGChange(Activity.ADD, ('B', 'A'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('B', 'A'), 4.0, None))
     new_best, event = know_abc_2.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == best
     assert know_abc_2.count == 3
@@ -651,8 +651,8 @@ def test_hc_best_abc_7_ok(know_abc_2, abc1):  # first request ignored
 
     # fourth request ignored as limit reached
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('C', 'B'), 4.0, None),
-                          DAGChange(Activity.ADD, ('B', 'C'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('C', 'B'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None))
     new_best, event = know_abc_2.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == best
     assert know_abc_2.count == 4
@@ -672,10 +672,10 @@ def test_hc_best_abc_8_ok(know_abc_3, abc1):  # limit 3, expertise 0.5
 
     # first request erroneously says no arc, which leads to EXT_ADD
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('A', 'B'), 4.0, None),
-                          DAGChange(Activity.ADD, ('B', 'A'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('B', 'A'), 4.0, None))
     new_best, event = know_abc_3.hc_best(best, 6, abc1[0], abc1[1])
-    best.top.activity = Activity.NONE
+    best.top.activity = GraphAction.NONE
     assert new_best == best
     assert know_abc_3.count == 1
     assert event.rule == Rule.EQUIV_ADD
@@ -689,8 +689,8 @@ def test_hc_best_abc_8_ok(know_abc_3, abc1):  # limit 3, expertise 0.5
 
     # second request correctly makes a swap
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('C', 'B'), 4.0, None),
-                          DAGChange(Activity.ADD, ('B', 'C'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('C', 'B'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None))
     new_best, event = know_abc_3.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == BestDAGChanges(best.second, best.top)
     assert know_abc_3.count == 2
@@ -705,10 +705,10 @@ def test_hc_best_abc_8_ok(know_abc_3, abc1):  # limit 3, expertise 0.5
 
     # third request accepted, already incorrectly think A->B does not exist
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('A', 'B'), 4.0, None),
-                          DAGChange(Activity.ADD, ('B', 'A'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('B', 'A'), 4.0, None))
     new_best, event = know_abc_3.hc_best(best, 6, abc1[0], abc1[1])
-    best.top.activity = Activity.NONE
+    best.top.activity = GraphAction.NONE
     assert best == new_best
     assert know_abc_3.count == 2
     assert event.rule == Rule.EQUIV_ADD
@@ -727,10 +727,10 @@ def test_hc_best_abc_9_ok(know_abc_3, abc1):  # limit 3, expertise 0.5
 
     # first request erroneously says no arc, which leads to NO_OP
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('A', 'B'), 4.0, None),
-                          DAGChange(Activity.ADD, ('B', 'A'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('B', 'A'), 4.0, None))
     new_best, event = know_abc_3.hc_best(best, 6, abc1[0], abc1[1])
-    best.top.activity = Activity.NONE
+    best.top.activity = GraphAction.NONE
     assert new_best == best
     assert know_abc_3.count == 1
     assert event.rule == Rule.EQUIV_ADD
@@ -744,8 +744,8 @@ def test_hc_best_abc_9_ok(know_abc_3, abc1):  # limit 3, expertise 0.5
 
     # second request correctly makes a swap
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('C', 'B'), 4.0, None),
-                          DAGChange(Activity.ADD, ('B', 'C'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('C', 'B'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None))
     new_best, event = know_abc_3.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == BestDAGChanges(best.second, best.top)
     assert know_abc_3.count == 2
@@ -760,8 +760,8 @@ def test_hc_best_abc_9_ok(know_abc_3, abc1):  # limit 3, expertise 0.5
 
     # third change not equiv_add so ignored
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('A', 'B'), 4.0, None),
-                          DAGChange(Activity.ADD, ('B', 'C'), 2.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('B', 'C'), 2.0, None))
     new_best, event = know_abc_3.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == BestDAGChanges(best.top, best.second)
     assert know_abc_3.count == 2
@@ -779,8 +779,8 @@ def test_hc_best_abc_10_ok(know_abc_3, abc1):  # limit 3, expertise 0.5
 
     # first change doesn't trigger equiv_add rule
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('A', 'B'), 4.0, None),
-                          DAGChange(Activity.ADD, ('B', 'C'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None))
     new_best, event = know_abc_3.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == best
     assert know_abc_3.count == 0
@@ -792,10 +792,10 @@ def test_hc_best_abc_10_ok(know_abc_3, abc1):  # limit 3, expertise 0.5
 
     # first request erroneously says no arc, causing EXT_ADD
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('B', 'C'), 4.0, None),
-                          DAGChange(Activity.ADD, ('C', 'B'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('C', 'B'), 4.0, None))
     new_best, event = know_abc_3.hc_best(best, 6, abc1[0], abc1[1])
-    best.top.activity = Activity.NONE
+    best.top.activity = GraphAction.NONE
     assert new_best == best
     assert know_abc_3.count == 1
     assert event.rule == Rule.EQUIV_ADD
@@ -809,8 +809,8 @@ def test_hc_best_abc_10_ok(know_abc_3, abc1):  # limit 3, expertise 0.5
 
     # third change doesn't trigger equiv_add rule
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('A', 'B'), 4.0, None),
-                          DAGChange(Activity.ADD, ('B', 'A'), 4.0003, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('B', 'A'), 4.0003, None))
     new_best, event = know_abc_3.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == best
     assert know_abc_3.count == 1
@@ -823,10 +823,10 @@ def test_hc_best_abc_10_ok(know_abc_3, abc1):  # limit 3, expertise 0.5
 
     # second request accepted, knowledge cache says C->B does not exist
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('C', 'B'), 4.0, None),
-                          DAGChange(Activity.ADD, ('B', 'C'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('C', 'B'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None))
     new_best, event = know_abc_3.hc_best(best, 6, abc1[0], abc1[1])
-    best.top.activity = Activity.NONE
+    best.top.activity = GraphAction.NONE
     assert new_best == best
     assert know_abc_3.count == 1
     assert event.rule == Rule.EQUIV_ADD
@@ -845,8 +845,8 @@ def test_hc_best_abc_11_ok(know_abc_3, abc1):  # limit 3, expertise 0.5
 
     # first change doesn't trigger equiv_add rule
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('A', 'B'), 4.0, None),
-                          DAGChange(Activity.ADD, ('B', 'C'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None))
     new_best, event = know_abc_3.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == best
     assert know_abc_3.count == 0
@@ -858,10 +858,10 @@ def test_hc_best_abc_11_ok(know_abc_3, abc1):  # limit 3, expertise 0.5
 
     # first request erroneously says no arc, causing EXT_ADD
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('B', 'C'), 4.0, None),
-                          DAGChange(Activity.ADD, ('C', 'B'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('C', 'B'), 4.0, None))
     new_best, event = know_abc_3.hc_best(best, 6, abc1[0], abc1[1])
-    best.top.activity = Activity.NONE
+    best.top.activity = GraphAction.NONE
     assert new_best == best
     assert know_abc_3.count == 1
     assert event.rule == Rule.EQUIV_ADD
@@ -875,8 +875,8 @@ def test_hc_best_abc_11_ok(know_abc_3, abc1):  # limit 3, expertise 0.5
 
     # third change doesn't trigger equiv_add rule
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('A', 'B'), 4.0, None),
-                          DAGChange(Activity.ADD, ('B', 'A'), 4.0003, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('B', 'A'), 4.0003, None))
     new_best, event = know_abc_3.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == best
     assert know_abc_3.count == 1
@@ -889,8 +889,8 @@ def test_hc_best_abc_11_ok(know_abc_3, abc1):  # limit 3, expertise 0.5
 
     # second request accepted, and correctly makes swap
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('B', 'A'), 4.0, None),
-                          DAGChange(Activity.ADD, ('A', 'B'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('B', 'A'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None))
     new_best, event = know_abc_3.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == BestDAGChanges(best.second, best.top)
     assert know_abc_3.count == 2
@@ -905,8 +905,8 @@ def test_hc_best_abc_11_ok(know_abc_3, abc1):  # limit 3, expertise 0.5
 
     # third request accepted, cache correctly says A->B exists, so swap OK
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('B', 'A'), 4.0, None),
-                          DAGChange(Activity.ADD, ('A', 'B'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('B', 'A'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None))
     new_best, event = know_abc_3.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == BestDAGChanges(best.second, best.top)
     assert know_abc_3.count == 2
@@ -926,8 +926,8 @@ def test_hc_best_abc_12_ok(know_abc_4, abc1):  # lim 1, igno 1, expertise 0.8
 
     # first request ignored because of ignore param
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('A', 'B'), 4.0, None),
-                          DAGChange(Activity.ADD, ('B', 'A'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('B', 'A'), 4.0, None))
     new_best, event = know_abc_4.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == best
     assert know_abc_4.count == 1
@@ -941,8 +941,8 @@ def test_hc_best_abc_12_ok(know_abc_4, abc1):  # lim 1, igno 1, expertise 0.8
 
     # second request correctly makes no swap
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('B', 'C'), 4.0, None),
-                          DAGChange(Activity.ADD, ('C', 'B'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('C', 'B'), 4.0, None))
     new_best, event = know_abc_4.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == best
     assert know_abc_4.count == 2
@@ -956,8 +956,8 @@ def test_hc_best_abc_12_ok(know_abc_4, abc1):  # lim 1, igno 1, expertise 0.8
 
     # third request ignored as limit reached
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('C', 'B'), 4.0, None),
-                          DAGChange(Activity.ADD, ('B', 'C'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('C', 'B'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None))
     new_best, event = know_abc_4.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == best
     assert know_abc_4.count == 3
@@ -976,8 +976,8 @@ def test_hc_best_abc_13_ok(know_abc_3, abc1):  # limit 3, expert 0.5, offset 2
 
     # first change doesn't trigger equiv_add rule
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('A', 'B'), 4.0, None),
-                          DAGChange(Activity.ADD, ('B', 'C'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None))
     new_best, event = know_abc_3.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best is best
     assert know_abc_3.count == 0
@@ -989,8 +989,8 @@ def test_hc_best_abc_13_ok(know_abc_3, abc1):  # limit 3, expert 0.5, offset 2
 
     # first request correctly makes no swap
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('B', 'C'), 4.0, None),
-                          DAGChange(Activity.ADD, ('C', 'B'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('C', 'B'), 4.0, None))
     new_best, event = know_abc_3.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == best
     assert know_abc_3.count == 1
@@ -1004,8 +1004,8 @@ def test_hc_best_abc_13_ok(know_abc_3, abc1):  # limit 3, expert 0.5, offset 2
 
     # third change doesn't trigger equiv_add rule
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('A', 'B'), 4.0, None),
-                          DAGChange(Activity.ADD, ('B', 'A'), 4.0003, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('B', 'A'), 4.0003, None))
     new_best, event = know_abc_3.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == best
     assert know_abc_3.count == 1
@@ -1017,8 +1017,8 @@ def test_hc_best_abc_13_ok(know_abc_3, abc1):  # limit 3, expert 0.5, offset 2
 
     # second request accepted, and correctly does swap
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('B', 'A'), 4.0, None),
-                          DAGChange(Activity.ADD, ('A', 'B'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('B', 'A'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None))
     new_best, event = know_abc_3.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == BestDAGChanges(best.second, best.top)
     assert know_abc_3.count == 2
@@ -1033,8 +1033,8 @@ def test_hc_best_abc_13_ok(know_abc_3, abc1):  # limit 3, expert 0.5, offset 2
 
     # third request accepted, cache correctly says A->B exists, NO_OP
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('A', 'B'), 4.0, None),
-                          DAGChange(Activity.ADD, ('B', 'A'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('B', 'A'), 4.0, None))
     new_best, event = know_abc_3.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == best
     assert know_abc_3.count == 2
@@ -1054,8 +1054,8 @@ def test_hc_best_abc_14_ok(know_abc_3, abc1):  # lim 3, expert 0.5, offset 2
 
     # first change doesn't trigger equiv_add rule
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('A', 'B'), 4.0, None),
-                          DAGChange(Activity.ADD, ('B', 'C'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None))
     new_best, event = know_abc_3.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best is best
     assert know_abc_3.count == 0
@@ -1067,8 +1067,8 @@ def test_hc_best_abc_14_ok(know_abc_3, abc1):  # lim 3, expert 0.5, offset 2
 
     # first request correctly makes no swap
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('B', 'C'), 4.0, None),
-                          DAGChange(Activity.ADD, ('C', 'B'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('C', 'B'), 4.0, None))
     new_best, event = know_abc_3.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == best
     assert know_abc_3.count == 1
@@ -1082,8 +1082,8 @@ def test_hc_best_abc_14_ok(know_abc_3, abc1):  # lim 3, expert 0.5, offset 2
 
     # third change doesn't trigger equiv_add rule
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('A', 'B'), 4.0, None),
-                          DAGChange(Activity.ADD, ('B', 'A'), 4.0003, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('B', 'A'), 4.0003, None))
     new_best, event = know_abc_3.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == best
     assert know_abc_3.count == 1
@@ -1095,8 +1095,8 @@ def test_hc_best_abc_14_ok(know_abc_3, abc1):  # lim 3, expert 0.5, offset 2
 
     # second request accepted, and correctly makes swap_best
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('B', 'A'), 4.0, None),
-                          DAGChange(Activity.ADD, ('A', 'B'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('B', 'A'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None))
     new_best, event = know_abc_3.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == BestDAGChanges(best.second, best.top)
     assert know_abc_3.count == 2
@@ -1111,8 +1111,8 @@ def test_hc_best_abc_14_ok(know_abc_3, abc1):  # lim 3, expert 0.5, offset 2
 
     # third request accepted, incorrectly says unknown edge correct
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('A', 'C'), 4.0, None),
-                          DAGChange(Activity.ADD, ('C', 'A'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('A', 'C'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('C', 'A'), 4.0, None))
     new_best, event = know_abc_3.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == best
     assert know_abc_3.count == 3
@@ -1133,8 +1133,8 @@ def test_hc_best_abc_15_ok(know_abc_5, abc1):  # lim 3, expert 0.5, offset 2
 
     # first change doesn't trigger equiv_add rule
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('A', 'B'), 4.0, None),
-                          DAGChange(Activity.ADD, ('B', 'C'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None))
     new_best, event = know_abc_5.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best is best
     assert know_abc_5.count == 0
@@ -1146,8 +1146,8 @@ def test_hc_best_abc_15_ok(know_abc_5, abc1):  # lim 3, expert 0.5, offset 2
 
     # first request correctly makes no swap
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('B', 'C'), 4.0, None),
-                          DAGChange(Activity.ADD, ('C', 'B'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('C', 'B'), 4.0, None))
     new_best, event = know_abc_5.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == best
     assert know_abc_5.count == 1
@@ -1161,8 +1161,8 @@ def test_hc_best_abc_15_ok(know_abc_5, abc1):  # lim 3, expert 0.5, offset 2
 
     # third change doesn't trigger equiv_add rule
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('A', 'B'), 4.0, None),
-                          DAGChange(Activity.ADD, ('B', 'A'), 4.0003, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('B', 'A'), 4.0003, None))
     new_best, event = know_abc_5.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == best
     assert know_abc_5.count == 1
@@ -1174,8 +1174,8 @@ def test_hc_best_abc_15_ok(know_abc_5, abc1):  # lim 3, expert 0.5, offset 2
 
     # second request accepted, and correctly makes swap_best
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('B', 'A'), 4.0, None),
-                          DAGChange(Activity.ADD, ('A', 'B'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('B', 'A'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None))
     new_best, event = know_abc_5.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == BestDAGChanges(best.second, best.top)
     assert know_abc_5.count == 2
@@ -1191,8 +1191,8 @@ def test_hc_best_abc_15_ok(know_abc_5, abc1):  # lim 3, expert 0.5, offset 2
     # third request accepted, reference graph indicates no arc, but because
     # partial is true we just return arc that algorithm was going to add
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('A', 'C'), 4.0, None),
-                          DAGChange(Activity.ADD, ('C', 'A'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('A', 'C'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('C', 'A'), 4.0, None))
     new_best, event = know_abc_5.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == best
     assert know_abc_5.count == 3
@@ -1218,10 +1218,10 @@ def test_hc_best_abc_16_ok(abc1):  # lim 4, expert 0.5, get FTF sequence
 
     # first request incorrectly does EXT_ADD
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('B', 'C'), 4.0, None),
-                          DAGChange(Activity.ADD, ('C', 'B'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('C', 'B'), 4.0, None))
     new_best, event = know.hc_best(best, 6, abc1[0], abc1[1])
-    best.top.activity = Activity.NONE
+    best.top.activity = GraphAction.NONE
     assert new_best == best
     assert know.count == 1
     assert event.rule == Rule.EQUIV_ADD
@@ -1235,8 +1235,8 @@ def test_hc_best_abc_16_ok(abc1):  # lim 4, expert 0.5, get FTF sequence
 
     # second request correctly swaps B --> A
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('B', 'A'), 4.0, None),
-                          DAGChange(Activity.ADD, ('A', 'B'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('B', 'A'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None))
     new_best, event = know.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == BestDAGChanges(best.second, best.top)
     assert know.count == 2
@@ -1251,8 +1251,8 @@ def test_hc_best_abc_16_ok(abc1):  # lim 4, expert 0.5, get FTF sequence
 
     # third request incorrectly does a swap best
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('A', 'C'), 4.0, None),
-                          DAGChange(Activity.ADD, ('C', 'A'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('A', 'C'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('C', 'A'), 4.0, None))
     new_best, event = know.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == BestDAGChanges(best.second, best.top)
     assert know.count == 3
@@ -1278,8 +1278,8 @@ def test_hc_best_abc_17_ok(abc1):  # lim 4, expert 0.5, earlyok=True
 
     # first request correctly does no_op
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('B', 'C'), 4.0, None),
-                          DAGChange(Activity.ADD, ('C', 'B'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('C', 'B'), 4.0, None))
     new_best, event = know.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == best
     assert know.count == 1
@@ -1293,8 +1293,8 @@ def test_hc_best_abc_17_ok(abc1):  # lim 4, expert 0.5, earlyok=True
 
     # second request correctly swaps B --> A
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('B', 'A'), 4.0, None),
-                          DAGChange(Activity.ADD, ('A', 'B'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('B', 'A'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None))
     new_best, event = know.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == BestDAGChanges(best.second, best.top)
     assert know.count == 2
@@ -1309,8 +1309,8 @@ def test_hc_best_abc_17_ok(abc1):  # lim 4, expert 0.5, earlyok=True
 
     # third request incorrectly does a no_op
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('A', 'C'), 4.0, None),
-                          DAGChange(Activity.ADD, ('C', 'A'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('A', 'C'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('C', 'A'), 4.0, None))
     new_best, event = know.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == best
     assert know.count == 3
@@ -1336,10 +1336,10 @@ def test_hc_best_abc_18_ok(abc1):  # lim 4, expert 0.5, get FTF sequence
 
     # first request incorrectly does EXT_ADD
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('B', 'C'), 4.0, None),
-                          DAGChange(Activity.ADD, ('C', 'B'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('B', 'C'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('C', 'B'), 4.0, None))
     new_best, event = know.hc_best(best, 6, abc1[0], abc1[1])
-    best.top.activity = Activity.NONE
+    best.top.activity = GraphAction.NONE
     assert new_best == best
     assert know.count == 1
     assert event.rule == Rule.EQUIV_ADD
@@ -1353,8 +1353,8 @@ def test_hc_best_abc_18_ok(abc1):  # lim 4, expert 0.5, get FTF sequence
 
     # second request correctly swaps B --> A
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('B', 'A'), 4.0, None),
-                          DAGChange(Activity.ADD, ('A', 'B'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('B', 'A'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('A', 'B'), 4.0, None))
     new_best, event = know.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == BestDAGChanges(best.second, best.top)
     assert know.count == 2
@@ -1369,8 +1369,8 @@ def test_hc_best_abc_18_ok(abc1):  # lim 4, expert 0.5, get FTF sequence
 
     # third request incorrectly does a swap best
 
-    best = BestDAGChanges(DAGChange(Activity.ADD, ('A', 'C'), 4.0, None),
-                          DAGChange(Activity.ADD, ('C', 'A'), 4.0, None))
+    best = BestDAGChanges(DAGChange(GraphAction.ADD, ('A', 'C'), 4.0, None),
+                          DAGChange(GraphAction.ADD, ('C', 'A'), 4.0, None))
     new_best, event = know.hc_best(best, 6, abc1[0], abc1[1])
     assert new_best == BestDAGChanges(best.second, best.top)
     assert know.count == 3
@@ -1393,8 +1393,8 @@ def test_hc_best_part_1_ok(asia1):  # add of true arc
     know = asia1['know']
 
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.ADD, ('asia', 'tub'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('tub', 'asia'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('asia', 'tub'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('tub', 'asia'), 4.0, None)
     new_best, event = know.hc_best(best, 6, asia1['data'],
                                    asia1['parents'])
 
@@ -1416,8 +1416,8 @@ def test_hc_best_part_2_ok(asia1):  # add of misorientated arc
     know = asia1['know']
 
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.ADD, ('tub', 'asia'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('asia', 'tub'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('tub', 'asia'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('asia', 'tub'), 4.0, None)
     new_best, event = know.hc_best(best, 6, asia1['data'],
                                    asia1['parents'])
 
@@ -1439,8 +1439,8 @@ def test_hc_best_part_3_ok(asia1):  # add of non-existent arcs
     know = asia1['know']
 
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.ADD, ('asia', 'smoke'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('smoke', 'asia'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('asia', 'smoke'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('smoke', 'asia'), 4.0, None)
     new_best, event = know.hc_best(best, 6, asia1['data'],
                                    asia1['parents'])
 
@@ -1460,8 +1460,8 @@ def test_hc_best_part_3_ok(asia1):  # add of non-existent arcs
     # lung --> tub, which is again NO_OP
 
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.ADD, ('tub', 'lung'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('lung', 'tub'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('tub', 'lung'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('lung', 'tub'), 4.0, None)
     new_best, event = know.hc_best(best, 6, asia1['data'],
                                    asia1['parents'])
     assert new_best == best
@@ -1478,8 +1478,8 @@ def test_hc_best_part_3_ok(asia1):  # add of non-existent arcs
     # bronc--> either, which is SWAP_BEST this time
 
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.ADD, ('either', 'bronc'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('bronc', 'either'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('either', 'bronc'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('bronc', 'either'), 4.0, None)
     new_best, event = know.hc_best(best, 6, asia1['data'],
                                    asia1['parents'])
     assert new_best == BestDAGChanges(best.second, best.top)
@@ -1502,8 +1502,8 @@ def test_hc_best_part_4_ok(asia2):  # add of true arc
     know = asia2['know']
 
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.ADD, ('asia', 'tub'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('tub', 'asia'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('asia', 'tub'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('tub', 'asia'), 4.0, None)
     new_best, event = know.hc_best(best, 6, asia2['data'],
                                    asia2['parents'])
 
@@ -1526,8 +1526,8 @@ def test_hc_best_part_5_ok(asia2):  # add of misorientated arc
     know = asia2['know']
 
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.ADD, ('tub', 'asia'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('asia', 'tub'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('tub', 'asia'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('asia', 'tub'), 4.0, None)
     new_best, event = know.hc_best(best, 6, asia2['data'],
                                    asia2['parents'])
 
@@ -1550,8 +1550,8 @@ def test_hc_best_part_6_ok(asia2):  # add of non-existent arcs
     know = asia2['know']
 
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.ADD, ('asia', 'smoke'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('smoke', 'asia'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('asia', 'smoke'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('smoke', 'asia'), 4.0, None)
     new_best, event = know.hc_best(best, 6, asia2['data'],
                                    asia2['parents'])
 
@@ -1571,8 +1571,8 @@ def test_hc_best_part_6_ok(asia2):  # add of non-existent arcs
     # lung --> tub, which is again NO_OP
 
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.ADD, ('tub', 'lung'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('lung', 'tub'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('tub', 'lung'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('lung', 'tub'), 4.0, None)
     new_best, event = know.hc_best(best, 6, asia2['data'],
                                    asia2['parents'])
     assert new_best == best
@@ -1589,8 +1589,8 @@ def test_hc_best_part_6_ok(asia2):  # add of non-existent arcs
     # bronc--> either, which is SWAP_BEST this time
 
     best = BestDAGChanges()
-    best.top = DAGChange(Activity.ADD, ('either', 'bronc'), 4.0, None)
-    best.second = DAGChange(Activity.ADD, ('bronc', 'either'), 4.0, None)
+    best.top = DAGChange(GraphAction.ADD, ('either', 'bronc'), 4.0, None)
+    best.second = DAGChange(GraphAction.ADD, ('bronc', 'either'), 4.0, None)
     new_best, event = know.hc_best(best, 6, asia2['data'],
                                    asia2['parents'])
     assert new_best == BestDAGChanges(best.second, best.top)
