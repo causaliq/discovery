@@ -6,7 +6,7 @@ import pytest
 import testdata.example_pdags as ex_pdag
 import testdata.example_dags as ex_dag
 import testdata.example_sdgs as ex_sdg
-from core.metrics import pdag_compare
+from causaliq_analysis.metrics import pdag_compare
 
 
 @pytest.fixture

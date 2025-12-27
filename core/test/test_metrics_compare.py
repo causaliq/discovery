@@ -3,8 +3,8 @@
 
 import pytest
 
-from causaliq_core.graph import DAG, PDAG, pdag_to_cpdag
-from core.metrics import pdag_compare
+from causaliq_core.graph import DAG, pdag_to_cpdag
+from causaliq_analysis.metrics import pdag_compare
 from call.r import requires_r_and_bnlearn
 from call.bnlearn import bnlearn_compare
 from data import TESTDATA_DIR

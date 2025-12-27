@@ -17,7 +17,7 @@ from glob import glob
 
 from data import EXPTS_DIR
 from causaliq_data.pandas import Pandas
-from core.metrics import pdag_compare
+from causaliq_analysis.metrics import pdag_compare
 from causaliq_core.graph.io.bayesys import write as write_bayesys, read as read_bayesys
 from knowledge.bayesys import read_constraints
 from causaliq_core.bn.io.xdsl import write as write_xdsl

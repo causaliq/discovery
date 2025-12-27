@@ -9,7 +9,7 @@ from statistics import mean, stdev
 from data import EXPTS_DIR
 from experiments.common import SERIES_GROUPS, reference_bn
 from causaliq_core.graph import pdag_to_cpdag
-from core.metrics import pdag_compare
+from causaliq_analysis.metrics import pdag_compare
 from learn.trace import Trace
 from analysis.trace import TraceAnalysis
 

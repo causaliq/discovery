@@ -8,7 +8,7 @@ from causaliq_core.graph import EdgeType, BAYESYS_VERSIONS
 from causaliq_core.graph import DAG, dag_to_pdag, is_cpdag, pdag_to_cpdag
 from causaliq_core.bn import BN
 from causaliq_core.bn.io import read_bn
-from core.metrics import pdag_compare
+from causaliq_analysis.metrics import pdag_compare
 from causaliq_data.indep import indep
 from data import EXPTS_DIR
 from learn.trace import Trace, Activity

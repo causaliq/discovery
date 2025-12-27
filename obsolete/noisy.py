@@ -6,7 +6,7 @@ from os import walk, sep
 from re import compile
 import pandas as pd
 
-from core.metrics import pdag_compare
+from causaliq_analysis.metrics import pdag_compare
 from causaliq_core.graph.io.bayesys import read
 from causaliq_core.utils import FileFormatError, is_valid_path
 from causaliq_core.utils import dicts_same

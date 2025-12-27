@@ -10,7 +10,7 @@ from itertools import chain, combinations
 from causaliq_core.graph import DAG, PDAG, dag_to_pdag
 from causaliq_core.bn import BN
 from causaliq_core.bn import CPT
-from core.metrics import kl
+from causaliq_analysis.metrics import kl
 from causaliq_data.score import node_score
 from causaliq_data.pandas import Pandas
 from causaliq_data import Oracle

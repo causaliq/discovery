@@ -14,7 +14,7 @@ from causaliq_data.score import node_score
 from causaliq_core.graph import DAG
 from causaliq_core.bn import BN
 from causaliq_core.bn import CPT
-from core.metrics import kl
+from causaliq_analysis.metrics import kl
 from causaliq_data.indep import indep
 
 
