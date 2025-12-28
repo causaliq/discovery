@@ -174,13 +174,15 @@ def values_ijar2_stab_test_ll():
 
     networks = list(CATEGORICAL) + ['hailfinder2', 'win95pts2']
     for s in series:
-        Trace.update_scores(s, networks, 'loglik', test=True)
+        Trace.update_scores(s, networks, 'loglik', root_dir=EXPTS_DIR,
+                            save=True, test=True)
 
     # compute loglik all the continuous networks for Tabu & HC
 
     networks = list(CONTINUOUS)
     for s in series:
-        Trace.update_scores(s, networks, 'loglik', test=True)
+        Trace.update_scores(s, networks, 'loglik', root_dir=EXPTS_DIR,
+                            save=True, test=True)
 
 
 # Draws sequence of arcs added when learning Asia from 10K rows.

@@ -6,16 +6,21 @@ from time import time, localtime, asctime
 from pandas import DataFrame
 from re import compile
 import pickle
-from compress_pickle import dump, load
+from compress_pickle import dump
 from gzip import BadGzipFile
 from os import makedirs
-from io import BytesIO
 import gzip
 
 from causaliq_core import SOFTWARE_VERSION
 from causaliq_analysis.graph import GraphActionDetail
 from causaliq_analysis.graph import GraphAction
-
+from causaliq_core.utils.random import Randomise
+from causaliq_core.utils import environment
+from causaliq_core.utils import values_same
+from causaliq_core.graph import DAG, SDG, extend_pdag
+from causaliq_data.score import dag_score
+from causaliq_core.utils import is_valid_path
+from causaliq_data import NumPy
 
 class CompatibilityUnpickler(pickle.Unpickler):
     """
@@ -87,16 +92,7 @@ def load_with_compatibility(file_handle, compression="gzip", **kwargs):
         # For uncompressed files
         file_handle.seek(0)
         return CompatibilityUnpickler(file_handle).load()
-from causaliq_core.utils.random import Randomise
-from causaliq_core.utils import environment
-from causaliq_core.utils import EnumWithAttrs
-from causaliq_core.utils import values_same
-from causaliq_core.graph import DAG, SDG, extend_pdag
-from causaliq_data.score import dag_score
-from learn.common import TreeStats
-from data import EXPTS_DIR
-from causaliq_core.utils import is_valid_path
-from causaliq_data import NumPy
+
 
 CONTEXT_FIELDS = {'id': str, 'algorithm': str, 'params': dict, 'in': str,
                   'N': int, 'dataset': bool, 'external': str,
@@ -210,7 +206,7 @@ class Trace():
                                  for b in self.trace['blocked']]
 
     @classmethod
-    def read(self, partial_id, root_dir=EXPTS_DIR):
+    def read(self, partial_id, root_dir):
         """
             Reads set of Traces matching partial_id from serialised file.
 
@@ -262,16 +258,17 @@ class Trace():
         return self
 
     @classmethod
-    def update_scores(self, series, networks, score, test=False,
-                      root_dir=EXPTS_DIR):
+    def update_scores(self, series, networks, score, root_dir, save=False,
+                      test=False):
         """
             Update score in all traces of a series
 
             :param str series: series to update traces for
             :param list networks: list of networks to update
             :param str score: score to update e.g. 'bic', 'loglik'
-            :param bool test: whether score should be evaluated on test data
             :param str root_dir: root directory holding trace files
+            :param bool save: whether to save updated scores in trace file
+            :param bool test: whether score should be evaluated on test data
 
             :raise ValueError: if bad arg values
         """
@@ -287,7 +284,7 @@ class Trace():
             # read traces for this network
 
             print('\nReading {} traces for {} ...'.format(series, network))
-            traces = Trace.read(series + '/' + network)
+            traces = Trace.read(series + '/' + network, root_dir)
             if traces is None:
                 print(' ... no traces found for {}'.format(network))
                 continue
@@ -296,11 +293,13 @@ class Trace():
             # data for largest sample size.
 
             Ns = {int(id.split('_')[0][1:]) for id in traces}
+            print(Ns)
             dstype = 'continuous' if network.endswith('_c') else 'categorical'
             gauss = '' if dstype == 'categorical' else '-g'
-            N_reqd = 1000000 if test is True else max(Ns)
-            data = NumPy.read(EXPTS_DIR + '/datasets/' + network + '.data.gz',
+            N_reqd = 1000000 if test is True else None
+            data = NumPy.read(root_dir + '/datasets/' + network + '.data.gz',
                               dstype=dstype, N=N_reqd)
+            N_data = data.N
 
             # Obtain scores for initial graphs unless doing log likelihood
 
@@ -308,6 +307,8 @@ class Trace():
                 initial = DAG(list(data.get_order()), [])
                 initial_score = {}
                 for N in Ns:
+                    if N > N_data:
+                        continue
                     data.set_N(N)
                     initial_score[N] = (dag_score(initial, data, score + gauss,
                                                       params)[score +
@@ -327,6 +328,8 @@ class Trace():
                 # set subset of data matching N for this trace
 
                 N = int(id.split('_')[0][1:])
+                if N > N_data:
+                    continue
                 if test is True:
                     seed = int(id.split('_')[1]) if '_' in id else 0
                     print(f'Seed is {seed}')
@@ -365,8 +368,8 @@ class Trace():
                     trace.trace['delta/score'][-1] = learnt_score
                     scores[(network, id)] = (initial_score[N], learnt_score)
 
-                if root_dir == EXPTS_DIR:
-                    trace.save()
+                if save is True:
+                    trace.save(root_dir)
 
         return scores
 
@@ -420,7 +423,7 @@ class Trace():
 
             :returns Trace: current Trace to support chaining
         """
-        if not isinstance(treestats, TreeStats):
+        if type(treestats).__name__ != 'TreeStats':
             raise TypeError('Trace.set_treestats() bad arg type')
 
         self.treestats = treestats
@@ -470,7 +473,7 @@ class Trace():
 
         return (path, file_name, key, traces)
 
-    def save(self, root_dir=EXPTS_DIR):
+    def save(self, root_dir):
         """
             Saves the trace to a composite serialised (pickle) file
 

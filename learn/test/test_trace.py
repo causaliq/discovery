@@ -11,7 +11,7 @@ from learn.trace import Trace
 from causaliq_analysis.graph import GraphAction
 from causaliq_analysis.graph import GraphActionDetail
 from causaliq_core.utils.random import Randomise
-from data import TESTDATA_DIR
+from data import TESTDATA_DIR, EXPTS_DIR
 import testdata.example_dags as ex_dag
 
 
@@ -430,13 +430,13 @@ def test_trace_read_type_error_1():  # no argument type
 
 def test_trace_read_type_error_2():  # bad id argument
     with pytest.raises(TypeError):
-        Trace.read(True)
+        Trace.read(True, TESTDATA_DIR + '/experiments')
     with pytest.raises(TypeError):
-        Trace.read(39)
+        Trace.read(39, TESTDATA_DIR + '/experiments')
     with pytest.raises(TypeError):
-        Trace.read(-11.2)
+        Trace.read(-11.2, TESTDATA_DIR + '/experiments')
     with pytest.raises(TypeError):
-        Trace.read([-11.2])
+        Trace.read([-11.2], TESTDATA_DIR + '/experiments')
     with pytest.raises(TypeError):
         Trace.read('misc/trace', 32)
     with pytest.raises(TypeError):
@@ -598,12 +598,12 @@ def test_trace_save_filenotfound_error():  # non-existent root_dir
 
 def test_trace_save_value_error_1():  # id not defined
     with pytest.raises(ValueError):
-        Trace().save()
+        Trace().save(EXPTS_DIR)
 
 
 def test_trace_save_value_error_2():  # invalid id
     with pytest.raises(ValueError):
-        Trace({'id': 'invalid'}).save()
+        Trace({'id': 'invalid'}).save(EXPTS_DIR)
 
 
 def test_trace_save_value_error_3():  # binary file

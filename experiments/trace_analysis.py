@@ -336,8 +336,8 @@ def check_traces(series, networks, Ns):
 
     for network in networks:
         stats = {'same': 0, 'diff': 0, 'only_1': 0, 'only_2': 0, 'neither': 0}
-        traces_1 = Trace.read(series[0] + '/' + network)
-        traces_2 = Trace.read(series[-1] + '/' + network)
+        traces_1 = Trace.read(series[0] + '/' + network, EXPTS_DIR)
+        traces_2 = Trace.read(series[-1] + '/' + network, EXPTS_DIR)
         for N in Ns:
             key = 'N{}'.format(N)
             if key not in traces_1 and key not in traces_2:

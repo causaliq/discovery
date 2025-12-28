@@ -556,7 +556,7 @@ def test_trace_analysis_mildew_10_ok():  # Mildew, 10 rows
         comparisn to fail without DataFrame recreation to prevent zero
         marginals.
     """
-    trace = Trace.read('HC/STD/mildew')['N10']
+    trace = Trace.read('HC/STD/mildew', EXPTS_DIR)['N10']
     ref = read_bn(EXPTS_DIR + '/bn/mildew.dsc').dag
     data = Pandas.read(EXPTS_DIR + '/datasets/mildew.data.gz', N=10,
                        dstype='categorical').sample

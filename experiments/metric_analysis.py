@@ -35,7 +35,7 @@ def _get_metrics_for_figure(compare_metrics, series, networks, metrics, Ns):
 
         for network in networks:
             ref, _ = reference_bn(network)
-            traces = Trace.read(_series + '/' + network)
+            traces = Trace.read(_series + '/' + network, EXPTS_DIR)
             if traces is None:
                 continue
 

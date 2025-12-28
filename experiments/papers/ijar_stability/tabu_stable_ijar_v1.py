@@ -260,7 +260,7 @@ def values_ijar_stab_score_graphs():
                   .format(network, id, score, initial_score[N], learnt_score))
             trace.trace['delta/score'][0] = initial_score[N]
             trace.trace['delta/score'][-1] = learnt_score
-            trace.save()
+            trace.save(EXPTS_DIR)
 
 
 # Generating of additional baseline series:
@@ -317,7 +317,7 @@ def values_ijar_stab_baselines():
             trace.add(GraphAction.INIT, {GraphActionDetail.DELTA: score_e})
             trace.add(GraphAction.STOP, {GraphActionDetail.DELTA: score_e})
             trace.result = empty
-            trace.save()
+            trace.save(EXPTS_DIR)
             print('{:>8} rows, emp: {:.3e}'.format(N, score_e))
 
             # create a minimal trace for ref graph which includes its score
@@ -329,7 +329,7 @@ def values_ijar_stab_baselines():
             trace.add(GraphAction.INIT, {GraphActionDetail.DELTA: score_e})
             trace.add(GraphAction.STOP, {GraphActionDetail.DELTA: score_r})
             trace.result = ref
-            trace.save()
+            trace.save(EXPTS_DIR)
             print('{:>8} rows, ref: {:.3e}'.format(N, score_r))
 
             # Learn graph with Knowledge prohibiting all arcs not in the
@@ -339,7 +339,7 @@ def values_ijar_stab_baselines():
                        'in': _in}
             _, trace = hc(data, params=params, knowledge=ref_know,
                           context=context, init_cache=True)
-            trace.save()
+            trace.save(EXPTS_DIR)
             print('{:>8} rows,  hc: {:.3e}        [{} iters]\n'
                   .format(N, trace.trace['delta/score'][-1],
                           len(trace.trace['delta/score']) - 2))

@@ -147,7 +147,7 @@ def _get_parents_to_score(series, network, ref, nodes, Ns):
 
     # Obtain learning traces for network at each sample size
 
-    traces = Trace.read(series + '/' + network)
+    traces = Trace.read(series + '/' + network, EXPTS_DIR)
     if traces is None:
         return None
 
