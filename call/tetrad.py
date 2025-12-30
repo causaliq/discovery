@@ -10,7 +10,7 @@ from datetime import datetime
 from causaliq_core.graph import DAG, PDAG, SDG, extend_pdag
 from causaliq_data.score import dag_score
 from causaliq_data.score import SCORE_PARAMS
-from learn.trace import Trace, CONTEXT_FIELDS
+from causaliq_analysis.trace import Trace, CONTEXT_FIELDS
 from causaliq_analysis.graph import GraphAction
 from causaliq_analysis.graph import GraphActionDetail
 from call.cmd import dispatch_cmd

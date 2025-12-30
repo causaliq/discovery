@@ -4,7 +4,7 @@
 import pytest
 from copy import deepcopy
 
-from learn.trace import Trace
+from causaliq_analysis.trace import Trace
 from data import TESTDATA_DIR
 
 

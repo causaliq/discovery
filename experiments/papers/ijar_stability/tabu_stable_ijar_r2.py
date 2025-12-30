@@ -13,7 +13,7 @@ from experiments.plot import relplot
 from data import EXPTS_DIR
 from causaliq_data.pandas import Pandas
 from learn.hc import hc
-from learn.trace import Trace
+from causaliq_analysis.trace import Trace
 from experiments.latex import to_table
 
 # Categorical variable networks studied

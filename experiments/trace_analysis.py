@@ -8,7 +8,7 @@ from data import EXPTS_DIR
 from causaliq_data.pandas import Pandas
 from experiments.common import reference_bn, NETWORKS_GRID_DESIGN, \
     SERIES_GROUPS, FIGURE_PARAMS
-from learn.trace import Trace
+from causaliq_analysis.trace import Trace
 from analysis.trace import TraceAnalysis
 from analysis.graphviz import traceviz
 from experiments.plot import relplot

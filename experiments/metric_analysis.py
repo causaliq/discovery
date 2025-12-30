@@ -9,7 +9,7 @@ from causaliq_data.pandas import Pandas
 from experiments.common import NETWORKS_GRID_DESIGN, reference_bn, METRICS, \
     Ordering, compare_series_properties, comma_to_and, FIGURE_PARAMS
 from experiments.plot import relplot
-from learn.trace import Trace
+from causaliq_analysis.trace import Trace
 from analysis.trace import TraceAnalysis
 
 

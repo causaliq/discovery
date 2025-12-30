@@ -8,7 +8,7 @@ from functools import wraps
 from os import remove
 
 from data import TESTDATA_DIR
-from learn.trace import Trace
+from causaliq_analysis.trace import Trace
 from causaliq_core.bn import BN
 from causaliq_core.bn.io import read_bn
 from analysis.graphviz import traceviz

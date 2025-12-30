@@ -4,7 +4,7 @@
 import pytest
 
 from learn.tabulist import TabuList
-from learn.trace import Trace
+from causaliq_analysis.trace import Trace
 from causaliq_analysis.graph import GraphAction
 from causaliq_analysis.graph import GraphActionDetail
 from learn.dagchange import DAGChange

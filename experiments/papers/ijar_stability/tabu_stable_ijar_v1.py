@@ -14,7 +14,7 @@ from data import EXPTS_DIR
 from causaliq_data.pandas import Pandas
 from causaliq_data import NumPy
 from learn.hc import hc
-from learn.trace import Trace
+from causaliq_analysis.trace import Trace
 from causaliq_analysis.graph import GraphAction
 from causaliq_analysis.graph import GraphActionDetail
 from learn.knowledge import Knowledge, RuleSet

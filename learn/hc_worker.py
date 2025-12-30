@@ -9,7 +9,7 @@ from causaliq_data.score import node_score
 from causaliq_core.utils import values_same
 from causaliq_core.graph import DAG
 from causaliq_data.pandas import Pandas
-from learn.trace import Trace
+from causaliq_analysis.trace import Trace
 from learn.tabulist import TabuList
 from causaliq_analysis.graph import GraphAction
 from causaliq_analysis.graph import GraphActionDetail

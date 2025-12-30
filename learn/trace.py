@@ -57,6 +57,10 @@ class CompatibilityUnpickler(pickle.Unpickler):
         ('core.graph', 'DAG'): 'causaliq_core.graph.dag',
         ('core.graph', 'NotDAGError'): 'causaliq_core.graph.dag',
         ('core.graph', 'NotPDAGError'): 'causaliq_core.graph.pdag',
+        # Trace class mapping for the import refactoring
+        ("learn.trace", "Trace"): "causaliq_analysis.trace",
+        ("learn.trace", "CONTEXT_FIELDS"): "causaliq_analysis.trace",
+        ("learn.trace", "DiffType"): "causaliq_analysis.trace",
         # Add more specific class mappings as needed
     }
     

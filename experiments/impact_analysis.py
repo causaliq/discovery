@@ -11,7 +11,7 @@ from pingouin import pairwise_tests
 from warnings import simplefilter, catch_warnings
 
 from data import EXPTS_DIR
-from learn.trace import Trace
+from causaliq_analysis.trace import Trace
 from analysis.trace import TraceAnalysis
 from experiments.plot import relplot
 from analysis.bn import BN_PROPERTIES

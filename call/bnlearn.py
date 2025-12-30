@@ -18,7 +18,7 @@ from causaliq_data.indep import check_indep_args, MIN_P_VALUE
 from causaliq_core.utils import is_valid_path
 from causaliq_data.pandas import Pandas
 from causaliq_data import NumPy
-from learn.trace import Trace, CONTEXT_FIELDS
+from causaliq_analysis.trace import Trace, CONTEXT_FIELDS
 from causaliq_analysis.graph import GraphAction
 from causaliq_analysis.graph import GraphActionDetail
 from learn.knowledge import Knowledge

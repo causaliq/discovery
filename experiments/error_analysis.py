@@ -8,7 +8,7 @@ from data import EXPTS_DIR
 from causaliq_data.pandas import Pandas
 from causaliq_core.utils import ln
 from experiments.common import reference_bn
-from learn.trace import Trace
+from causaliq_analysis.trace import Trace
 from analysis.trace import TraceAnalysis
 
 

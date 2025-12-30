@@ -5,7 +5,7 @@ import pytest
 
 from causaliq_core.utils import values_same
 from data import TESTDATA_DIR
-from learn.trace import Trace
+from causaliq_analysis.trace import Trace
 
 
 def test_trace_update_scores_type_error_1():  # no args

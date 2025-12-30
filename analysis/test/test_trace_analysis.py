@@ -5,7 +5,7 @@ import pytest
 from pandas import DataFrame
 
 from analysis.trace import TraceAnalysis
-from learn.trace import Trace
+from causaliq_analysis.trace import Trace
 from data import TESTDATA_DIR, EXPTS_DIR
 from causaliq_core.utils import dicts_same
 from causaliq_core.bn import BN

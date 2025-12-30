@@ -7,7 +7,7 @@ from os.path import exists
 from os import remove, rmdir
 
 from causaliq_core import SOFTWARE_VERSION
-from learn.trace import Trace
+from causaliq_analysis.trace import Trace
 from causaliq_analysis.graph import GraphAction
 from causaliq_analysis.graph import GraphActionDetail
 from causaliq_core.utils.random import Randomise

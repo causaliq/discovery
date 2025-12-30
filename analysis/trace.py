@@ -11,7 +11,7 @@ from causaliq_core.bn.io import read_bn
 from causaliq_analysis.metrics import pdag_compare
 from causaliq_data.indep import indep
 from data import EXPTS_DIR
-from learn.trace import Trace
+from causaliq_analysis.trace import Trace
 from causaliq_analysis.graph import GraphAction
 
 

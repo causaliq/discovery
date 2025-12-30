@@ -8,7 +8,7 @@ from data import TESTDATA_DIR
 from causaliq_data import NumPy
 from causaliq_core.graph import EdgeType, PDAG
 from causaliq_core.utils import values_same
-from learn.trace import Trace
+from causaliq_analysis.trace import Trace
 
 
 # --- Successful cases with categorical data

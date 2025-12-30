@@ -23,7 +23,7 @@ from causallearn.score.LocalScoreFunction import local_score_BDeu, \
 from causallearn.utils.PDAG2DAG import pdag2dag
 from causallearn.utils.DAG2CPDAG import dag2cpdag
 
-from learn.trace import CONTEXT_FIELDS, Trace
+from causaliq_analysis.trace import CONTEXT_FIELDS, Trace
 from causaliq_analysis.graph import GraphAction
 from causaliq_analysis.graph import GraphActionDetail
 from causaliq_data.pandas import Pandas
