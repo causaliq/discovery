@@ -3,7 +3,7 @@
 
 import pytest
 
-from learn.knowledge import RuleSet
+from causaliq_discovery.learn.knowledge import RuleSet
 from experiments.common import series_props, series_comparator, Package, \
     Ordering, Algorithm, sample_sizes, to_num
 

@@ -4,7 +4,7 @@
 
 from enum import Enum
 from causaliq_core.utils.random import Randomise
-from learn.knowledge import RuleSet
+from causaliq_discovery.learn.knowledge import RuleSet
 
 
 NETWORKS = ['cancer', 'asia', 'sports', 'sachs', 'covid',  # networks

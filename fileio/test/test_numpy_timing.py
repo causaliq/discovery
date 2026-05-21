@@ -7,7 +7,7 @@ from data import EXPTS_DIR
 from causaliq_data import NumPy
 from causaliq_data.pandas import Pandas
 from causaliq_core.utils.timing import Timing
-from learn.hc import hc
+from causaliq_discovery.learn.hc import hc
 
 
 @pytest.fixture(scope="module")  # covid, 1M rows

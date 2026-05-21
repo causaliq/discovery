@@ -10,11 +10,11 @@ from causaliq_core.utils import values_same
 from causaliq_core.graph import DAG
 from causaliq_data.pandas import Pandas
 from causaliq_analysis.trace import Trace
-from learn.tabulist import TabuList
+from causaliq_discovery.learn.tabulist import TabuList
 from causaliq_analysis.graph import GraphAction
 from causaliq_analysis.graph import GraphActionDetail
-from learn.dagchange import DAGChange, BestDAGChanges
-from learn.knowledge import Knowledge
+from causaliq_discovery.learn.dagchange import DAGChange, BestDAGChanges
+from causaliq_discovery.learn.knowledge import Knowledge
 
 
 class HCWorker():

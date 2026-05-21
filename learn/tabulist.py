@@ -4,7 +4,7 @@
 from copy import deepcopy
 
 from causaliq_analysis.graph import GraphAction
-from learn.dagchange import DAGChange
+from causaliq_discovery.learn.dagchange import DAGChange
 
 
 class TabuList():

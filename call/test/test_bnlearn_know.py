@@ -11,8 +11,8 @@ from causaliq_data import NumPy
 from causaliq_core.graph import DAG, EdgeType
 from causaliq_core.bn import BN
 from causaliq_core.bn.io import read_bn
-from learn.knowledge import Knowledge
-from learn.knowledge_rule import RuleSet
+from causaliq_discovery.learn.knowledge import Knowledge
+from causaliq_discovery.learn.knowledge_rule import RuleSet
 
 
 # Generate 10 categorical rows for A --> B

@@ -5,10 +5,10 @@ from copy import deepcopy
 
 from causaliq_core.utils.random import stable_random, init_stable_random
 from causaliq_analysis.graph import GraphAction
-from learn.dagchange import BestDAGChanges, DAGChange
-from learn.knowledge_rule import Rule, RuleSet, KnowledgeOutcome, \
+from causaliq_discovery.learn.dagchange import BestDAGChanges, DAGChange
+from causaliq_discovery.learn.knowledge_rule import Rule, RuleSet, KnowledgeOutcome, \
     KnowledgeEvent
-from learn.knowledge_params import KnowledgeParams
+from causaliq_discovery.learn.knowledge_params import KnowledgeParams
 
 
 class Knowledge():

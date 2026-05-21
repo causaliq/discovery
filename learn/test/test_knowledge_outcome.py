@@ -3,7 +3,7 @@
 
 import pytest
 
-from learn.knowledge import KnowledgeOutcome
+from causaliq_discovery.learn.knowledge import KnowledgeOutcome
 
 
 # Test the KnowledgeOutcome class

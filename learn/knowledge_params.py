@@ -8,7 +8,7 @@ from causaliq_core.utils.random import RandomIntegers, stable_random, init_stabl
 from causaliq_core.bn import BN
 from causaliq_core.graph import DAG
 from causaliq_core.graph.dag import NotDAGError
-from learn.knowledge_rule import Rule
+from causaliq_discovery.learn.knowledge_rule import Rule
 
 KNOWLEDGE_PARAMS = {'limit': (int, float, bool),  # limit on AL requests
                     'ref': BN,  # reference BN used by 'expert' in AL

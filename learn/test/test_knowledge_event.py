@@ -3,7 +3,7 @@
 
 import pytest
 
-from learn.knowledge import Rule, KnowledgeEvent, KnowledgeOutcome
+from causaliq_discovery.learn.knowledge import Rule, KnowledgeEvent, KnowledgeOutcome
 
 
 def test_knowledge_event_type_error_1():  # no arguments

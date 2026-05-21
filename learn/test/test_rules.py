@@ -3,7 +3,7 @@
 
 import pytest
 
-from learn.knowledge import Rule, RuleSet
+from causaliq_discovery.learn.knowledge import Rule, RuleSet
 from causaliq_analysis.graph import GraphAction
 
 

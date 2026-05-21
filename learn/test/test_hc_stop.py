@@ -7,8 +7,8 @@ from pandas import DataFrame, set_option
 from data import TESTDATA_DIR
 from causaliq_core.bn import BN
 from causaliq_core.bn.io import read_bn
-from learn.hc import hc
-from learn.knowledge import Knowledge, RuleSet
+from causaliq_discovery.learn.hc import hc
+from causaliq_discovery.learn.knowledge import Knowledge, RuleSet
 
 
 @pytest.fixture

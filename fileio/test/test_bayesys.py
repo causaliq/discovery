@@ -12,8 +12,8 @@ from causaliq_core.utils import FileFormatError
 import testdata.example_dags as ex_dag
 import testdata.example_pdags as ex_pdag
 from causaliq_core.bn.io import read_bn
-from learn.knowledge import Knowledge
-from learn.knowledge_rule import Rule
+from causaliq_discovery.learn.knowledge import Knowledge
+from causaliq_discovery.learn.knowledge_rule import Rule
 
 
 @pytest.fixture(scope="function")  # temp file, automatically removed

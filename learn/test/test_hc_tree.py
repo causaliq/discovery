@@ -6,9 +6,9 @@ import pytest
 from data import TESTDATA_DIR
 from causaliq_core.bn import BN
 from causaliq_core.bn.io import read_bn
-from learn.hc import hc
-from learn.knowledge import Knowledge
-from learn.knowledge_rule import RuleSet
+from causaliq_discovery.learn.hc import hc
+from causaliq_discovery.learn.knowledge import Knowledge
+from causaliq_discovery.learn.knowledge_rule import RuleSet
 
 
 def test_hc_tree_type_error_1():  # tree parameter not tuple

@@ -7,7 +7,7 @@ from pandas import DataFrame, set_option
 
 from causaliq_core.bn import BN
 from causaliq_core.bn import CPT
-from learn.hc import hc
+from causaliq_discovery.learn.hc import hc
 from analysis.trace import TraceAnalysis
 import testdata.example_dags as ex_dag
 

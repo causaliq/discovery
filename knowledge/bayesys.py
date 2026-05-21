@@ -6,7 +6,7 @@ import csv
 
 from causaliq_core.utils import is_valid_path, FileFormatError
 from causaliq_core.graph import DAG
-from learn.knowledge import Knowledge, RuleSet
+from causaliq_discovery.learn.knowledge import Knowledge, RuleSet
 
 
 def read_constraints(path, nodes):

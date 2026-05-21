@@ -8,7 +8,7 @@ from causaliq_data.pandas import Pandas
 from causaliq_data import NumPy
 from causaliq_analysis.metrics import pdag_compare
 from causaliq_core.graph.io.bayesys import read
-from learn.hc import hc
+from causaliq_discovery.learn.hc import hc
 from call.bnlearn import bnlearn_learn
 from call.tetrad import tetrad_learn
 from causaliq_core.graph.io.tetrad import write as write_tetrad, read as read_tetrad

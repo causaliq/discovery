@@ -3,7 +3,7 @@
 
 import pytest
 
-from learn.dagchange import DAGChange, BestDAGChanges
+from causaliq_discovery.learn.dagchange import DAGChange, BestDAGChanges
 from causaliq_analysis.graph import GraphAction
 
 

@@ -9,7 +9,7 @@ from causaliq_data import NumPy
 from causaliq_core.bn import BN
 from causaliq_core.bn.io import read_bn
 from causaliq_core.utils.timing import Timing
-from learn.hc import hc
+from causaliq_discovery.learn.hc import hc
 
 
 def run_profile_asia():

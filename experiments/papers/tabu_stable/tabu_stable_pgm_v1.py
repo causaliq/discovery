@@ -8,7 +8,7 @@ from experiments.summary_analysis import summary_analysis
 from experiments.plot import relplot
 from data import EXPTS_DIR
 from causaliq_data.pandas import Pandas
-from learn.hc import hc
+from causaliq_discovery.learn.hc import hc
 
 
 CATEGORICAL = ('asia,sports,sachs,covid,child,' +

@@ -17,7 +17,7 @@ from causaliq_core.utils import ln
 from causaliq_core.bn import BN
 from causaliq_core.bn.io import read_bn
 from data import EXPTS_DIR
-from learn.knowledge import RuleSet
+from causaliq_discovery.learn.knowledge import RuleSet
 
 INT = compile(r'^\-*\d+$')
 FLOAT = compile(r'^\-*\d+\.\d+$')

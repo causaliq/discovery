@@ -3,10 +3,10 @@
 
 import pytest
 
-from learn.knowledge import Knowledge, Rule, RuleSet, \
+from causaliq_discovery.learn.knowledge import Knowledge, Rule, RuleSet, \
     KnowledgeOutcome
 from causaliq_analysis.graph import GraphAction
-from learn.dagchange import DAGChange, BestDAGChanges
+from causaliq_discovery.learn.dagchange import DAGChange, BestDAGChanges
 from data import TESTDATA_DIR
 from causaliq_core.bn import BN
 from causaliq_core.bn.io import read_bn

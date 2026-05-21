@@ -3,11 +3,11 @@
 
 import pytest
 
-from learn.tabulist import TabuList
+from causaliq_discovery.learn.tabulist import TabuList
 from causaliq_analysis.trace import Trace
 from causaliq_analysis.graph import GraphAction
 from causaliq_analysis.graph import GraphActionDetail
-from learn.dagchange import DAGChange
+from causaliq_discovery.learn.dagchange import DAGChange
 
 
 @pytest.fixture  # an initialised Trace object for testing

@@ -47,6 +47,14 @@
             <parents>Deaths_with_COVID_on_certificate Majority_COVID_19_variant Patients_in_MVBs Patients_in_hospital Season</parents>
             <definition>Lockdown=0.001453980105*Deaths_with_COVID_on_certificate-0.5916585326*Majority_COVID_19_variant+0.0003145858645*Patients_in_MVBs+0.00001347064972*Patients_in_hospital+0.03979425505*Season+Normal(3.017402172,0.8368324544)</definition>
         </equation>
+        <equation id="Face_masks">
+            <parents>Deaths_with_COVID_on_certificate Lockdown Patients_in_MVBs Patients_in_hospital</parents>
+            <definition>Face_masks=-0.003179745283*Deaths_with_COVID_on_certificate+0.5117633343*Lockdown+0.0005133040249*Patients_in_MVBs+0.000007808208466*Patients_in_hospital+Normal(1.244655609,0.6451629825)</definition>
+        </equation>
+        <equation id="Excess_mortality">
+            <parents>Deaths_with_COVID_on_certificate Lockdown</parents>
+            <definition>Excess_mortality=0.05584656447*Deaths_with_COVID_on_certificate-1.171786427*Lockdown+Normal(-0.4592809677,11.89302828)</definition>
+        </equation>
         <equation id="Work_and_school_activity">
             <parents>Lockdown Season</parents>
             <definition>Work_and_school_activity=-0.5091350079*Lockdown-0.002862490015*Season+Normal(4.009604454,0.5199887979)</definition>
@@ -54,14 +62,6 @@
         <equation id="Leisure_activity">
             <parents>Lockdown Season</parents>
             <definition>Leisure_activity=-0.2964703143*Lockdown-0.3072581291*Season+Normal(4.04975605,0.6194804621)</definition>
-        </equation>
-        <equation id="Excess_mortality">
-            <parents>Deaths_with_COVID_on_certificate Lockdown</parents>
-            <definition>Excess_mortality=0.05584656447*Deaths_with_COVID_on_certificate-1.171786427*Lockdown+Normal(-0.4592809677,11.89302828)</definition>
-        </equation>
-        <equation id="Face_masks">
-            <parents>Deaths_with_COVID_on_certificate Lockdown Patients_in_MVBs Patients_in_hospital</parents>
-            <definition>Face_masks=-0.003179745283*Deaths_with_COVID_on_certificate+0.5117633343*Lockdown+0.0005133040249*Patients_in_MVBs+0.000007808208466*Patients_in_hospital+Normal(1.244655609,0.6451629825)</definition>
         </equation>
         <equation id="Transportation_activity">
             <parents>Leisure_activity Lockdown Season Work_and_school_activity</parents>
@@ -154,29 +154,29 @@
                 <font color="000000" name="Arial" size="8" />
                 <position>120 800 200 840</position>
             </node>
-            <node id="Work_and_school_activity">
-                <name>Work_and_school_activity</name>
+            <node id="Face_masks">
+                <name>Face_masks</name>
                 <interior color="e5f6f7" />
                 <outline color="000080" />
                 <font color="000000" name="Arial" size="8" />
                 <position>20 900 100 940</position>
-            </node>
-            <node id="Leisure_activity">
-                <name>Leisure_activity</name>
-                <interior color="e5f6f7" />
-                <outline color="000080" />
-                <font color="000000" name="Arial" size="8" />
-                <position>120 900 200 940</position>
             </node>
             <node id="Excess_mortality">
                 <name>Excess_mortality</name>
                 <interior color="e5f6f7" />
                 <outline color="000080" />
                 <font color="000000" name="Arial" size="8" />
+                <position>120 900 200 940</position>
+            </node>
+            <node id="Work_and_school_activity">
+                <name>Work_and_school_activity</name>
+                <interior color="e5f6f7" />
+                <outline color="000080" />
+                <font color="000000" name="Arial" size="8" />
                 <position>220 900 300 940</position>
             </node>
-            <node id="Face_masks">
-                <name>Face_masks</name>
+            <node id="Leisure_activity">
+                <name>Leisure_activity</name>
                 <interior color="e5f6f7" />
                 <outline color="000080" />
                 <font color="000000" name="Arial" size="8" />

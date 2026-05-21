@@ -8,17 +8,17 @@ from enum import Enum
 from copy import deepcopy
 from time import time
 
-from learn.common import TreeStats
-from learn.hc_worker import HCWorker, Prefer
+from causaliq_discovery.learn.common import TreeStats
+from causaliq_discovery.learn.hc_worker import HCWorker, Prefer
 from causaliq_data import Data
 from causaliq_data.pandas import Pandas
 from causaliq_data import NumPy
 from causaliq_core.graph import DAG, SDG
 from causaliq_data.score import check_score_params, SCORE_PARAMS
 from causaliq_core.utils import values_same
-from learn.tabulist import TabuList
-from learn.knowledge import Knowledge
-from learn.knowledge_rule import RuleSet, Rule
+from causaliq_discovery.learn.tabulist import TabuList
+from causaliq_discovery.learn.knowledge import Knowledge
+from causaliq_discovery.learn.knowledge_rule import RuleSet, Rule
 
 HC_PARAMS = {'score',  # score to use e.g. 'bic', 'bde'
              'maxiter',  # limit on number of iterations

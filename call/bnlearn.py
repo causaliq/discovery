@@ -21,8 +21,8 @@ from causaliq_data import NumPy
 from causaliq_analysis.trace import Trace, CONTEXT_FIELDS
 from causaliq_analysis.graph import GraphAction
 from causaliq_analysis.graph import GraphActionDetail
-from learn.knowledge import Knowledge
-from learn.knowledge_rule import Rule
+from causaliq_discovery.learn.knowledge import Knowledge
+from causaliq_discovery.learn.knowledge_rule import Rule
 
 BNLEARN_ALGORITHMS = {
     'gs': 'constraint',

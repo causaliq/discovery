@@ -14,9 +14,9 @@ from call.r import initialise_r_environment
 from call.bnlearn import bnlearn_learn
 from call.tetrad import tetrad_learn
 from call.causal import causal_learn
-from learn.hc import hc
+from causaliq_discovery.learn.hc import hc
 from causaliq_analysis.trace import Trace
-from learn.knowledge import Knowledge
+from causaliq_discovery.learn.knowledge import Knowledge
 from experiments.common import series_props, reference_bn, \
     Algorithm, Package, process_args, Ordering
 
