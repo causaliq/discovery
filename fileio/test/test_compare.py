@@ -50,18 +50,3 @@ def test_core_metrics_compare_all_d7at():
 def test_core_metrics_compare_all_d8atr():
     assert values_same(compare_all(TESTDATA_DIR + '/dhs/d8atr', metric='bsf',
                                    bayesys='v1.5+'), 0.508, sf=3) is True
-
-
-def test_core_metrics_compare_all_d7a_no_know_old():
-    assert values_same(compare_all(TESTDATA_DIR + '/dhs/d7a', metric='bsf',
-                                   bayesys='v1.3'), 0.330, sf=3) is True
-
-
-def test_core_metrics_compare_all_d7at_old():
-    assert values_same(compare_all(TESTDATA_DIR + '/dhs/d7at', metric='bsf',
-                                   bayesys='v1.3'), 0.374, sf=3) is True
-
-
-def test_core_metrics_compare_all_d8atr_old():
-    assert values_same(compare_all(TESTDATA_DIR + '/dhs/d8atr', metric='bsf',
-                                   bayesys='v1.3'), 0.488, sf=3) is True

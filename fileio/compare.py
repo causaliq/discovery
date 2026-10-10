@@ -39,18 +39,17 @@ def compare_all(dir, metric, bayesys):
 
     graphs = {f: read(dir + sep + f) for f in listdir(dir)}
 
-    # ensure all graphs have same set of nodes unless v1.3 bayesys
+    # ensure all graphs have the same set of nodes
 
-    if bayesys != 'v1.3':
-        all_nodes = None
-        for _, graph in graphs.items():
-            if graph.number_components() == 1:
-                all_nodes = graph.nodes
-                break
-        if all_nodes is None:
-            raise ValueError('No single fragment graphs')
-        graphs = {f: read(dir + sep + f, all_nodes=all_nodes)
-                  for f in listdir(dir)}
+    all_nodes = None
+    for _, graph in graphs.items():
+        if graph.number_components() == 1:
+            all_nodes = graph.nodes
+            break
+    if all_nodes is None:
+        raise ValueError('No single fragment graphs')
+    graphs = {f: read(dir + sep + f, all_nodes=all_nodes)
+              for f in listdir(dir)}
 
     # compare each graph with every other graph
 
